@@ -14,7 +14,7 @@
 - [x] 2.2 Lint-Regeln gegen Arbitrary Colors (`bg-[#…]`, Inline-Hex) einrichten; verifizieren: Fixture-Datei mit `#ff0000` lässt `pnpm lint` fehlschlagen
 - [x] 2.3 Raleway, Roboto Slab, Poppins als WOFF2 (latin + latin-ext) selbst hosten via `next/font/local`; verifizieren: Playwright-Test zeichnet Requests auf, keiner an `fonts.googleapis.com`/`fonts.gstatic.com`
 - [x] 2.4 Logo als SVG nachbauen bzw. hochauflösend aufbereiten, Favicons + Apple-Touch-Icon + OG-Standardbild (1200×630) erzeugen; verifizieren: visuelle Prüfung bei 2× DPR, Dateien in `public/`
-- [ ] 2.5 Basiskomponenten bauen (Button, Link, Section, Container, Card, Heading, Field, Disclosure, Tabs) inkl. Fokus-Stilen und Reduced-Motion-Varianten; verifizieren: Komponenten-Übersichtsseite `/_styleguide/` (nur dev/staging, `noindex`) + axe-Test ohne serious/critical
+- [x] 2.5 Basiskomponenten bauen (Button, Link, Section, Container, Card, Heading, Field, Disclosure, Tabs) inkl. Fokus-Stilen und Reduced-Motion-Varianten; verifizieren: Komponenten-Übersichtsseite `/_styleguide/` (nur dev/staging, `noindex`) + axe-Test ohne serious/critical
 
 ## 3. Inhaltsmodell & Migration
 

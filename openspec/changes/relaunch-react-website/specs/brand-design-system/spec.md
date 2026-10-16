@@ -5,7 +5,7 @@ Legt das Corporate Design der GÖK Bauüberwachung Bahn GmbH als verbindliche To
 ## ADDED Requirements
 
 ### Requirement: Farbpalette
-Die Website SHALL ausschließlich Farben aus der definierten Palette verwenden: Primär/Bronze `#A6875C`, Bronze-Hell `#E2C398`, Sekundär `#54595F`, Text `#141414`, Fläche-Hell `#EEEEEE`, Fläche-Weiß `#FFFFFF` sowie davon abgeleitete Abstufungen, die im Design-System dokumentiert sind.
+Die Website SHALL ausschließlich Farben aus der definierten Palette verwenden: Primär/Bronze `#A6875C`, Bronze-Hell `#E2C398`, Sekundär `#54595F`, Text `#141414`, Fläche-Hell `#EEEEEE`, Fläche-Weiß `#FFFFFF`, davon abgeleitete Abstufungen sowie funktionale Statusfarben für Fehler und Erfolg. Alle MUST im Design-System dokumentiert sein.
 
 #### Scenario: Undokumentierte Farbe im Code
 - **WHEN** eine Komponente eine Farbe verwendet, die nicht als Token definiert ist
