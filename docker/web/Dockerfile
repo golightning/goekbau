@@ -1,6 +1,6 @@
 # Lokaler Prod-Nachbau (design.md D9): Apache + PHP 8.3 wie auf IONOS Deploy Now.
 # Base-Image per Digest gepinnt (Lieferkette, web-security).
-FROM php@sha256:f8506a19d79cad7fcf0c8049f1ed2208824961018fdc10bd80f324094dcd36bd
+FROM php@sha256:01a109229f4465bc9ef042d9198f09a4d9da7775a825dbd8572dcdbd8756c4d3
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends libzip-dev libpng-dev libjpeg62-turbo-dev libwebp-dev \
