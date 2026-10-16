@@ -20,9 +20,13 @@
     "assemble": "sh scripts/assemble.sh",
     "prod:up": "pnpm build && pnpm assemble && docker compose up -d --build",
     "prod:down": "docker compose down",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "brand:assets": "node scripts/brand-assets.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/raleway": "^5.3.0",
+    "@fontsource-variable/roboto-slab": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
     "next": "^16.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
@@ -30,12 +34,17 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.64.0",
+    "@tailwindcss/node": "^4.3.3",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.0",
+    "postcss": "^8.5.29",
     "prettier": "^3.9.9",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "vitest": "^5.0.3"
   }

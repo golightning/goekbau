@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/*
+ * Corporate Design GÖK Bauüberwachung Bahn (brand-design-system).
+ * Quelle: Elementor-Kit (post-58), ergänzt um kontrastsichere Abstufungen.
+ * Tailwind-Standardfarben sind entfernt – es existieren nur diese Tokens.
+ * Kontrastwerte werden in src/styles/tokens.test.ts geprüft.
+ */
+@theme {
+  --color-*: initial;
+
+  /* Marke */
+  --color-bronze-50: #f6f3ef;
+  --color-bronze-100: #ede7de;
+  --color-bronze-200: #e4dbce;
+  --color-bronze-300: #e2c398; /* Hover-Gold aus dem Bestand */
+  --color-bronze-500: #a6875c; /* Primär/Akzent – Flächen, große Schrift, dunkler Text darauf */
+  --color-bronze-700: #7d6644; /* Text, Links, kleine Buttons – ≥ 4,5:1 auf Weiß und Hellgrau */
+  --color-bronze-800: #635036;
+  --color-bronze-900: #423524;
+
+  /* Neutral */
+  --color-ink: #141414; /* Text */
+  --color-slate: #54595f; /* Sekundär */
+  --color-mist: #eeeeee; /* Fläche hell */
+  --color-white: #ffffff;
+  --color-black: #000000; /* nur für Bild-Overlays mit Transparenz */
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Funktionale Statusfarben (Formular-Feedback) */
+  --color-danger: #b42318;
+  --color-success: #1e7b4f;
+
+  /* Typografie */
+  --font-heading: var(--font-raleway), var(--font-raleway-ext), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-roboto-slab), var(--font-roboto-slab-ext), ui-serif, Georgia, serif;
+  --font-accent: var(--font-poppins), var(--font-poppins-ext), ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
+  --text-2xl: clamp(1.625rem, 1.35rem + 1vw, 2.125rem);
+  --text-3xl: clamp(2rem, 1.5rem + 1.8vw, 2.875rem);
+  --text-4xl: clamp(2.5rem, 1.7rem + 3vw, 4.25rem);
+
+  /* Layout: Breakpoints Mobil < 768, Tablet 768–1023, Desktop ≥ 1024 */
+  --breakpoint-sm: 30rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --container-content: 75rem; /* 1200 px */
+  --container-prose: 42rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+}
+
+@layer base {
+  html {
+    color: var(--color-ink);
+    background-color: var(--color-white);
+    font-family: var(--font-body);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-bronze-700);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
