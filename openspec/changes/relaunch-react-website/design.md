@@ -127,7 +127,8 @@ Der Docker-basierte Prod-Nachbau ist der zentrale Hebel: `.htaccess`- und PHP-Ve
 
 ## Open Questions
 
-- Empfängeradressen je Formular (Kontakt → `info@`? Bewerbung → `deniz.goek@`?) und Absender-Postfach für SMTP. Reine Konfiguration.
+- Empfängeradressen: Laut WP-Export gehen heute beide Formulare an `deniz.goek@goekbau.de`. Zu bestätigen: Bleibt das so, und welches IONOS-Postfach wird SMTP-Absender? Reine Konfiguration.
+- Umgang mit den 248 in WordPress gespeicherten Einsendungen und den 18 Bewerbungsdateien vor der Abschaltung: Export an den Kunden oder Löschung nach Aufbewahrungsfrist (DSGVO). Betrifft Task 11.5, nicht die Architektur.
 - Existieren echte Social-Media-Profile? Wenn nicht, werden keine Icons angezeigt (bereits spezifiziert).
 - Freigabe von Kennzahlen, Projektdetails, Team-Rollen und Partner-Logos (Bildrechte) durch GÖK. Inhalt, nicht Struktur.
 - Genauer Wortlaut der Rechtstexte (Impressum/Datenschutz), bei Bedarf über einen Generator oder den Anwalt des Kunden.
