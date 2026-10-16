@@ -1,0 +1,54 @@
+slug: home
+path: /
+seo:
+  title: Bauüberwachung Bahn und Oberbau in Süddeutschland
+  description: GÖK Bauüberwachung Bahn – Fachbauüberwacher Oberbau, Bauüberwacher Bahn Ob/KIB, Sicherungsüberwachung und BETRA-Anträge aus einer Hand.
+hero:
+  eyebrow: Präzision und Expertise im Gleisbau
+  title: Schienen der Zukunft gestalten
+  lead: Wir überwachen Bau und Instandhaltung von Gleisanlagen – zuverlässig, vorausschauend und mit langjähriger Branchenerfahrung. So bleiben Ihre Baumaßnahmen sicher, termingerecht und vertragskonform.
+  image:
+    src: ../media/photos/railway-track-pixabay-2049394.jpg
+    alt: Gleis führt unter dunklem Wolkenhimmel geradeaus in die Ferne
+    credit: Pixabay
+blocks:
+  - id: intro
+    eyebrow: Über uns
+    title: Ihr Partner für die Bauüberwachung im Gleisbau
+    body: |
+      Die GÖK Bauüberwachung Bahn GmbH wird von Geschäftsführer Deniz Gök geführt, der seine langjährige Branchenerfahrung in den Dienst seiner Kunden stellt. Seit unserer Gründung im Mai 2023 schätzen Auftraggeber unseren ausgeprägten Servicegedanken: kundenorientiertes Handeln, vorausschauende Planung und penible Genauigkeit.
+    cta:
+      label: Mehr über uns
+      href: /uber-uns/
+  - id: leistungen
+    eyebrow: Leistungen
+    title: Fachbauüberwachung Oberbau und Bauüberwachung Bahn Ob/KIB
+    body: |
+      Von der Sicherungsüberwachung über BETRA- und Schaltanträge bis zur Überwachung der vertragskonformen Bauausführung – wir decken die Aufgaben rund um Ihre Baumaßnahme am Gleis ab.
+    cta:
+      label: Alle Leistungen
+      href: /leistungen/
+  - id: projekte
+    eyebrow: Projekte
+    title: Von uns erfolgreich begleitet
+  - id: team
+    eyebrow: Das Team
+    title: Unsere Experten
+    cta:
+      label: Team kennenlernen
+      href: /uber-uns/#team
+  - id: karriere
+    eyebrow: Karriere
+    title: Wir stellen ein und bilden aus
+    body: |
+      Sie möchten die Bahninfrastruktur von morgen mitgestalten? Wir suchen Fachbauüberwacher und Bauüberwacher Bahn – und begleiten Sie auf Wunsch durch die Funktionsausbildung.
+    cta:
+      label: Offene Stellen
+      href: /karriere/
+  - id: kontakt
+    title: Bauen Sie die Zukunft der Schiene mit uns
+    body: |
+      Ob Neubau, Modernisierung oder Instandhaltung: Wir sorgen dafür, dass Ihre Baumaßnahme sicher, effizient und vertragsgerecht umgesetzt wird.
+    cta:
+      label: Kontakt aufnehmen
+      href: /kontakt/

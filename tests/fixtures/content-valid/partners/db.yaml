@@ -1,0 +1,4 @@
+slug: db-partner
+name: Partner
+logo: { src: ../media/logo.png, alt: Logo Partner }
+order: 1

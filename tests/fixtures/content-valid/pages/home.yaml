@@ -1,0 +1,11 @@
+slug: home
+path: /
+seo:
+  title: Startseite Test
+  description: Dies ist eine ausreichend lange Testbeschreibung für die Startseite mit mehr als siebzig Zeichen.
+hero:
+  title: Willkommen
+blocks:
+  - id: intro
+    title: Einleitung
+    body: Ein **Absatz**.

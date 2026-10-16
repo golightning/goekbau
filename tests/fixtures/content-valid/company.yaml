@@ -1,0 +1,12 @@
+name: Test GmbH
+shortName: Test
+claim: Testclaim
+tagline: Testzeile
+foundingYear: 2023
+managingDirector: Max Muster
+address: { street: Teststraße 1, postalCode: "12345", city: Teststadt, country: DE }
+phone: { display: "+49 123 456789", e164: "+49123456789" }
+whatsapp: { e164: "+49123456789" }
+emails:
+  - { id: general, label: Allgemein, address: info@example.org }
+agency: { name: Agentur, url: "https://example.org" }

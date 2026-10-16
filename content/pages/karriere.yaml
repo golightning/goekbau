@@ -1,0 +1,48 @@
+slug: karriere
+path: /karriere/
+seo:
+  title: Karriere – Stellen und Ausbildung im Gleisbau
+  description: Jobs als Fachbauüberwacher Oberbau und Bauüberwacher Bahn Ob/KIB sowie Funktionsausbildungen bei der GÖK Bauüberwachung Bahn GmbH.
+hero:
+  eyebrow: Karriere
+  title: Gestalten Sie die Bahninfrastruktur der Zukunft mit
+  lead: Sie suchen eine spannende Aufgabe in der Gleisbauüberwachung? Bei uns entfalten Sie Ihre Fähigkeiten in einem engagierten Team – als erfahrene Fachkraft oder über eine Funktionsausbildung.
+blocks:
+  - id: intro
+    title: Warum GÖK?
+    body: |
+      Als Gleisbauüberwacher spielen Sie eine zentrale Rolle für die Sicherheit und Effizienz von Schienenwegen. Wir bieten ein Umfeld, in dem Innovation und Engagement geschätzt werden.
+  - id: angebot
+    title: Was wir bieten
+    items:
+      - title: Eine herausfordernde und erfüllende Aufgabe
+        body: Mit Raum für persönliches Wachstum und berufliche Entwicklung.
+      - title: Bedeutende Infrastrukturprojekte
+        body: Mit direktem Einfluss auf Mobilität und Sicherheit.
+      - title: Schulungen und Weiterbildung
+        body: Damit Sie stets auf dem neuesten Stand der Technik sind.
+      - title: Teamkultur
+        body: Zusammenarbeit und Ideenaustausch auf Augenhöhe.
+  - id: anforderungen
+    title: Was Sie mitbringen
+    items:
+      - title: Fachkenntnisse im Gleisbau und in der Gleisüberwachung
+      - title: Verständnis für Sicherheitsstandards im Schienenverkehr
+      - title: Analytisches Denken und lösungsorientiertes Arbeiten
+      - title: Teamorientierung und gute Kommunikationsfähigkeit
+  - id: stellen
+    eyebrow: Stellenangebote
+    title: Stellen für Berufserfahrene
+  - id: ausbildung
+    eyebrow: Aus- und Weiterbildung
+    title: Wir bilden aus
+    body: |
+      Sie haben die fachlichen Voraussetzungen, aber noch keine Zulassung? Wir begleiten Sie durch die Funktionsausbildung nach den Richtlinien der DB InfraGO.
+  - id: initiativ
+    title: Keine passende Stelle dabei?
+    body: |
+      Senden Sie uns Ihre Initiativbewerbung – wir melden uns bei Ihnen.
+  - id: bewerbung
+    title: Jetzt bewerben
+    body: |
+      Schicken Sie uns Ihre Unterlagen direkt über das Formular. Wir behandeln Ihre Bewerbung vertraulich.

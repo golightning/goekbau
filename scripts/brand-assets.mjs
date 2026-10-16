@@ -5,7 +5,7 @@ import path from "node:path";
 import sharp from "sharp";
 
 const root = path.resolve(import.meta.dirname, "..");
-const master = path.join(root, "content/media/brand/logo-goek-master.png");
+const master = path.join(root, "content/media/brand/logo-goek.png");
 const ogPhoto = path.join(root, "content/media/photos/railway-track-pixabay-2049394.jpg");
 const publicBrand = path.join(root, "public/brand");
 const appDir = path.join(root, "src/app");

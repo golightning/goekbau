@@ -18,10 +18,10 @@
 
 ## 3. Inhaltsmodell & Migration
 
-- [ ] 3.1 Velite einrichten und Zod-Schemas für `company`, `pages`, `services`, `service-areas`, `projects`, `team`, `partners`, `stats`, `careers/jobs`, `careers/trainings` anlegen (inkl. Slug-Eindeutigkeit, Pflicht-`alt`/`decorative`, SEO-Feldlängen, `legacyPaths`); verifizieren: Vitest mit gültigen und ungültigen Fixtures, Fehlermeldungen nennen Datei + Feld
-- [ ] 3.2 Lint-Regel/Test gegen hartkodierte Stammdaten (Telefon, E-Mail, Adresse außerhalb `content/company.yaml`); verifizieren: Fixture mit Telefonnummer-Literal schlägt fehl
-- [ ] 3.3 WordPress-Export in `_wp-export/` auswerten (Elementor-JSON je Seite, Formular-Einstellungen, Medien-Originale) bzw. – falls nicht vorhanden – Crawl aus `research/wp-audit/` nutzen; verifizieren: Originalbilder in `content/media/` mit Herkunftsliste
-- [ ] 3.4 Inhalte migrieren und redaktionell bereinigen (Tippfehler B9, Widerspruch B13, Leistungs-Status, Stellen vs. Ausbildungen); verifizieren: `pnpm build` grün, `research/wp-audit/MIGRATION.md` listet alle 12 WP-Seiten mit Ziel/Begründung
+- [x] 3.1 Velite einrichten und Zod-Schemas für `company`, `pages`, `services`, `service-areas`, `projects`, `team`, `partners`, `stats`, `careers/jobs`, `careers/trainings` anlegen (inkl. Slug-Eindeutigkeit, Pflicht-`alt`/`decorative`, SEO-Feldlängen, `legacyPaths`); verifizieren: Vitest mit gültigen und ungültigen Fixtures, Fehlermeldungen nennen Datei + Feld
+- [x] 3.2 Lint-Regel/Test gegen hartkodierte Stammdaten (Telefon, E-Mail, Adresse außerhalb `content/company.yaml`); verifizieren: Fixture mit Telefonnummer-Literal schlägt fehl
+- [x] 3.3 WordPress-Export in `_wp-export/` auswerten (Elementor-JSON je Seite, Formular-Einstellungen, Medien-Originale) bzw. – falls nicht vorhanden – Crawl aus `research/wp-audit/` nutzen; verifizieren: Originalbilder in `content/media/` mit Herkunftsliste
+- [x] 3.4 Inhalte migrieren und redaktionell bereinigen (Tippfehler B9, Widerspruch B13, Leistungs-Status, Stellen vs. Ausbildungen); verifizieren: `pnpm build` grün, `research/wp-audit/MIGRATION.md` listet alle 12 WP-Seiten mit Ziel/Begründung
 - [ ] 3.5 Content-Pflege-Anleitung in `docs/content.md` (neue Stelle anlegen, Kennzahl ändern, Bild hinzufügen, PR-Workflow); verifizieren: Anleitung an einer Test-Stelle durchgespielt, Stelle erscheint auf Staging
 
 ## 4. Layout & Navigation

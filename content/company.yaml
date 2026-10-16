@@ -1,0 +1,31 @@
+# Unternehmensstammdaten – einzige Quelle für Footer, Kontaktseite, Impressum, JSON-LD und Formular-Mails.
+name: GÖK Bauüberwachung Bahn GmbH
+shortName: GÖK Bauüberwachung Bahn
+claim: Vorreiter im Gleisbau
+tagline: Wir gestalten Transportwege der Zukunft im gesamten Süden Deutschlands.
+foundingYear: 2023
+managingDirector: Deniz Gök
+address:
+  street: Max-Planck-Straße 16
+  postalCode: "89250"
+  city: Senden
+  district: Wullenstetten
+  country: DE
+phone:
+  display: +49 162 1991444
+  e164: "+491621991444"
+whatsapp:
+  e164: "+491621991444"
+emails:
+  - id: general
+    label: Allgemein
+    address: info@goekbau.de
+  - id: management
+    label: Geschäftsführung
+    address: deniz.goek@goekbau.de
+vatId: DE455803768
+# register: { court: "Amtsgericht …", number: "HRB …" }  ⟵ vom Kunden zu ergänzen (Pflichtangabe GmbH)
+social: {}
+agency:
+  name: Lightning Solutions
+  url: https://golightning.ai

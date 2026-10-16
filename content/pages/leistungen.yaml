@@ -1,0 +1,21 @@
+slug: leistungen
+path: /leistungen/
+seo:
+  title: Leistungen – Fachbauüberwachung Oberbau, BÜB Ob/KIB
+  description: Technischer Berechtigter, Sicherungsüberwacher, BETRA- und Schaltanträge, DV-gestützte Inspektion und mehr – unsere Leistungen im Überblick.
+hero:
+  eyebrow: Leistungen
+  title: Unsere Leistungen für Ihre Baumaßnahme
+  lead: Wir bieten maßgeschneiderte Lösungen für Ihre Anforderungen am Gleis – mit Expertise, Sorgfalt und einem klaren Blick auf Sicherheit, Qualität und Termine.
+blocks:
+  - id: geplant
+    title: In Vorbereitung
+    body: |
+      Diese Leistungen bieten wir derzeit noch nicht an. Sie sind nach erfolgter Firmenfreigabe geplant.
+  - id: kontakt
+    title: Sie planen eine Baumaßnahme?
+    body: |
+      Sprechen Sie uns an – wir klären gemeinsam, welche Leistungen Ihr Vorhaben braucht.
+    cta:
+      label: Kontakt aufnehmen
+      href: /kontakt/

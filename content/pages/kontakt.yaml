@@ -1,0 +1,14 @@
+slug: kontakt
+path: /kontakt/
+seo:
+  title: Kontakt – Ihre Anfrage an GÖK Bauüberwachung Bahn
+  description: Kontakt zur GÖK Bauüberwachung Bahn GmbH in Senden-Wullenstetten – per Formular, Telefon oder WhatsApp. Wir melden uns schnellstmöglich bei Ihnen.
+hero:
+  eyebrow: Kontakt
+  title: Treten Sie mit uns in Kontakt
+  lead: Schildern Sie uns kurz Ihr Vorhaben – wir melden uns schnellstmöglich bei Ihnen.
+blocks:
+  - id: formular
+    title: Ihre Nachricht an uns
+  - id: anfahrt
+    title: So finden Sie uns

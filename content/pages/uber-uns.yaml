@@ -1,0 +1,57 @@
+slug: uber-uns
+path: /uber-uns/
+seo:
+  title: Über uns – Team, Werte und Projekte
+  description: Lernen Sie die GÖK Bauüberwachung Bahn GmbH kennen – unser Team aus Fachbauüberwachern, unsere Werte und abgeschlossene Projekte im Gleisbau.
+hero:
+  eyebrow: Über uns
+  title: Wer wir sind und was wir tun
+  lead: Wir sind Vorreiter im Gleisbau und gestalten Transportwege der Zukunft – mit einem engagierten Team und modernen Arbeitsweisen.
+  image:
+    src: ../media/photos/rails-pixabay-3633518.jpg
+    alt: Nahaufnahme von Schienen und Schotter im Gegenlicht
+    credit: Pixabay
+blocks:
+  - id: profil
+    eyebrow: Unser Profil
+    title: Bauüberwachung mit Engagement und Erfahrung
+    body: |
+      Die GÖK Bauüberwachung Bahn GmbH wird von Geschäftsführer Deniz Gök geführt, der seine langjährig erworbenen Branchenkenntnisse in den Dienst seiner Kunden stellt. Bestehende Kunden schätzen unseren ausgeprägten Servicegedanken, der sich in kundenorientiertem Handeln, vorausschauender Planung und penibler Genauigkeit widerspiegelt.
+
+      Bau und Instandhaltung, gepaart mit kompetenter Bauüberwachung, sind für die Sicherheit und einen reibungslosen Ablauf von essenziellem Wert. Auch Planung, Kalkulation und Organisation eines Vorhabens stellen Sie vor große Herausforderungen. Dabei möchten wir Sie unterstützen – als engagierter und langfristiger Partner. Dafür sind wir im Mai 2023 angetreten.
+  - id: zitat
+    body: |
+      „Die Eisenbahn ist für mich ein Symbol des Lebens: Man sitzt ruhig und bewegt sich doch schnell vorwärts.“
+    title: Wolfgang Korruhn
+  - id: werte
+    eyebrow: Wofür wir stehen
+    title: Für unsere Werte stehen wir mit unserem Namen
+    items:
+      - title: Innovation
+        body: Wir setzen auf neue Technologien und kreative Lösungsansätze, um die Bahnbauüberwachung auf ein neues Niveau zu heben.
+      - title: Erfahrung
+        body: Unsere Expertise aus vielen Jahren in der Branche ist die Grundlage für präzise Überwachungslösungen.
+      - title: Ökonomisches Denken
+        body: Wir verstehen die Bedeutung effizienter Prozesse und bieten Überwachungsleistungen, die wirtschaftlich sinnvoll sind.
+      - title: Nachhaltigkeit
+      - title: Pünktlichkeit
+      - title: Moderne Technologien
+  - id: kennzahlen
+    eyebrow: In Zahlen
+    title: Was uns ausmacht
+  - id: projekte
+    eyebrow: Projekte
+    title: Von uns erfolgreich begleitet
+  - id: team
+    eyebrow: Das Team
+    title: Unsere Experten
+  - id: partner
+    eyebrow: Vertrauen und Glaubwürdigkeit
+    title: Unsere Kunden und Partner
+    body: |
+      Gemeinsam mit unseren Partnern setzen wir auf Qualität, Effizienz und Sicherheit in der Bauüberwachung. Durch enge Zusammenarbeit finden wir für jedes Projekt die passende Lösung.
+  - id: kontakt
+    title: Treten Sie mit uns in Kontakt
+    cta:
+      label: Kontakt aufnehmen
+      href: /kontakt/

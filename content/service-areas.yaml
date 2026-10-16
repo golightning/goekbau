@@ -1,0 +1,8 @@
+- id: bauueberwachung-oberbau
+  title: Fachbauüberwachung Oberbau und Bauüberwachung Bahn Ob/KIB
+  summary: Überwachung, Sicherung und Antragswesen rund um Ihre Baumaßnahme am Gleis.
+  order: 1
+- id: schienentechnik
+  title: Fachkraft Schienentechnik (SÜ/QÜS)
+  summary: Schienenbearbeitung, Schweißtechnik und Spannungsausgleich.
+  order: 2
