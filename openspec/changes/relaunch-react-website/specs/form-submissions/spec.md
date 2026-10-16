@@ -22,16 +22,16 @@ Das Bewerbungsformular SHALL die Felder Name, E-Mail, Telefon (optional), Positi
 - **WHEN** ein Nutzer eine gültige Bewerbung mit zwei PDF-Dateien sendet
 - **THEN** erhält die Empfängeradresse eine E-Mail mit beiden Dateien als Anhang und der Position im Betreff
 
-### Requirement: Dateianhänge begrenzen
-Der Endpoint SHALL nur Dateien der Typen PDF, DOC, DOCX, JPG und PNG annehmen, höchstens 5 Dateien und insgesamt höchstens 10 MB. Der Typ MUST serverseitig anhand des Dateiinhalts geprüft werden, nicht nur anhand der Endung.
+### Requirement: Anhänge nur nach Sicherheitsprüfung
+Dateianhänge SHALL nur zugestellt werden, wenn sie alle Prüfungen aus `upload-security` bestanden haben. Das Formular MUST erlaubte Formate (PDF, DOCX, JPG, PNG) und Grenzen (5 Dateien, 10 MB) vor dem Hochladen anzeigen und im Browser vorprüfen.
 
-#### Scenario: Unerlaubter Dateityp
-- **WHEN** ein Nutzer eine `.exe`-Datei oder eine in `.pdf` umbenannte ausführbare Datei hochlädt
-- **THEN** wird die Bewerbung abgelehnt und der Nutzer erhält eine Meldung zu erlaubten Dateitypen
+#### Scenario: Vorabhinweis im Browser
+- **WHEN** ein Nutzer eine 12-MB-Datei auswählt
+- **THEN** zeigt das Formular sofort, noch vor dem Absenden, einen Hinweis auf die 10-MB-Grenze
 
-#### Scenario: Zu groß
-- **WHEN** die Anhänge zusammen größer als 10 MB sind
-- **THEN** wird die Bewerbung abgelehnt und die Meldung nennt die Grenze von 10 MB
+#### Scenario: Abgelehnter Anhang
+- **WHEN** ein Anhang eine Prüfung aus `upload-security` nicht besteht
+- **THEN** wird die gesamte Bewerbung nicht zugestellt, und der Nutzer erfährt, welche Datei aus welchem Grund abgelehnt wurde
 
 ### Requirement: Serverseitige Validierung
 Der Endpoint SHALL alle Eingaben serverseitig unabhängig von der Browser-Validierung prüfen. Bei Fehlern MUST er mit HTTP 422 und feldbezogenen Fehlern antworten und keine E-Mail versenden.
@@ -40,19 +40,15 @@ Der Endpoint SHALL alle Eingaben serverseitig unabhängig von der Browser-Validi
 - **WHEN** ein Request ohne Pflichtfeld „E-Mail“ direkt an den Endpoint geschickt wird
 - **THEN** antwortet der Endpoint mit 422 und versendet nichts
 
-### Requirement: Spam-Schutz ohne Drittanbieter
-Der Endpoint SHALL Spam ohne externe Dienste abwehren: mit einem Honeypot-Feld, einer Mindest-Ausfüllzeit und einer Begrenzung auf 5 Übermittlungen pro IP-Adresse und Stunde.
+### Requirement: Spam-Abwehr vor Zustellung
+Jede Übermittlung SHALL alle Schichten aus `spam-protection` durchlaufen, bevor sie verarbeitet oder zugestellt wird.
 
-#### Scenario: Honeypot ausgefüllt
-- **WHEN** das versteckte Honeypot-Feld einen Wert enthält
-- **THEN** antwortet der Endpoint scheinbar erfolgreich, versendet aber keine E-Mail
-
-#### Scenario: Rate-Limit
-- **WHEN** von derselben IP innerhalb einer Stunde eine 6. Übermittlung eingeht
-- **THEN** antwortet der Endpoint mit HTTP 429 und versendet nichts
+#### Scenario: Reihenfolge der Prüfungen
+- **WHEN** eine Bewerbung mit Anhängen eingeht, die die Spam-Prüfung nicht besteht
+- **THEN** werden die Anhänge nicht inhaltlich verarbeitet und nichts wird versendet
 
 ### Requirement: Zustellung und Antwortadresse
-E-Mails SHALL über einen authentifizierten SMTP-Versand von einer Absenderadresse der Domain `goekbau.de` verschickt werden. Die E-Mail-Adresse des Nutzers MUST als `Reply-To` gesetzt sein. Zugangsdaten MUST außerhalb des Repositorys konfiguriert sein.
+E-Mails SHALL gemäß `email-security` zugestellt werden. Die E-Mail-Adresse des Nutzers MUST als `Reply-To` gesetzt sein, und Zugangsdaten MUST außerhalb des Repositorys konfiguriert sein. Betreff und Text MUST deutsch sein und Formulartyp sowie, bei Bewerbungen, die Position nennen.
 
 #### Scenario: Antworten auf Anfrage
 - **WHEN** GÖK in seinem Mailprogramm auf eine Kontaktanfrage antwortet

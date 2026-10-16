@@ -37,7 +37,7 @@ Jede Seite SHALL Open-Graph- und Twitter-Card-Metadaten (Titel, Beschreibung, Bi
 - **THEN** wird das Standard-Vorschaubild der Marke verwendet
 
 ### Requirement: Strukturierte Unternehmensdaten
-Die Startseite SHALL JSON-LD vom Typ `Organization` (bzw. `LocalBusiness`) mit Name, Logo, Anschrift, Telefon und E-Mail ausgeben. Diese Werte MUST aus derselben Quelle wie Footer und Kontaktseite stammen.
+Die Startseite SHALL JSON-LD vom Typ `Organization` (bzw. `LocalBusiness`) mit Name, Logo, Anschrift, Telefon und einem `contactPoint` mit Verweis auf `/kontakt/` ausgeben. Diese Werte MUST aus derselben Quelle wie Footer und Kontaktseite stammen. E-Mail-Adressen MUST NOT enthalten sein (`email-security`).
 
 #### Scenario: Telefonnummer geändert
 - **WHEN** die Telefonnummer im Inhaltsmodell geändert wird

@@ -36,7 +36,7 @@ Das Build-Artefakt ist ein Ordner mit dem Next-Export (`out/`), `api/submit.php`
 
 - *Warum*: Ein statisches Deploy-Now-Projekt kann keine Formulare verarbeiten. Ein PHP-Projekt liefert statische Dateien und PHP aus einer Hand aus, ohne zusätzlichen Dienst (Datensparsamkeit, keine Drittanbieter).
 - *Alternativen*: ein statisches Projekt plus Formular-SaaS (Formspree, Web3Forms). Verworfen wegen Drittanbieter-Datenübermittlung und der Upload-Grenzen. Ein separater IONOS-Webspace nur für PHP wäre doppelte Infrastruktur.
-- *Risiko*: Ob Deploy Now `.htaccess` (mod_rewrite, mod_headers) im PHP-Projekt voll unterstützt, ist **nicht verifiziert** → Spike-Task 1.3 vor allem anderen.
+- *Risiko*: Nicht verifiziert ist, ob Deploy Now im PHP-Projekt `.htaccess` (mod_rewrite, mod_headers) voll unterstützt, ob es ein beschreibbares Verzeichnis außerhalb des Document Roots gibt (Rate-Limit, ALTCHA-Replay), welche PHP-Extensions verfügbar sind (`fileinfo`, `gd`/`imagick`, `zip`, `zlib`, `openssl`) und ob ausgehende HTTPS- und SMTP-Verbindungen erlaubt sind. → Spike-Task 1.3 vor allem anderen.
 
 ### D3 – Redirects, 410, Header und Caching über `.htaccess`
 Eine versionierte Datei `config/redirects.ts` (Quelle, Ziel, Status) erzeugt zur Build-Zeit den Rewrite-Block der `.htaccess`. Daneben stehen dort die Sicherheits-Header (CSP, HSTS …) und die Cache-Header (`/_next/static/*` immutable, HTML `no-cache`).
@@ -77,13 +77,65 @@ Die Tokens stehen in `@theme` (Farben, Fonts, Abstände, Breakpoints `md: 768`, 
 ### D7 – Formulare: progressive Enhancement + PHP-Endpoint
 - HTML-`<form method="post" action="/api/submit.php" enctype="multipart/form-data">` funktioniert ohne JS. PHP antwortet dann mit 303 auf `/kontakt/danke/` bzw. `/kontakt/fehler/` (`noindex`).
 - Mit JS übernimmt eine Client-Komponente: Validierung mit demselben Feld-Schema (Zod → JSON-Schema-Export für PHP oder ein gespiegeltes, getestetes Regelset), `fetch` mit `Accept: application/json`. Antworten: 200 / 422 (Feldfehler) / 429 / 502.
-- PHP-Seite: `finfo` für MIME-Prüfung, Größen- und Anzahl-Limits, Honeypot, Mindestzeit (signierter Zeitstempel im Hidden-Feld, HMAC mit Secret), Rate-Limit über eine Datei in `sys_get_temp_dir()` mit **gehashter IP** und 1 h TTL. Versand mit PHPMailer über SMTP (IONOS-Postfach, z. B. `website@goekbau.de`), `Reply-To` = Nutzer. Temporäre Uploads werden im `finally` gelöscht. Logs enthalten nur Ergebnis-Codes.
+- PHP-Seite als Pipeline mit festen Stufen (Details in D11): Methode/Größe → Origin/CSRF → Spam-Schichten → Feldvalidierung → Upload-Prüfung → Versand → Aufräumen (`finally`). Jede Stufe ist eine eigene, einzeln getestete Klasse. Versand mit PHPMailer über SMTP (IONOS-Postfach, z. B. `website@goekbau.de`), `Reply-To` = Nutzer.
 - Konfiguration (SMTP-Host/User/Passwort, Empfänger je Formular, HMAC-Secret) kommt aus Deploy-Now-Runtime-Secrets (GitHub Secrets → Runtime-Config), nie aus dem Repo.
 - *Alternative*: Next Server Actions sind im statischen Export nicht möglich.
+- Der Spam-Schutz ist ALTCHA, selbst gehostet (Entscheidung des Auftraggebers). Google reCAPTCHA v2 aus dem WordPress-Bestand entfällt.
 
 ### D8 – Einwilligung ohne CMP
 Es gibt keine Tracker und keine Google Fonts. Damit bleibt nur Google Maps einwilligungspflichtig. Eine eigene Komponente `ExternalMediaConsent` zeigt einen statischen Platzhalter (Screenshot der Karte, selbst gehostet), den Button „Karte laden“ und den Link „In Google Maps öffnen“. Bei „Immer laden“ wird **nur dann** `localStorage["consent.externalMedia"]` gesetzt. Die Seite „Cookie-Einstellungen“ (`/datenschutz/#einstellungen` bzw. ein Dialog) zeigt und widerruft das. Das CookieYes-Banner entfällt (`privacy-consent` → Szenario „Kein Banner“).
 - Die CSP erlaubt `frame-src https://www.google.com https://maps.google.com`. Weitere Fremd-Origins gibt es nicht.
+
+### D11 – Sicherheitsarchitektur (Security first)
+Zielniveau: **OWASP ASVS Level 2**. Grundprinzip: Defense in Depth, keine Drittanbieter-Verarbeitung personenbezogener Daten, und jede Schicht ist automatisiert testbar.
+
+**Request-Pipeline in `api/submit.php`** (Abbruch bei der ersten verletzten Stufe, und bevor teure Arbeit anfällt):
+1. `POST`-only, `Content-Length` ≤ 11 MB (zusätzlich `LimitRequestBody` bzw. `post_max_size`) → sonst 405/413
+2. `Origin`/`Referer` = eigener Origin + signiertes Formular-Token (HMAC, enthält Formular-ID und Zeitstempel) → sonst 403
+3. Honeypot → Fake-200 · Zeitfenster 3 s – 2 h → verwerfen
+4. **ALTCHA**-Verifikation (PHP-Bibliothek `altcha-org/altcha`, HMAC-Key aus Secret) inkl. Replay-Schutz (benutzte Challenges bis Ablauf gespeichert)
+5. Rate-Limit (gesalzene IP-Hashes + E-Mail-Hashes, Sliding Window, Dateispeicher außerhalb des Webroots, TTL 24 h) → 429 + `Retry-After`
+6. Feldvalidierung (gemeinsames Regelset, D7) + E-Mail-Prüfung (RFC 5322, MX/A-Lookup mit 2 s Timeout, Wegwerf-Domain-Liste `disposable-email-domains` als versionierte Datei) + Inhaltsfilter (URL-Anzahl, BBCode/HTML-Links, Sperrwörter, Schriftsystem-Anteil, Duplikat-Hash 24 h)
+7. Upload-Prüfung (siehe unten)
+8. Versand (siehe Mail) → Ergebnis
+9. `finally`: Temp-Dateien löschen, Zähler für Monitoring erhöhen (nur Schicht und Ergebnis)
+
+**Datei-Scan – „bestes kostenloses Setup“** (`upload-security`):
+| Schicht | Umsetzung | Fängt |
+|---|---|---|
+| 1. Allowlist + Magic Bytes | `finfo` + eigene Signaturprüfung; nur PDF/DOCX/JPG/PNG | getarnte Executables, Archive, Makro-Altformate |
+| 2. Archiv-Bomben-Schutz | `ZipArchive` mit Statistik vor dem Entpacken (Einträge, Größe, Ratio, Pfade) | Zip-Bomben, Path Traversal |
+| 3. Entschärfung Bilder | GD bzw. Imagick: Dekodieren und neu Kodieren, EXIF entfernen | Polyglots, angehängte Payloads, Exploits in Metadaten |
+| 4. PDF-Inspektion | eigener Scanner: alle `FlateDecode`-Streams und `ObjStm` werden begrenzt dekomprimiert, `#xx`-Escapes in Namen normalisiert, Suche nach `/JavaScript /JS /Launch /EmbeddedFile /RichMedia /XFA /OpenAction`+Aktion, Verschlüsselung. Im Zweifel (nicht parsebar) **ablehnen** | aktive PDF-Inhalte, auch verschleiert |
+| 5. DOCX-Inspektion | `[Content_Types].xml` und `*.rels` prüfen: `vbaProject.bin`, `oleObject*`, `activeX*`, `TargetMode="External"` | Makros, OLE, Remote-Template-Injection |
+| 6. Hash-Reputation | SHA-256 → **abuse.ch MalwareBazaar** (`get_info`, kostenloser Auth-Key, 3 s Timeout). Es wird **nur der Hash** übertragen | bekannte Malware-Samples |
+| 7. Postfach-Scan | Virenschutz des IONOS-Postfachs auf Empfängerseite (Aktivierung prüfen, Task 8.7) | signaturbasierte Erkennung beim Empfang |
+
+- Bewusst ausgeschlossen: **VirusTotal, MetaDefender und ähnliche „kostenlose“ Scan-APIs**. Dort hochgeladene Dateien werden Dritten (Security-Community) zugänglich. Für Lebensläufe ist das ein DSGVO-Verstoß.
+- Upgrade-Pfad, falls später gewünscht: Ein eigener ClamAV-Dienst (IONOS-VPS) lässt sich als Schicht 6b einhängen, ohne die Specs zu ändern.
+- Dateinamen in der E-Mail werden neutral vergeben (`bewerbung-<n>.<ext>`). Die E-Mail enthält pro Anhang Typ, Größe, SHA-256 und Prüfergebnis.
+
+**Mail** (`email-security`):
+- PHPMailer mit `SMTPSecure` = TLS, `SMTPAutoTLS`, Peer-Verifikation an, kein Fallback auf `mail()`. `From`/`Sender` sind fest (`website@goekbau.de`). Header-Werte laufen durch einen eigenen Sanitizer (CR/LF/Steuerzeichen, Länge) und zusätzlich durch die PHPMailer-Prüfung. Der Body ist `text/plain`.
+- DNS: SPF `include:_spf-eu.ionos.com` (genauen Wert aus der IONOS-Doku übernehmen), DKIM über IONOS aktivieren, DMARC `p=quarantine; rua=…` und nach 30 Tagen `p=reject`.
+- **Überwachung über einen unabhängigen Weg**: Ein täglicher GitHub-Actions-Job schickt eine synthetische Testanfrage mit eigenem Test-Token an die Produktion. Der Endpoint sendet sie an eine Agentur-Testadresse und meldet das SMTP-Ergebnis. Bei Fehlschlag schlägt der Workflow fehl, und GitHub benachrichtigt die Agentur. Dieser Weg funktioniert auch, wenn SMTP selbst kaputt ist. Das schließt die heutige Lücke (Mails scheitern seit Monaten unbemerkt).
+
+**Adress-Schutz**: Eine Komponente `<ProtectedEmail>` rendert serverseitig nur eine kodierte Form (z. B. ROT-verschobene oder Base64-codierte Teile in `data-*`) plus den lesbaren Fallback „info [at] goekbau.de“. Clientseitig wird beim Hydrieren ein echter `mailto:`-Link mit `aria-label` erzeugt. JSON-LD, Meta-Daten und Sitemap enthalten keine Adressen. Ein Build-Test durchsucht `out/**/*.html` nach `@goekbau.de` und schlägt bei Treffern fehl.
+
+**CSP bei statischem Next.js-Export**: Next legt Inline-Skripte (RSC-Payload `self.__next_f.push`) ins HTML, Nonces gehen ohne Server nicht. Lösung:
+- Ein Post-Build-Script berechnet je HTML-Datei die SHA-256-Hashes aller Inline-Skripte und setzt sie in ein `<meta http-equiv="Content-Security-Policy">` mit `script-src 'self' 'sha256-…'`.
+- Die `.htaccess` liefert zusätzlich eine Header-CSP mit den Direktiven, die per Meta nicht wirken (`frame-ancestors 'none'`, `report-to`). Beide Policies gelten gleichzeitig, es gilt also die Schnittmenge.
+- ALTCHA braucht `worker-src 'self' blob:`. Ein E2E-Test prüft, dass keine CSP-Violations auftreten.
+
+**Server-Härtung (`.htaccess` + `.user.ini`)**: `Options -Indexes`; Deny für `vendor/`, `config/`, `storage/`, Dotfiles, `composer.*`, `*.md`, `*.log`; PHP-Ausführung nur für `api/submit.php` (alles andere unter `api/` → 404); `expose_php=Off`, `display_errors=Off`, `log_errors=On`; Header-Unset `X-Powered-By`. Temp- und Rate-Limit-Speicher liegen außerhalb des Document Roots, falls Deploy Now das erlaubt (Spike 1.3). Andernfalls kommen sie in ein per `.htaccess` komplett gesperrtes Verzeichnis.
+
+**Lieferkette und Prüfungen**:
+- Dependabot (npm, Composer, GitHub Actions)
+- `pnpm audit --prod` / `composer audit` (Fail ab „high“)
+- CodeQL (JS/TS) + Semgrep (PHP-Regeln, OWASP)
+- gitleaks
+- OWASP ZAP Baseline-Scan gegen den Docker-Nachbau bei jedem PR. Vor dem Go-live ein aktiver ZAP-Scan gegen Staging mit Fokus auf den Formular-Endpoint.
+- Actions sind auf Commit-SHAs gepinnt, Lockfiles sind Pflicht.
 
 ### D9 – Teststrategie und CI
 | Ebene | Werkzeug | Deckt ab |
@@ -95,6 +147,7 @@ Es gibt keine Tracker und keine Google Fonts. Damit bleibt nur Google Maps einwi
 | A11y | `@axe-core/playwright` auf allen Routen | `accessibility` |
 | Performance | Lighthouse CI (mobil) + Bundle-Budget | `performance-budget` |
 | Secrets | gitleaks | `delivery-pipeline` |
+| Security | Malware-Testkorpus (EICAR, PDF mit `/JavaScript` inkl. verschleierter Varianten, DOCX mit Makro/OLE/externer Vorlage, Zip-Bombe, Polyglot-PNG), Header-Injection-Fälle, CSP-Violation-Check, ZAP Baseline, CodeQL/Semgrep, Dependency-Audit | `upload-security`, `email-security`, `web-security`, `spam-protection` |
 
 Der Docker-basierte Prod-Nachbau ist der zentrale Hebel: `.htaccess`- und PHP-Verhalten werden vor Deploy Now getestet. Lokal startet `docker compose up` dieselbe Umgebung.
 
@@ -110,7 +163,11 @@ Der Docker-basierte Prod-Nachbau ist der zentrale Hebel: `.htaccess`- und PHP-Ve
 - [Deploy Now ignoriert Teile der `.htaccess` (z. B. Header oder 410)] → Spike 1.3 zuerst. Fallback: Header per PHP-Front-Controller nur für HTML oder ein Wechsel zu IONOS-Webspace mit SFTP-Deployment aus GitHub Actions.
 - [Next.js liefert ~90 KB React-Runtime auch auf rein statischen Seiten] → Budget 120 KB ist darauf ausgelegt. Wird es gerissen, folgt ein Wechsel zu Astro + React (D1-Fallback). Komponenten bleiben React und sind portierbar.
 - [IONOS-SMTP lehnt E-Mails mit fremdem `From` ab] → `From` ist immer ein eigenes Postfach, die Nutzeradresse steht nur in `Reply-To`.
-- [Spam trotz Honeypot/Rate-Limit] → Das Monitoring der Zustellmenge erfolgt in der ersten Woche manuell. Eskalation: selbst gehostetes Proof-of-Work-Captcha (z. B. ALTCHA), kein Google reCAPTCHA.
+- [Spam trotz aller Schichten] → Die Monitoring-Zähler (`spam-protection`) zeigen, welche Schicht greift. Sperrwortliste und ALTCHA-Komplexität sind ohne Code-Änderung konfigurierbar.
+- [Der eigene PDF-Scanner übersieht eine Verschleierungstechnik] → Bei Parse-Zweifeln wird abgelehnt (fail-closed). Der Testkorpus wächst mit bekannten Techniken. Dazu kommen der Postfach-Scan als zweite Linie und ClamAV als Upgrade-Pfad.
+- [Die strenge Prüfung lehnt legitime Bewerbungs-PDFs ab, z. B. Formulare mit `/OpenAction`] → Die Fehlermeldung nennt einen konkreten Ausweg („als PDF drucken/exportieren“) und den Alternativweg per E-Mail. Die Ablehnungsquote wird über die Zähler beobachtet.
+- [MalwareBazaar nicht erreichbar oder Key ungültig] → Fail-open mit Kennzeichnung „[Anhang ungeprüft]“ (Schichten 1–5 + 7 greifen weiter). Der Ausfall wird im täglichen Monitoring sichtbar.
+- [Hash-basierte CSP bricht nach Next-Update] → Der E2E-Test auf CSP-Violations läuft bei jedem PR.
 - [Inhaltliche Zulieferungen (Team-Fotos, Projektdetails, Partner-Logos) fehlen zum Go-live] → Das Inhaltsmodell erlaubt optionale Bilder mit Platzhaltern (`company-pages` → „Teammitglied ohne Foto“). Der Go-live hängt nicht davon ab.
 - [Bewerbungsanhänge per E-Mail sind sensible Daten] → TLS-SMTP, keine Speicherung auf dem Server, und die Datenschutzerklärung beschreibt den Weg.
 - [Agentur ist einziger Redakteur] → bewusste Entscheidung. Das Inhaltsmodell ist CMS-tauglich geschnitten (Non-Goal-Hinweis).

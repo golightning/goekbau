@@ -4,9 +4,10 @@
 
 - [ ] 1.1 Git-Remote `golightning/goekbau` einrichten, Branch-Schutz für `main` (PR + grüne Checks) aktivieren; verifizieren: direkter Push auf `main` wird abgelehnt
 - [ ] 1.2 Next.js (App Router, TypeScript strict, `output: "export"`, `trailingSlash: true`), pnpm, ESLint, Prettier, Vitest aufsetzen; verifizieren: `pnpm build` erzeugt `out/index.html`, `pnpm lint && pnpm test` grün
-- [ ] 1.3 **Spike Deploy Now**: PHP-Projekt mit Minimal-`out/`, `api/ping.php` und `.htaccess` (1× 301, 1× 410, 1× Custom-Header, 404-ErrorDocument) deployen; verifizieren per `curl -I` auf der Staging-URL, Ergebnis in `docs/adr/0001-deploy-now.md` dokumentieren (bei Fehlschlag: Fallback aus design.md D2 entscheiden, bevor es weitergeht)
+- [ ] 1.3 **Spike Deploy Now**: PHP-Projekt mit Minimal-`out/`, `api/ping.php` und `.htaccess` (1× 301, 1× 410, 1× Custom-Header, Header-Unset `X-Powered-By`, Deny `vendor/`, 404-ErrorDocument) deployen. `ping.php` meldet: PHP-Version, Extensions (`fileinfo`, `gd`/`imagick`, `zip`, `zlib`, `openssl`), beschreibbares Verzeichnis außerhalb des Document Roots (persistiert über Requests?), ausgehendes HTTPS (abuse.ch) und SMTP (IONOS, Port 465/587), `upload_max_filesize`/`post_max_size`. Verifizieren per `curl -I` auf der Staging-URL; Ergebnis in `docs/adr/0001-deploy-now.md` dokumentieren. Bei Fehlschlag: Fallback aus design.md D2 entscheiden, bevor es weitergeht
 - [ ] 1.4 Lokalen Prod-Nachbau anlegen: `docker-compose.yml` mit `php:8.3-apache` (mod_rewrite/headers) + Mailpit, mountet `out/`, `api/`, `.htaccess`; verifizieren: `docker compose up` liefert `http://localhost:8080/` und Mailpit-UI erreichbar
 - [ ] 1.5 Deploy-Now-Workflow um Gates erweitern (Typecheck, Lint, Test, Build, gitleaks) und Staging-Deployments für Nicht-`main`-Branches aktivieren; verifizieren: Test-PR erzeugt Staging-URL, absichtlich roter Test verhindert Deployment
+- [ ] 1.6 Lieferketten-Sicherheit einrichten: Dependabot (npm, Composer, Actions), `pnpm audit --prod`/`composer audit` (Fail ab high), CodeQL (JS/TS), Semgrep (PHP), Actions auf Commit-SHAs gepinnt, Lockfiles Pflicht; verifizieren: Test-PR mit bekannt verwundbarer Abhängigkeit wird blockiert
 
 ## 2. Design-System
 
@@ -48,34 +49,51 @@
 ## 7. Formulare
 
 - [ ] 7.1 Gemeinsames Feld-Schema (Kontakt, Bewerbung) als Single Source für Client-Validierung und PHP-Regeln (Export als JSON); verifizieren: Vitest + PHPUnit laufen gegen dieselben Testfälle
-- [ ] 7.2 PHP-Endpoint `api/submit.php` (Composer, PHPMailer): Validierung → 422, Upload-Prüfung via `finfo` (PDF/DOC/DOCX/JPG/PNG, ≤ 5 Dateien, ≤ 10 MB), Honeypot, HMAC-Zeitstempel, Rate-Limit (gehashte IP, 5/h → 429), SMTP-Versand mit eigenem `From` + `Reply-To`, 502 bei SMTP-Fehler, Temp-Dateien im `finally` löschen, Logs ohne Inhalte; verifizieren: PHPUnit für jede Regel aus `form-submissions`
-- [ ] 7.3 Konfiguration über Deploy-Now-Runtime-Secrets (SMTP, Empfänger je Formular, HMAC-Secret) + `.env.example` ohne Werte; verifizieren: gitleaks grün, Endpoint verweigert Start ohne Konfiguration mit klarer Log-Meldung
-- [ ] 7.4 React-Formular-Komponenten (Labels, Pflichtkennzeichnung, `aria-describedby`-Fehler, Live-Region, Ladezustand, Doppelklick-Schutz, vorbelegte Position) mit No-JS-Fallback auf `/kontakt/danke/` bzw. `/kontakt/fehler/` (`noindex`); verifizieren: Playwright gegen Docker+Mailpit – Kontakt, Bewerbung mit 2 PDFs, `.exe` abgelehnt, > 10 MB abgelehnt, Honeypot, 6. Request → 429, JS deaktiviert → Ergebnisseite
-- [ ] 7.5 Echte Zustellung auf Staging mit IONOS-SMTP testen; verifizieren: Testmail kommt im Kundenpostfach an, Antworten gehen an `Reply-To`
+- [ ] 7.2 PHP-Endpoint-Gerüst `api/submit.php` (Composer, PSR-4, PHP 8.3 strict types) als Stufen-Pipeline laut design.md D11 mit austauschbaren Stufen; Feldvalidierung → 422 (deutsche, feldbezogene Meldungen), Temp-Dateien im `finally` löschen; verifizieren: PHPUnit für Pipeline-Reihenfolge (Abbruch vor Upload-Verarbeitung bei Spam) und Validierung
+- [ ] 7.3 Konfiguration über Deploy-Now-Runtime-Secrets (SMTP, Empfänger je Formular, HMAC-Secrets für Formular-Token/ALTCHA/IP-Salt, MalwareBazaar-Key, Monitoring-Test-Token) + `.env.example` ohne Werte; verifizieren: gitleaks grün, Endpoint verweigert Betrieb ohne vollständige Konfiguration mit generischer 503 und klarer Log-Meldung
+- [ ] 7.4 React-Formular-Komponenten (Labels, Pflichtkennzeichnung, `aria-describedby`-Fehler, Live-Region, Ladezustand, Doppelklick-Schutz, vorbelegte Position, Datei-Vorprüfung Typ/Größe/Anzahl, ALTCHA-Widget) mit No-JS-Fallback auf `/kontakt/danke/` bzw. `/kontakt/fehler/` (`noindex`); verifizieren: Playwright gegen Docker+Mailpit – Kontakt und Bewerbung mit 2 PDFs kommen an, JS deaktiviert → Ergebnisseite, 12-MB-Datei wird vor dem Absenden gemeldet
+- [ ] 7.5 Echte Zustellung auf Staging mit IONOS-SMTP testen; verifizieren: Testmail kommt im Kundenpostfach an, Antworten gehen an `Reply-To`, Header zeigt `spf=pass dkim=pass dmarc=pass`
 
-## 8. Datenschutz & Einwilligung
+## 8. Sicherheit (Spam, Uploads, E-Mail, Härtung)
 
-- [ ] 8.1 `ExternalMediaConsent`-Komponente für Google Maps (statischer Platzhalter, „Karte laden“, „Immer laden“, externer Link); verifizieren: Playwright – ohne Klick kein Google-Request, nach Klick iframe geladen
-- [ ] 8.2 Einstellungen „Cookie-Einstellungen“ (Anzeige + Widerruf), Storage nur nach „Immer laden“; verifizieren: Test – Erstbesuch ohne Cookies/Storage, Widerruf verhindert Auto-Laden
-- [ ] 8.3 Globaler Test „nur eigener Origin“ über alle Routen ohne Einwilligung; verifizieren: Playwright-Netzwerk-Mitschnitt je Route enthält ausschließlich `localhost:8080` bzw. Produktions-Origin
+- [ ] 8.1 Spam-Schichten: signiertes Formular-Token + Origin-Prüfung (403), Honeypot (Fake-200), Zeitfenster 3 s–2 h, ALTCHA selbst gehostet (`altcha-org/altcha` PHP + Widget, Replay-Speicher), Rate-Limit IP/E-Mail mit gesalzenen Hashes (429 + `Retry-After`); verifizieren: PHPUnit je Schicht + Playwright: fremder Origin → 403, 6. Request → 429, wiederverwendete ALTCHA-Lösung abgelehnt, keine Fremd-Requests beim Ausfüllen
+- [ ] 8.2 Inhalts- und Adressfilter: URL-Zähler, BBCode/HTML-Links, Sperrwortliste (konfigurierbar), Schriftsystem-Anteil, Duplikat-Hash 24 h, RFC-5322-Prüfung, MX/A-Lookup (2 s Timeout), Wegwerf-Domain-Liste als versionierte Datei; verifizieren: PHPUnit mit Spam-Korpus (≥ 30 echte Spam-Muster aus den WP-Einsendungen, anonymisiert) und Ham-Korpus (≥ 10 legitime Anfragen) – 0 False Positives im Ham-Korpus
+- [ ] 8.3 Upload-Schichten 1–2: Allowlist PDF/DOCX/JPG/PNG mit Magic-Byte- + Endungs- + MIME-Abgleich, Grenzen 5 Dateien/10 MB vor Verarbeitung, ZIP-Statistik (Einträge, Größe, Ratio, Pfade) vor Entpacken; verifizieren: PHPUnit mit Testkorpus (EXE als PDF, DOC/DOCM/RTF/ZIP, Zip-Bombe, Path-Traversal-DOCX)
+- [ ] 8.4 Upload-Schichten 3–5: Bild-Neukodierung ohne Metadaten, PDF-Scanner (Stream-/ObjStm-Dekompression begrenzt, `#xx`-Normalisierung, Merkmal-Liste, fail-closed), DOCX-Inspektion (Makros, OLE, ActiveX, externe Beziehungen); verifizieren: PHPUnit mit Korpus (Polyglot-PNG, EXIF-GPS-JPG, PDF mit `/JavaScript` klar + in ObjStm versteckt + hex-escaped, PDF mit `/Launch`, `/EmbeddedFile`, verschlüsseltes PDF, DOCX mit Makro/OLE/Remote-Template) + 10 legitime Lebenslauf-PDFs/DOCX (Word, LibreOffice, Google Docs, Canva-Export) werden angenommen
+- [ ] 8.5 Upload-Schicht 6: SHA-256-Abgleich gegen abuse.ch MalwareBazaar (nur Hash, 3 s Timeout, fail-open mit „[Anhang ungeprüft]“), neutrale Anhangsnamen, Prüfprotokoll je Anhang in der Mail; verifizieren: PHPUnit mit gemocktem API (bekannt/unbekannt/Timeout) + Netzwerk-Mitschnitt im Docker-Nachbau zeigt keine Dateiinhalte außer per SMTP
+- [ ] 8.6 Sicherer Mailversand: festes `From`, TLS mit Peer-Verifikation, kein `mail()`-Fallback, Header-Sanitizer, `text/plain`-Body, deutsche Betreffzeilen; verifizieren: PHPUnit Header-Injection-Fälle (CRLF, Unicode-Zeilentrenner) + Mailpit-Test: kein zusätzlicher Header, HTML erscheint als Text
+- [ ] 8.7 E-Mail-Infrastruktur `goekbau.de`: SPF, DKIM (IONOS), DMARC `p=quarantine` mit `rua`; Virenschutz der IONOS-Empfangspostfächer prüfen/aktivieren; Termin für `p=reject` nach 30 Tagen im Runbook; verifizieren: `dig TXT` zeigt gültige Einträge, Testmail mit `dmarc=pass`, Screenshot/Notiz zum Postfach-Virenschutz in `docs/runbook-email.md`
+- [ ] 8.8 Zustellungs-Monitoring: täglicher GitHub-Actions-Job sendet synthetische Anfrage mit Test-Token an Produktion (Versand an Agentur-Testadresse, keine Kundenmail), Workflow schlägt bei SMTP-Fehler fehl; Tageszähler je Schutzschicht abrufbar (geschützt per Token); verifizieren: absichtlich falsches SMTP-Passwort auf Staging → Workflow rot + GitHub-Benachrichtigung
+- [ ] 8.9 E-Mail-Adress-Schutz: `<ProtectedEmail>` (kodiert im HTML, `mailto:` nach Hydrierung, lesbarer No-JS-Fallback, `aria-label`), keine Adressen in JSON-LD/Meta; verifizieren: Build-Test durchsucht `out/**/*.html` nach `@goekbau.de` → 0 Treffer, Playwright: Klick erzeugt korrekten `mailto:`
+- [ ] 8.10 Server-Härtung: `.htaccess` (Options -Indexes, Deny vendor/config/storage/Dotfiles/composer/md/log, PHP nur für `api/submit.php`, Header-Unset `X-Powered-By`, HSTS, nosniff, Referrer-Policy, Permissions-Policy, COOP, Header-CSP mit `frame-ancestors 'none'`), `.user.ini` (`expose_php=Off`, `display_errors=Off`), 405 für Nicht-POST, Request-Limit 11 MB; verifizieren: `curl`-Suite gegen Docker-Nachbau und Staging für jede Regel aus `web-security`
+- [ ] 8.11 Hash-basierte CSP: Post-Build-Script berechnet SHA-256 aller Inline-Skripte je HTML und setzt Meta-CSP (`script-src 'self' 'sha256-…'`, `worker-src 'self' blob:`, `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, `frame-src` nur Google Maps); verifizieren: Playwright über alle Routen ohne CSP-Violations, injiziertes Test-Inline-Skript wird blockiert
+- [ ] 8.12 Datenschutzfreundliches Logging (Zeit, Ergebnis-Code, Schicht; IP gehasht; Rotation ≤ 14 Tage) + `/.well-known/security.txt` (RFC 9116); verifizieren: PHPUnit prüft Log-Zeilen auf Abwesenheit von Name/E-Mail/Dateiname, security.txt-Validator grün
+- [ ] 8.13 DAST: OWASP ZAP Baseline gegen Docker-Nachbau in jeder PR-Pipeline (Fail ab „high“); verifizieren: CI-Report grün, absichtlich entfernter `nosniff`-Header lässt Scan fehlschlagen
 
-## 9. SEO & Redirects
+## 9. Datenschutz & Einwilligung
 
-- [ ] 9.1 Metadaten je Seite aus Inhaltsmodell (Titel-Suffix, Description-Längen, Canonical mit Slash, OG/Twitter, `og:locale de_DE`), Build-Check auf Eindeutigkeit; verifizieren: Unit-Test für doppelte Titel/fehlende Description
-- [ ] 9.2 `Organization`/`LocalBusiness`-JSON-LD aus Stammdaten; verifizieren: Test vergleicht JSON-LD-Telefon mit Footer-Telefon
-- [ ] 9.3 `sitemap.xml` + `robots.txt` (Staging: `noindex` + Disallow); verifizieren: Test – neue Stellen-Fixture erscheint in Sitemap, 404/Danke-Seiten nicht
-- [ ] 9.4 Redirect-Generator `config/redirects.ts` → `.htaccess` (Stellen aus `legacyPaths`, Sitemaps, Feeds, WP-Pfade 410, Trailing-Slash), Sicherheits- und Cache-Header; verifizieren: Vitest für Generator + Playwright/`curl`-Suite gegen Docker prüft jeden Eintrag auf Status und `Location` sowie alle Header
+- [ ] 9.1 `ExternalMediaConsent`-Komponente für Google Maps (statischer Platzhalter, „Karte laden“, „Immer laden“, externer Link); verifizieren: Playwright – ohne Klick kein Google-Request, nach Klick iframe geladen
+- [ ] 9.2 Einstellungen „Cookie-Einstellungen“ (Anzeige + Widerruf), Storage nur nach „Immer laden“; verifizieren: Test – Erstbesuch ohne Cookies/Storage, Widerruf verhindert Auto-Laden
+- [ ] 9.3 Globaler Test „nur eigener Origin“ über alle Routen ohne Einwilligung; verifizieren: Playwright-Netzwerk-Mitschnitt je Route enthält ausschließlich `localhost:8080` bzw. Produktions-Origin
 
-## 10. Qualitäts-Gates
+## 10. SEO & Redirects
 
-- [ ] 10.1 axe-Prüfung über alle Routen in CI (Fail bei serious/critical); verifizieren: absichtlich entferntes Label lässt CI fehlschlagen
-- [ ] 10.2 Lighthouse CI (mobil) für Start, Über uns, Karriere, Kontakt mit Assertions (LCP ≤ 2,5 s, CLS ≤ 0,1, TBT ≤ 200 ms, Score ≥ 90) + Bundle-Budget (≤ 30 Requests, JS ≤ 120 KB, CSS ≤ 40 KB auf Startseite); verifizieren: CI-Report grün, Budget-Überschreitung per Test-Branch provoziert Fehlschlag
-- [ ] 10.3 Bildpipeline (`next-image-export-optimizer`, AVIF/WebP, `srcset`, Lazy-Loading, LCP-Priorität); verifizieren: Playwright bei 390 px lädt Hero-Variante ≤ 800 px
+- [ ] 10.1 Metadaten je Seite aus Inhaltsmodell (Titel-Suffix, Description-Längen, Canonical mit Slash, OG/Twitter, `og:locale de_DE`), Build-Check auf Eindeutigkeit; verifizieren: Unit-Test für doppelte Titel/fehlende Description
+- [ ] 10.2 `Organization`/`LocalBusiness`-JSON-LD aus Stammdaten; verifizieren: Test vergleicht JSON-LD-Telefon mit Footer-Telefon
+- [ ] 10.3 `sitemap.xml` + `robots.txt` (Staging: `noindex` + Disallow); verifizieren: Test – neue Stellen-Fixture erscheint in Sitemap, 404/Danke-Seiten nicht
+- [ ] 10.4 Redirect-Generator `config/redirects.ts` → `.htaccess` (Stellen aus `legacyPaths`, Sitemaps, Feeds, WP-Pfade 410, Trailing-Slash), Sicherheits- und Cache-Header; verifizieren: Vitest für Generator + Playwright/`curl`-Suite gegen Docker prüft jeden Eintrag auf Status und `Location` sowie alle Header
 
-## 11. Abnahme & Go-live
+## 11. Qualitäts-Gates
 
-- [ ] 11.1 Staging-Abnahme durch GÖK (Inhalte, Bilder, Formulare an echte Postfächer); verifizieren: schriftliche Freigabe im PR/Issue
-- [ ] 11.2 Cutover vorbereiten: DNS-TTL auf 300 s, alte DNS-Werte in `docs/runbook-cutover.md`, Custom Domain in Deploy Now; verifizieren: Runbook-Review
-- [ ] 11.3 DNS umstellen (nur A/AAAA/CNAME, MX unverändert); verifizieren: Redirect-Crawl gegen alte Sitemap (alle 12 URLs → 200/301 korrekt), Header-Check, Formular-Testsendung in Produktion, Mail-Empfang `info@goekbau.de` unverändert
-- [ ] 11.4 Google Search Console: Sitemap einreichen, Abdeckung nach 7 Tagen prüfen; verifizieren: keine neuen 404-Fehler für alte URLs
-- [ ] 11.5 Nach 30 Tagen ohne Rollback: WordPress-Backup archivieren, Installation und Plugin-Lizenzen kündigen; verifizieren: Bestätigung IONOS/Lizenzportale, Backup-Ablageort dokumentiert
+- [ ] 11.1 axe-Prüfung über alle Routen in CI (Fail bei serious/critical); verifizieren: absichtlich entferntes Label lässt CI fehlschlagen
+- [ ] 11.2 Lighthouse CI (mobil) für Start, Über uns, Karriere, Kontakt mit Assertions (LCP ≤ 2,5 s, CLS ≤ 0,1, TBT ≤ 200 ms, Score ≥ 90) + Bundle-Budget (≤ 30 Requests, JS ≤ 120 KB, CSS ≤ 40 KB auf Startseite); verifizieren: CI-Report grün, Budget-Überschreitung per Test-Branch provoziert Fehlschlag
+- [ ] 11.3 Bildpipeline (`next-image-export-optimizer`, AVIF/WebP, `srcset`, Lazy-Loading, LCP-Priorität); verifizieren: Playwright bei 390 px lädt Hero-Variante ≤ 800 px
+
+## 12. Abnahme & Go-live
+
+- [ ] 12.0 Security-Abnahme vor Go-live: aktiver OWASP-ZAP-Scan gegen Staging (Fokus `api/submit.php`), Checkliste OWASP ASVS L2 (relevante Kapitel V1–V5, V7, V8, V12, V13, V14) durchgehen; verifizieren: Bericht ohne offene high/critical-Funde in `docs/security/go-live-review.md`
+- [ ] 12.1 Staging-Abnahme durch GÖK (Inhalte, Bilder, Formulare an echte Postfächer); verifizieren: schriftliche Freigabe im PR/Issue
+- [ ] 12.2 Cutover vorbereiten: DNS-TTL auf 300 s, alte DNS-Werte in `docs/runbook-cutover.md`, Custom Domain in Deploy Now; verifizieren: Runbook-Review
+- [ ] 12.3 DNS umstellen (nur A/AAAA/CNAME, MX unverändert); verifizieren: Redirect-Crawl gegen alte Sitemap (alle 12 URLs → 200/301 korrekt), Header-Check, Formular-Testsendung in Produktion, Mail-Empfang `info@goekbau.de` unverändert
+- [ ] 12.4 Google Search Console: Sitemap einreichen, Abdeckung nach 7 Tagen prüfen; verifizieren: keine neuen 404-Fehler für alte URLs
+- [ ] 12.5 Nach 30 Tagen ohne Rollback: WordPress-Backup verschlüsselt archivieren, die 248 gespeicherten Formular-Einsendungen und 18 Bewerbungsdateien nach Kundenentscheidung übergeben bzw. löschen (DSGVO, Aufbewahrungsfrist), Backup des Plugins „Backup Migration“ aus dem Webspace entfernen, Installation und Plugin-Lizenzen kündigen; verifizieren: Bestätigung IONOS/Lizenzportale, Löschprotokoll, Backup-Ablageort dokumentiert

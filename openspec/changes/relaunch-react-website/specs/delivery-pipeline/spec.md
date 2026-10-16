@@ -16,7 +16,7 @@ Jeder Push auf `main` im Repository `golightning/goekbau` SHALL nach erfolgreich
 - **THEN** ist er unter einer eigenen Staging-URL erreichbar, die nicht indexiert wird
 
 ### Requirement: Qualitäts-Gates vor dem Deployment
-Vor jedem Deployment SHALL die Pipeline ausführen: Typprüfung, Linting, Inhalts-Validierung, Unit-Tests, Build, Redirect-Tests, Barrierefreiheits-Prüfung und Performance-Budget. Schlägt eine Prüfung fehl, MUST das Deployment unterbleiben.
+Vor jedem Deployment SHALL die Pipeline ausführen: Typprüfung, Linting, Inhalts-Validierung, Unit-Tests, Build, Redirect-Tests, Barrierefreiheits-Prüfung, Performance-Budget sowie die Sicherheitsprüfungen aus `web-security`. Schlägt eine Prüfung fehl, MUST das Deployment unterbleiben.
 
 #### Scenario: Fehlgeschlagene Prüfung
 - **WHEN** die Barrierefreiheits-Prüfung einen kritischen Verstoß meldet
@@ -35,10 +35,3 @@ Ein fehlerhaftes Produktions-Deployment SHALL innerhalb von 15 Minuten auf die v
 #### Scenario: Rollback
 - **WHEN** nach einem Deployment ein schwerer Fehler entdeckt wird
 - **THEN** ist durch Revert des Merge-Commits innerhalb von 15 Minuten wieder die Vorversion live
-
-### Requirement: Serverseitige Sicherheits-Header
-Die Produktion SHALL HTTPS erzwingen und mindestens folgende Header senden: `Strict-Transport-Security`, `Content-Security-Policy` (nur eigene Origins plus explizit freigegebene Einbettungen nach Einwilligung), `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` und `Permissions-Policy`.
-
-#### Scenario: Header-Prüfung
-- **WHEN** die Startseite der Produktion abgerufen wird
-- **THEN** enthält die Antwort alle genannten Header, und die CSP blockiert Skripte fremder Origins

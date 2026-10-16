@@ -32,7 +32,7 @@ Jede Seite SHALL einen Footer mit Kurzclaim, Navigation, Kontaktdaten (Telefon, 
 - **THEN** sind Impressum und Datenschutz mit höchstens einem Klick erreichbar
 
 ### Requirement: Direkte Kontaktwege
-Die Website SHALL Telefonnummer und E-Mail als `tel:`- bzw. `mailto:`-Links anbieten und einen schwebenden WhatsApp-Button, der auf `https://wa.me/49…` mit vollständiger internationaler Nummer verlinkt. Der WhatsApp-Button MUST keine Drittanbieter-Ressourcen laden, bevor er geklickt wird.
+Die Website SHALL die Telefonnummer als `tel:`-Link anbieten, E-Mail-Adressen gemäß `email-security` geschützt darstellen und einen schwebenden WhatsApp-Button anbieten, der auf `https://wa.me/49…` mit vollständiger internationaler Nummer verlinkt. Der WhatsApp-Button MUST keine Drittanbieter-Ressourcen laden, bevor er geklickt wird.
 
 #### Scenario: WhatsApp-Link
 - **WHEN** ein Nutzer den WhatsApp-Button aktiviert
