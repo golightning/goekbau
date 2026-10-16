@@ -1,0 +1,25 @@
+# Lokaler Prod-Nachbau: `pnpm assemble && docker compose up -d`
+# Website: http://localhost:8080  ·  Mailpit (SMTP-Fänger): http://localhost:8025
+services:
+  web:
+    build: docker/web
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./dist/site:/var/www/html:ro
+      - storage:/var/www/storage
+    environment:
+      GOEKBAU_ENV: local
+    depends_on:
+      - mailpit
+
+  mailpit:
+    image: axllent/mailpit@sha256:23fe39e81bde596a918000b3135c0f85dc8bb4c9ea6be274b051143f3e300387
+    ports:
+      - "127.0.0.1:8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+
+volumes:
+  storage:

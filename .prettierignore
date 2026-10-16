@@ -1,0 +1,8 @@
+.next/
+out/
+dist/
+_wp-export/
+research/
+openspec/
+.claude/
+pnpm-lock.yaml

@@ -3,8 +3,8 @@
 ## 1. Fundament & lokaler Prod-Nachbau
 
 - [ ] 1.1 Git-Remote `golightning/goekbau` einrichten, Branch-Schutz für `main` (PR + grüne Checks) aktivieren; verifizieren: direkter Push auf `main` wird abgelehnt
-- [ ] 1.2 Next.js (App Router, TypeScript strict, `output: "export"`, `trailingSlash: true`), pnpm, ESLint, Prettier, Vitest aufsetzen; verifizieren: `pnpm build` erzeugt `out/index.html`, `pnpm lint && pnpm test` grün
-- [ ] 1.3 Lokalen Prod-Nachbau anlegen: `docker-compose.yml` mit `php:8.3-apache` (mod_rewrite/headers) + Mailpit, mountet `out/`, `api/`, `.htaccess`; verifizieren: `docker compose up` liefert `http://localhost:8080/` und Mailpit-UI erreichbar
+- [x] 1.2 Next.js (App Router, TypeScript strict, `output: "export"`, `trailingSlash: true`), pnpm, ESLint, Prettier, Vitest aufsetzen; verifizieren: `pnpm build` erzeugt `out/index.html`, `pnpm lint && pnpm test` grün
+- [x] 1.3 Lokalen Prod-Nachbau anlegen: `docker-compose.yml` mit `php:8.3-apache` (mod_rewrite/headers) + Mailpit, mountet `out/`, `api/`, `.htaccess`; verifizieren: `docker compose up` liefert `http://localhost:8080/` und Mailpit-UI erreichbar
 - [ ] 1.4 CI in GitHub Actions (ohne Deployment) mit Gates für jeden PR: Typecheck, Lint, Test, Build, gitleaks, Start des Docker-Nachbaus + E2E; verifizieren: absichtlich roter Test macht den PR-Check rot
 - [ ] 1.5 Lieferketten-Sicherheit einrichten: Dependabot (npm, Composer, Actions), `pnpm audit --prod`/`composer audit` (Fail ab high), CodeQL (JS/TS), Semgrep (PHP), Actions auf Commit-SHAs gepinnt, Lockfiles Pflicht; verifizieren: Test-PR mit bekannt verwundbarer Abhängigkeit wird blockiert
 

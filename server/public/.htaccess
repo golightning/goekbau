@@ -1,0 +1,4 @@
+# Basis-Konfiguration; vollständige Härtung, Redirects und Header folgen in Tasks 8.10 / 10.4.
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html

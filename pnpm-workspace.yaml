@@ -1,0 +1,7 @@
+# Lieferketten-Schutz (web-security): nur Paketversionen installieren, die seit mindestens 7 Tagen veröffentlicht sind
+minimumReleaseAge: 10080
+# Install-Skripte nur für explizit freigegebene Pakete (pnpm 11: allowBuilds)
+allowBuilds:
+  unrs-resolver: true
+  sharp: true
+  esbuild: true

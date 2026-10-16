@@ -70,16 +70,16 @@ gesendet. Erfolgreiche Zustellung bleibt Task 7.5.
 
 ## Noch ausstehende Hosting-Nachweise
 
-| Prüfung | IONOS-Ergebnis |
-|---|---|
-| 301 inklusive Ziel, 410, eigene 404-Seite | offen |
-| Custom-Header, kein X-Powered-By, Deny vendor/Dotfiles | offen |
-| PHP >= 8.3, fileinfo, GD/Imagick, ZIP, zlib, OpenSSL, XML | offen |
-| Upload >= 10 MiB, POST >= 11 MiB, mindestens 5 Dateien (per `.user.ini` gesetzt → belegt zugleich, ob Overrides greifen) | offen |
-| Privater Speicher beschreibbar und über Requests erhalten | offen |
-| Marker nach erneutem Deployment weiterhin vorhanden | offen |
-| HTTPS abuse.ch mit gültigem TLS | offen |
-| SMTP-TLS 465/587 | offen |
+| Prüfung                                                                                                                  | IONOS-Ergebnis |
+| ------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| 301 inklusive Ziel, 410, eigene 404-Seite                                                                                | offen          |
+| Custom-Header, kein X-Powered-By, Deny vendor/Dotfiles                                                                   | offen          |
+| PHP >= 8.3, fileinfo, GD/Imagick, ZIP, zlib, OpenSSL, XML                                                                | offen          |
+| Upload >= 10 MiB, POST >= 11 MiB, mindestens 5 Dateien (per `.user.ini` gesetzt → belegt zugleich, ob Overrides greifen) | offen          |
+| Privater Speicher beschreibbar und über Requests erhalten                                                                | offen          |
+| Marker nach erneutem Deployment weiterhin vorhanden                                                                      | offen          |
+| HTTPS abuse.ch mit gültigem TLS                                                                                          | offen          |
+| SMTP-TLS 465/587                                                                                                         | offen          |
 
 Nach dem ersten Test erneut deployen und den ersten Diagnose-Request prüfen:
 `previous_request_seen` muss bereits `true` sein. Der Marker heißt
