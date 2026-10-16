@@ -1,13 +1,12 @@
 # Tasks
 
-## 1. Fundament & Hosting-Spike
+## 1. Fundament & lokaler Prod-Nachbau
 
 - [ ] 1.1 Git-Remote `golightning/goekbau` einrichten, Branch-Schutz für `main` (PR + grüne Checks) aktivieren; verifizieren: direkter Push auf `main` wird abgelehnt
 - [ ] 1.2 Next.js (App Router, TypeScript strict, `output: "export"`, `trailingSlash: true`), pnpm, ESLint, Prettier, Vitest aufsetzen; verifizieren: `pnpm build` erzeugt `out/index.html`, `pnpm lint && pnpm test` grün
-- [ ] 1.3 **Spike Deploy Now**: PHP-Projekt mit Minimal-`out/`, `api/ping.php` und `.htaccess` (1× 301, 1× 410, 1× Custom-Header, Header-Unset `X-Powered-By`, Deny `vendor/`, 404-ErrorDocument) deployen. `ping.php` meldet: PHP-Version, Extensions (`fileinfo`, `gd`/`imagick`, `zip`, `zlib`, `openssl`), beschreibbares Verzeichnis außerhalb des Document Roots (persistiert über Requests?), ausgehendes HTTPS (abuse.ch) und SMTP (IONOS, Port 465/587), `upload_max_filesize`/`post_max_size`. Verifizieren per `curl -I` auf der Staging-URL; Ergebnis in `docs/adr/0001-deploy-now.md` dokumentieren. Bei Fehlschlag: Fallback aus design.md D2 entscheiden, bevor es weitergeht
-- [ ] 1.4 Lokalen Prod-Nachbau anlegen: `docker-compose.yml` mit `php:8.3-apache` (mod_rewrite/headers) + Mailpit, mountet `out/`, `api/`, `.htaccess`; verifizieren: `docker compose up` liefert `http://localhost:8080/` und Mailpit-UI erreichbar
-- [ ] 1.5 Deploy-Now-Workflow um Gates erweitern (Typecheck, Lint, Test, Build, gitleaks) und Staging-Deployments für Nicht-`main`-Branches aktivieren; verifizieren: Test-PR erzeugt Staging-URL, absichtlich roter Test verhindert Deployment
-- [ ] 1.6 Lieferketten-Sicherheit einrichten: Dependabot (npm, Composer, Actions), `pnpm audit --prod`/`composer audit` (Fail ab high), CodeQL (JS/TS), Semgrep (PHP), Actions auf Commit-SHAs gepinnt, Lockfiles Pflicht; verifizieren: Test-PR mit bekannt verwundbarer Abhängigkeit wird blockiert
+- [ ] 1.3 Lokalen Prod-Nachbau anlegen: `docker-compose.yml` mit `php:8.3-apache` (mod_rewrite/headers) + Mailpit, mountet `out/`, `api/`, `.htaccess`; verifizieren: `docker compose up` liefert `http://localhost:8080/` und Mailpit-UI erreichbar
+- [ ] 1.4 CI in GitHub Actions (ohne Deployment) mit Gates für jeden PR: Typecheck, Lint, Test, Build, gitleaks, Start des Docker-Nachbaus + E2E; verifizieren: absichtlich roter Test macht den PR-Check rot
+- [ ] 1.5 Lieferketten-Sicherheit einrichten: Dependabot (npm, Composer, Actions), `pnpm audit --prod`/`composer audit` (Fail ab high), CodeQL (JS/TS), Semgrep (PHP), Actions auf Commit-SHAs gepinnt, Lockfiles Pflicht; verifizieren: Test-PR mit bekannt verwundbarer Abhängigkeit wird blockiert
 
 ## 2. Design-System
 
@@ -91,9 +90,11 @@
 
 ## 12. Abnahme & Go-live
 
-- [ ] 12.0 Security-Abnahme vor Go-live: aktiver OWASP-ZAP-Scan gegen Staging (Fokus `api/submit.php`), Checkliste OWASP ASVS L2 (relevante Kapitel V1–V5, V7, V8, V12, V13, V14) durchgehen; verifizieren: Bericht ohne offene high/critical-Funde in `docs/security/go-live-review.md`
-- [ ] 12.1 Staging-Abnahme durch GÖK (Inhalte, Bilder, Formulare an echte Postfächer); verifizieren: schriftliche Freigabe im PR/Issue
-- [ ] 12.2 Cutover vorbereiten: DNS-TTL auf 300 s, alte DNS-Werte in `docs/runbook-cutover.md`, Custom Domain in Deploy Now; verifizieren: Runbook-Review
-- [ ] 12.3 DNS umstellen (nur A/AAAA/CNAME, MX unverändert); verifizieren: Redirect-Crawl gegen alte Sitemap (alle 12 URLs → 200/301 korrekt), Header-Check, Formular-Testsendung in Produktion, Mail-Empfang `info@goekbau.de` unverändert
-- [ ] 12.4 Google Search Console: Sitemap einreichen, Abdeckung nach 7 Tagen prüfen; verifizieren: keine neuen 404-Fehler für alte URLs
-- [ ] 12.5 Nach 30 Tagen ohne Rollback: WordPress-Backup verschlüsselt archivieren, die 248 gespeicherten Formular-Einsendungen und 18 Bewerbungsdateien nach Kundenentscheidung übergeben bzw. löschen (DSGVO, Aufbewahrungsfrist), Backup des Plugins „Backup Migration“ aus dem Webspace entfernen, Installation und Plugin-Lizenzen kündigen; verifizieren: Bestätigung IONOS/Lizenzportale, Löschprotokoll, Backup-Ablageort dokumentiert
+- [ ] 12.1 **Hosting-Test Deploy Now** (vorbereitet in `tools/deploy-now-spike/`, Ablauf in `docs/adr/0001-deploy-now.md`): PHP-Projekt anlegen, Spike deployen, `check.py` gegen Staging grün (`.htaccess`, Extensions, `.user.ini`-Limits, privater Speicher, HTTPS/SMTP ausgehend); bei Lücken Fallback aus design.md D2 entscheiden; verifizieren: ADR-Tabelle vollständig ausgefüllt
+- [ ] 12.2 Deploy-Now-Workflow auf die echte Site umstellen (Build: Next-Export + Composer + `.htaccess`, Publish-Verzeichnis), CI-Gates aus 1.4 vor Deployment, Staging für Nicht-`main`-Branches; Spike-Endpoint und Token entfernen; verifizieren: Test-PR erzeugt Staging-URL, roter Gate verhindert Deployment, `/api/ping.php` → 404
+- [ ] 12.3 Security-Abnahme vor Go-live: aktiver OWASP-ZAP-Scan gegen Staging (Fokus `api/submit.php`), Checkliste OWASP ASVS L2 (relevante Kapitel V1–V5, V7, V8, V12, V13, V14) durchgehen; verifizieren: Bericht ohne offene high/critical-Funde in `docs/security/go-live-review.md`
+- [ ] 12.4 Staging-Abnahme durch GÖK (Inhalte, Bilder, Formulare an echte Postfächer); verifizieren: schriftliche Freigabe im PR/Issue
+- [ ] 12.5 Cutover vorbereiten: DNS-TTL auf 300 s, alte DNS-Werte in `docs/runbook-cutover.md`, Custom Domain in Deploy Now; verifizieren: Runbook-Review
+- [ ] 12.6 DNS umstellen (nur A/AAAA/CNAME, MX unverändert); verifizieren: Redirect-Crawl gegen alte Sitemap (alle 12 URLs → 200/301 korrekt), Header-Check, Formular-Testsendung in Produktion, Mail-Empfang `info@goekbau.de` unverändert
+- [ ] 12.7 Google Search Console: Sitemap einreichen, Abdeckung nach 7 Tagen prüfen; verifizieren: keine neuen 404-Fehler für alte URLs
+- [ ] 12.8 Nach 30 Tagen ohne Rollback: WordPress-Backup verschlüsselt archivieren, die 248 gespeicherten Formular-Einsendungen und 18 Bewerbungsdateien nach Kundenentscheidung übergeben bzw. löschen (DSGVO, Aufbewahrungsfrist), Backup des Plugins „Backup Migration“ aus dem Webspace entfernen, Installation und Plugin-Lizenzen kündigen; verifizieren: Bestätigung IONOS/Lizenzportale, Löschprotokoll, Backup-Ablageort dokumentiert
