@@ -9,6 +9,7 @@ Das Vorgehen ist spec-first mit [OpenSpec](https://github.com/Fission-AI/OpenSpe
 | Ist-Analyse der WordPress-Seite | [research/wp-audit/AUDIT.md](research/wp-audit/AUDIT.md) |
 | Aktuelle Change (Proposal, Specs, Design, Tasks) | [openspec/changes/relaunch-react-website/](openspec/changes/relaunch-react-website/) |
 | Extrahierte Alt-Inhalte | [research/wp-audit/content/](research/wp-audit/content/) |
+| Deploy-Now-Spike (Task 1.3): Einrichtung und Prüfstand | [docs/adr/0001-deploy-now.md](docs/adr/0001-deploy-now.md) |
 
 ```bash
 openspec view                                   # Dashboard
