@@ -98,3 +98,33 @@ jobs:
           docker run --rm -v "$PWD:/repo"
           ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
           git /repo --no-banner --redact --exit-code 1
+
+  dast:
+    name: DAST (OWASP ZAP Baseline)
+    needs: checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build && pnpm assemble
+      - run: docker compose up -d --build --wait
+      - name: ZAP Baseline (FAIL-Regeln in .zap/rules.tsv)
+        run: >
+          docker run --rm --network host -v "$PWD/.zap:/zap/wrk:rw"
+          ghcr.io/zaproxy/zaproxy@sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6
+          zap-baseline.py -t http://localhost:8080/ -c rules.tsv -I -j -m 2 -J report.json -r report.html
+      - name: Gate ab Risiko „Mittel“
+        run: node scripts/zap-gate.mjs .zap/report.json
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: zap-report
+          path: .zap/report.html
+          retention-days: 14

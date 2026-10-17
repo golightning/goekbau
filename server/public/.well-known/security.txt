@@ -1,0 +1,5 @@
+# Meldestelle für Sicherheitslücken (RFC 9116) – web-security
+Contact: https://www.goekbau.de/kontakt/
+Expires: 2027-10-17T00:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://www.goekbau.de/.well-known/security.txt

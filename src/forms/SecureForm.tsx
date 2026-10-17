@@ -112,7 +112,7 @@ export function SecureForm({ form, position, submitLabel, fallbackHint }: Props)
       }
       const wait = MIN_AGE_MS - ageOf(ticket);
       if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-      data.set("token", ticket.token);
+      data.set("_csrf_token", ticket.token);
       data.set("altcha", await ticket.altcha);
 
       const res = await fetch("/api/submit.php", {
@@ -165,6 +165,10 @@ export function SecureForm({ form, position, submitLabel, fallbackHint }: Props)
     <form
       ref={formRef}
       hidden={!ready}
+      // Fallback nie per GET: Formulardaten dürfen nicht in URL/Server-Logs landen (ZAP-Befund 10024).
+      // Ohne JS scheitert ein POST serverseitig an ALTCHA – es wird nichts versendet.
+      method="post"
+      action="/api/submit.php"
       noValidate
       onSubmit={onSubmit}
       onFocusCapture={warmUp}
@@ -177,6 +181,9 @@ export function SecureForm({ form, position, submitLabel, fallbackHint }: Props)
         Felder mit <span aria-hidden="true">*</span>
         <span className="sr-only">Sternchen</span> sind Pflichtfelder.
       </p>
+
+      {/* CSRF-Token (spam-protection „Herkunftsprüfung“) – wird beim Absenden frisch gesetzt */}
+      <input type="hidden" name="_csrf_token" defaultValue="" />
 
       {/* Honeypot (spam-protection): für Menschen unsichtbar, für Screenreader ausgeblendet */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">

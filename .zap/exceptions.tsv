@@ -1,0 +1,2 @@
+# Gezielte Ausnahmen: Regel-ID<TAB>URL-Regex<TAB>Begründung
+10062	/api/challenge\.php	Fehlalarm: zufälliges ALTCHA-Salt/Token besteht zufällig den Luhn-Test, keine personenbezogenen Daten

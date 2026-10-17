@@ -15,3 +15,7 @@ playwright-report/
 .velite/
 public/static/
 server/vendor/
+.zap/*.html
+.zap/*.json
+.zap/*.md
+.zap/*.yaml

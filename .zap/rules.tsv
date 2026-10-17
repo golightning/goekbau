@@ -1,0 +1,11 @@
+10049	IGNORE	(Storable/Cacheable Content) Caching ist bewusst gesetzt – performance-budget
+10027	IGNORE	(Informationelle Kommentare) minifiziertes Next-Bundle
+10096	IGNORE	(Timestamp Disclosure) Fehlalarm: Zahlen im RSC-Payload/Bundle, keine Zeitstempel des Servers
+10055	WARN	(CSP style-src unsafe-inline) bewusst: React/Radix setzen style-Attribute; Skripte sind per Hash beschränkt
+90004	WARN	(COEP fehlt) require-corp würde die Google-Maps-Einbettung nach Einwilligung blockieren
+10021	FAIL	(X-Content-Type-Options fehlt) Pflicht-Header laut web-security
+10020	FAIL	(Anti-Clickjacking fehlt) frame-ancestors/X-Frame-Options Pflicht
+10038	FAIL	(CSP fehlt) Pflicht laut web-security
+10063	FAIL	(Permissions-Policy fehlt) Pflicht laut web-security
+10036	FAIL	(Server-Version wird preisgegeben)
+10037	FAIL	(X-Powered-By wird preisgegeben)

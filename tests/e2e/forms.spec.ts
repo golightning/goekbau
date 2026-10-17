@@ -166,6 +166,7 @@ test("ohne JavaScript: Hinweis mit Kontaktwegen statt Formular", async ({ reques
 });
 
 test("sechste Anfrage derselben IP innerhalb einer Stunde → 429", async ({ page, request, baseURL }) => {
+  test.setTimeout(120_000); // 6 Anfragen mit je ≥ 3 s Mindestwartezeit (Zeitfenster-Schutz)
   // Fünf gültige Anfragen über den Browser würden zu lange dauern: direkt gegen den Endpoint mit echten Tokens
   for (let i = 0; i < 6; i++) {
     const ch = await (await request.get("/api/challenge.php?form=contact")).json();
@@ -175,7 +176,7 @@ test("sechste Anfrage derselben IP innerhalb einer Stunde → 429", async ({ pag
     const res = await request.post("/api/submit.php", {
       headers: { Origin: new URL(baseURL!).origin },
       multipart: {
-        token: ch.token,
+        _csrf_token: ch.token,
         altcha,
         name: "Max",
         email: `rate${i}@example.org`,

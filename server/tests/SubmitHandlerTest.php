@@ -79,7 +79,7 @@ final class SubmitHandlerTest extends TestCase
     private function request(string $form = 'contact', array $overrides = [], array $files = [], array $headers = [], string $method = 'POST', ?int $issuedAt = null): Request
     {
         $post = [
-            'token' => $this->tokens->issue($form, $issuedAt ?? self::NOW - 30),
+            SubmitHandler::CSRF_FIELD => $this->tokens->issue($form, $issuedAt ?? self::NOW - 30),
             'altcha' => SpamLayersTest::solve($this->altcha->challenge(2000)),
             'name' => 'Max Muster',
             'email' => 'max@example.org',
@@ -162,7 +162,7 @@ final class SubmitHandlerTest extends TestCase
 
     public function testFehlendesOderGefaelschtesTokenWirdAbgelehnt(): void
     {
-        $res = $this->handler()->handle($this->request(overrides: ['token' => 'contact.1.x.y']), self::NOW);
+        $res = $this->handler()->handle($this->request(overrides: [SubmitHandler::CSRF_FIELD => 'contact.1.x.y']), self::NOW);
         self::assertSame(403, $res->status);
     }
 
