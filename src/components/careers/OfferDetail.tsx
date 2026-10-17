@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Prose } from "@/components/content/Prose";
+import { FormSection } from "@/forms/FormSection";
 import { Container, Eyebrow, Heading } from "@/components/ui/Layout";
 import { company, offerPath, type Offer } from "@/lib/content";
 import { jobPostingJsonLd, serializeJsonLd } from "@/lib/job-posting";
@@ -71,7 +72,9 @@ export function OfferDetail({ offer }: { offer: Offer }) {
             <Heading level={2} id="bewerbung-titel" size={3}>
               {isJob ? "Bewerben Sie sich für diese Stelle" : "Interesse an der Ausbildung?"}
             </Heading>
-            <div className="mt-6" data-slot="bewerbungsformular" data-position={offer.title} />
+            <div className="mt-6">
+              <FormSection form="application" position={offer.title} />
+            </div>
           </div>
         </aside>
       </Container>

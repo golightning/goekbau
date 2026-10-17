@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/content/Hero";
+import { FormSection } from "@/forms/FormSection";
 import { ProtectedEmail } from "@/components/ProtectedEmail";
 import { Heading, Section } from "@/components/ui/Layout";
 import { company, getBlock, getPage, telUrl, whatsappUrl } from "@/lib/content";
@@ -28,7 +29,9 @@ export default function ContactPage() {
             <Heading level={2} id="formular">
               {formular.title}
             </Heading>
-            <div className="mt-6" data-slot="kontaktformular" />
+            <div className="mt-6">
+              <FormSection form="contact" />
+            </div>
           </section>
 
           <aside aria-labelledby="kontaktdaten" className="space-y-8">

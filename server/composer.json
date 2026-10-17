@@ -1,0 +1,38 @@
+{
+  "name": "golightning/goekbau-forms",
+  "description": "Formular-Endpoint goekbau.de (form-submissions, spam-protection, upload-security, email-security)",
+  "type": "project",
+  "license": "proprietary",
+  "require": {
+    "php": ">=8.3",
+    "ext-fileinfo": "*",
+    "ext-gd": "*",
+    "ext-zip": "*",
+    "ext-zlib": "*",
+    "ext-openssl": "*",
+    "ext-json": "*",
+    "phpmailer/phpmailer": "^7.1",
+    "altcha-org/altcha": "^2.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^12.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Goekbau\\Forms\\": "app/src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Goekbau\\Forms\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "8.3.0"
+    },
+    "sort-packages": true,
+    "optimize-autoloader": true,
+    "allow-plugins": {}
+  }
+}

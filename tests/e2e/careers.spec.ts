@@ -35,10 +35,7 @@ test.describe("Detailseiten", () => {
     await expect(page.getByRole("heading", { name: "Ihre Aufgaben" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Ihr Profil" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Bewerben Sie sich für diese Stelle" })).toBeVisible();
-    await expect(page.locator('[data-slot="bewerbungsformular"]')).toHaveAttribute(
-      "data-position",
-      "Fachbauüberwacher Oberbau (FBÜ)",
-    );
+    await expect(page.getByLabel(/^Position/)).toHaveValue("Fachbauüberwacher Oberbau (FBÜ)");
     const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent())!);
     expect(ld["@type"]).toBe("JobPosting");
     expect(ld.title).toBe("Fachbauüberwacher Oberbau (FBÜ)");

@@ -6,3 +6,5 @@ research/
 openspec/
 .claude/
 pnpm-lock.yaml
+server/vendor/
+shared/

@@ -1,0 +1,53 @@
+# Sperrwörter für den Inhaltsfilter (spam-protection). Eine Zeile je Wort/Phrase, Kleinschreibung.
+# Ergänzen anhand der Spam-Statistik (/api/stats.php). Keine Fachbegriffe aus dem Gleisbau eintragen.
+viagra
+cialis
+casino
+crypto investment
+bitcoin investment
+forex signals
+seo services
+backlinks
+web design services
+increase your traffic
+guest post
+loan offer
+payday loan
+porn
+xxx
+escort
+# Muster aus 156 Spam-Einsendungen des WordPress-Bestands (Auswertung 17.10.2026)
+unsubscribe
+unsub
+opt out
+opt-out
+comstock
+xevil
+captcha
+seo
+backlink
+traffic to your
+more traffic
+your website
+your site
+your web site
+web design
+website design
+lead generation
+google ranking
+first page of google
+on google
+investment opportunity
+domain name
+marketing services
+free trial
+click here
+make money
+earn money
+promote your
+sales leads
+ai chatbot
+video explainer
+explainer video
+whatsapp marketing
+link building

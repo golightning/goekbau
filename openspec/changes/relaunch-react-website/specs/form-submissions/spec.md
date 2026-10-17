@@ -66,8 +66,12 @@ Der Endpoint SHALL Formulardaten und Anhänge nicht dauerhaft auf dem Server spe
 - **THEN** befinden sich keine Anhänge des Requests mehr im Dateisystem des Servers
 
 ### Requirement: Bedienbarkeit ohne Seitenwechsel
-Formulare SHALL ohne Seitenneuladen absenden, während des Sendens einen Ladezustand zeigen und Doppel-Absendungen verhindern. Ohne JavaScript MUST das Formular per normalem POST funktionieren und auf eine Ergebnisseite führen.
+Formulare SHALL ohne Seitenneuladen absenden, während des Sendens einen Ladezustand zeigen und Doppel-Absendungen verhindern. Weil der Spam-Schutz (`spam-protection`, ALTCHA) JavaScript erfordert, MUST ohne JavaScript statt des Formulars ein Hinweis mit den alternativen Kontaktwegen (Telefon, WhatsApp, E-Mail) erscheinen (Entscheidung Auftraggeber 17.10.2026: Sicherheit vor No-JS).
 
 #### Scenario: Doppelklick
 - **WHEN** ein Nutzer den Absenden-Button zweimal schnell klickt
 - **THEN** wird genau eine Übermittlung ausgelöst
+
+#### Scenario: JavaScript deaktiviert
+- **WHEN** ein Nutzer die Kontaktseite ohne JavaScript öffnet
+- **THEN** sieht er statt des Formulars einen Hinweis mit Telefonnummer, WhatsApp-Link und E-Mail-Adresse, und es gibt keinen Weg, das Formular ohne Spam-Prüfung abzusenden

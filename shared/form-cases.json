@@ -1,0 +1,55 @@
+{
+  "$comment": "Gemeinsame Testfälle für Client (Vitest) und Server (PHPUnit): gleiche Eingabe → gleiche Feldfehler.",
+  "cases": [
+    {
+      "name": "gültige Kontaktanfrage",
+      "form": "contact",
+      "input": { "name": "Max Muster", "email": "max@example.org", "phone": "", "message": "Wir planen eine Baumaßnahme.", "privacy": "on" },
+      "errors": []
+    },
+    {
+      "name": "ungültige E-Mail",
+      "form": "contact",
+      "input": { "name": "Max", "email": "max@", "message": "Eine ausreichend lange Nachricht.", "privacy": "on" },
+      "errors": ["email"]
+    },
+    {
+      "name": "fehlende Pflichtfelder",
+      "form": "contact",
+      "input": { "name": "", "email": "", "message": "", "privacy": "" },
+      "errors": ["name", "email", "message", "privacy"]
+    },
+    {
+      "name": "zu kurze Nachricht",
+      "form": "contact",
+      "input": { "name": "Max", "email": "max@example.org", "message": "Hallo", "privacy": "on" },
+      "errors": ["message"]
+    },
+    {
+      "name": "ungültige Telefonnummer",
+      "form": "contact",
+      "input": { "name": "Max", "email": "max@example.org", "phone": "abc<script>", "message": "Eine ausreichend lange Nachricht.", "privacy": "on" },
+      "errors": ["phone"]
+    },
+    {
+      "name": "zu langer Name",
+      "form": "contact",
+      "input": { "name": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "email": "max@example.org", "message": "Eine ausreichend lange Nachricht.", "privacy": "on" },
+      "errors": ["name"]
+    },
+    {
+      "name": "gültige Bewerbung ohne Nachricht",
+      "form": "application",
+      "input": { "name": "Erika Muster", "email": "erika@example.org", "position": "Fachbauüberwacher Oberbau", "message": "", "privacy": "on" },
+      "fileCount": 1,
+      "errors": []
+    },
+    {
+      "name": "Bewerbung ohne Anhang und Position",
+      "form": "application",
+      "input": { "name": "Erika", "email": "erika@example.org", "position": "", "privacy": "on" },
+      "fileCount": 0,
+      "errors": ["position", "files"]
+    }
+  ]
+}

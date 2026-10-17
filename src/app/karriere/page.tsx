@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BlockIntro } from "@/components/content/Blocks";
 import { Hero } from "@/components/content/Hero";
 import { OfferList } from "@/components/careers/OfferList";
+import { FormSection } from "@/forms/FormSection";
 import { Heading, Section } from "@/components/ui/Layout";
 import { getBlock, getPage, liveJobs, liveTrainings } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
@@ -73,7 +74,9 @@ export default function CareersPage() {
         <p className="mt-4 max-w-2xl text-lg">
           <strong>{initiativ.title}</strong> {initiativ.body?.replace(/<[^>]+>/g, "").trim()}
         </p>
-        <div className="mt-8" data-slot="bewerbungsformular" data-position="Initiativbewerbung" />
+        <div className="mt-8 max-w-2xl">
+          <FormSection form="application" position="Initiativbewerbung" />
+        </div>
       </Section>
     </main>
   );

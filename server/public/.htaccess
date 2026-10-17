@@ -2,3 +2,8 @@
 Options -Indexes
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
+
+RewriteEngine On
+# PHP-Anwendung, Abhängigkeiten und Dotfiles sind nie per HTTP erreichbar
+RewriteRule ^_app(/|$) - [F,L]
+RewriteRule (^|/)\.(?!well-known/) - [F,L]

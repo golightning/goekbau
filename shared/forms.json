@@ -1,0 +1,46 @@
+{
+  "$comment": "Einzige Quelle der Formularregeln (Task 7.1): wird vom React-Client und vom PHP-Endpoint gelesen.",
+  "limits": {
+    "maxFiles": 5,
+    "maxTotalBytes": 10485760,
+    "maxRequestBytes": 11534336,
+    "allowedExtensions": ["pdf", "docx", "jpg", "jpeg", "png"],
+    "accept": ".pdf,.docx,.jpg,.jpeg,.png,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png"
+  },
+  "forms": {
+    "contact": {
+      "label": "Kontaktanfrage",
+      "fields": [
+        { "name": "name", "label": "Name", "type": "text", "required": true, "maxLength": 120, "autocomplete": "name" },
+        { "name": "email", "label": "E-Mail", "type": "email", "required": true, "maxLength": 254, "autocomplete": "email" },
+        { "name": "phone", "label": "Telefon", "type": "tel", "required": false, "maxLength": 40, "pattern": "^[0-9+()/ .-]{6,40}$", "autocomplete": "tel" },
+        { "name": "message", "label": "Nachricht", "type": "textarea", "required": true, "minLength": 10, "maxLength": 5000 },
+        { "name": "privacy", "label": "Datenschutzhinweise", "type": "consent", "required": true }
+      ]
+    },
+    "application": {
+      "label": "Bewerbung",
+      "fields": [
+        { "name": "name", "label": "Name", "type": "text", "required": true, "maxLength": 120, "autocomplete": "name" },
+        { "name": "email", "label": "E-Mail", "type": "email", "required": true, "maxLength": 254, "autocomplete": "email" },
+        { "name": "phone", "label": "Telefon", "type": "tel", "required": false, "maxLength": 40, "pattern": "^[0-9+()/ .-]{6,40}$", "autocomplete": "tel" },
+        { "name": "position", "label": "Position", "type": "text", "required": true, "maxLength": 160 },
+        { "name": "message", "label": "Nachricht", "type": "textarea", "required": false, "maxLength": 5000 },
+        { "name": "files", "label": "Unterlagen", "type": "files", "required": true },
+        { "name": "privacy", "label": "Datenschutzhinweise", "type": "consent", "required": true }
+      ]
+    }
+  },
+  "messages": {
+    "required": "Bitte füllen Sie dieses Feld aus.",
+    "consent": "Bitte bestätigen Sie die Datenschutzhinweise.",
+    "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein, z. B. name@firma.de.",
+    "tooLong": "Bitte kürzen Sie Ihre Eingabe auf höchstens {max} Zeichen.",
+    "tooShort": "Bitte geben Sie mindestens {min} Zeichen ein.",
+    "pattern": "Bitte geben Sie eine gültige Telefonnummer ein.",
+    "filesRequired": "Bitte hängen Sie mindestens eine Datei an (PDF, DOCX, JPG oder PNG).",
+    "tooManyFiles": "Bitte laden Sie höchstens {max} Dateien hoch.",
+    "tooLarge": "Ihre Dateien sind zusammen größer als 10 MB. Bitte verkleinern Sie sie.",
+    "fileType": "Erlaubt sind nur PDF, DOCX, JPG und PNG."
+  }
+}

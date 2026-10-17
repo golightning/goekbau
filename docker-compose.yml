@@ -1,5 +1,6 @@
-# Lokaler Prod-Nachbau: `pnpm assemble && docker compose up -d`
-# Website: http://localhost:8080  ·  Mailpit (SMTP-Fänger): http://localhost:8025
+# Lokaler Prod-Nachbau: `pnpm prod:up`
+# Website: http://localhost:8080  ·  Mailpit (SMTP-Fänger mit STARTTLS): http://localhost:8025
+# Alle Werte hier sind reine Entwicklungswerte – Produktion nutzt Deploy-Now-Runtime-Secrets.
 services:
   web:
     build: docker/web
@@ -10,6 +11,21 @@ services:
       - storage:/var/www/storage
     environment:
       GOEKBAU_ENV: local
+      GOEKBAU_SECRET: lokal-nur-fuer-entwicklung-0123456789abcdef # gitleaks:allow (reiner Entwicklungswert)
+      GOEKBAU_ALLOWED_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
+      GOEKBAU_STORAGE_DIR: /var/www/storage
+      GOEKBAU_SMTP_HOST: mailpit
+      GOEKBAU_SMTP_PORT: "1025"
+      GOEKBAU_SMTP_USER: website@goekbau.de
+      GOEKBAU_SMTP_PASS: lokal
+      GOEKBAU_SMTP_SECURE: tls
+      GOEKBAU_SMTP_VERIFY_PEER: "0" # selbst signiertes Mailpit-Zertifikat, nur lokal
+      GOEKBAU_MAIL_FROM: website@goekbau.de
+      GOEKBAU_MAIL_FROM_NAME: Website goekbau.de
+      GOEKBAU_MAIL_TO_CONTACT: info@goekbau.de
+      GOEKBAU_MAIL_TO_APPLICATION: deniz.goek@goekbau.de
+      GOEKBAU_MAIL_TO_MONITOR: monitor@golightning.ai
+      GOEKBAU_MONITOR_TOKEN: lokal-monitor-token-0123456789abcdef0123
     depends_on:
       - mailpit
 
@@ -19,7 +35,9 @@ services:
       - "127.0.0.1:8025:8025"
     environment:
       MP_SMTP_AUTH_ACCEPT_ANY: "1"
-      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+      MP_SMTP_TLS_CERT: sans:mailpit
+      MP_SMTP_TLS_KEY: sans:mailpit
+      MP_SMTP_REQUIRE_STARTTLS: "true"
 
 volumes:
   storage:

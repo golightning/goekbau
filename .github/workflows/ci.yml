@@ -41,6 +41,21 @@ jobs:
           include-hidden-files: true
           retention-days: 7
 
+  php:
+    name: PHPUnit (Formular-Endpoint)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: composer install
+        run: >
+          docker run --rm -u "$(id -u):$(id -g)" -e COMPOSER_HOME=/tmp/composer -v "$PWD/server:/app" -w /app
+          composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac
+          composer install --no-interaction --no-progress --ignore-platform-req=ext-gd --ignore-platform-req=ext-zip
+      - run: docker build -q -t goekbau-php docker/web
+      - run: docker run --rm -v "$PWD:/repo" -w /repo/server goekbau-php php vendor/bin/phpunit --no-progress
+
   e2e:
     name: E2E gegen Prod-Nachbau
     needs: checks

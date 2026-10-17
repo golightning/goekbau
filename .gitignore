@@ -14,3 +14,4 @@ test-results/
 playwright-report/
 .velite/
 public/static/
+server/vendor/

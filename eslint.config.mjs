@@ -26,7 +26,18 @@ const config = [
     rules: colorRules,
   },
   {
-    ignores: [".next/**", "out/**", "dist/**", "_wp-export/**", "research/**", "tools/**", "next-env.d.ts"],
+    ignores: [
+      ".next/**",
+      ".velite/**",
+      "out/**",
+      "dist/**",
+      "_wp-export/**",
+      "research/**",
+      "tools/**",
+      "server/vendor/**",
+      "public/static/**",
+      "next-env.d.ts",
+    ],
   },
 ];
 

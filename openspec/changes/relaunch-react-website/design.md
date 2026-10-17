@@ -74,8 +74,9 @@ Die Tokens stehen in `@theme` (Farben, Fonts, Abstände, Breakpoints `md: 768`, 
 - **UI-Bausteine**: eigene, schlanke Komponenten (Button, Section, Card, Field, Tabs/Disclosure). Für zugängliche interaktive Primitive (Dialog/Menü, Disclosure) dient Radix UI bzw. React Aria als Basis, keine komplette UI-Library.
 - *Alternative*: CSS Modules mit Custom Properties. Ebenfalls valide, aber Tailwind beschleunigt den Komponentenbau, und das Token-Lock ist einfacher durchzusetzen.
 
-### D7 – Formulare: progressive Enhancement + PHP-Endpoint
-- HTML-`<form method="post" action="/api/submit.php" enctype="multipart/form-data">` funktioniert ohne JS. PHP antwortet dann mit 303 auf `/kontakt/danke/` bzw. `/kontakt/fehler/` (`noindex`).
+### D7 – Formulare: JS-gestützt + PHP-Endpoint
+- **Kein No-JS-Absenden** (Entscheidung Auftraggeber 17.10.2026): Ohne JS ließe sich ALTCHA umgehen. Ohne JS zeigt `<noscript>` deshalb Telefon, WhatsApp und E-Mail statt des Formulars. Der Endpoint lehnt Requests ohne gültiges ALTCHA ab.
+- Beim Fokussieren oder Laden holt das Formular per `GET /api/challenge.php` eine signierte ALTCHA-Challenge und ein Formular-Token (HMAC über Formular-ID und Ausstellzeit). Statischer Export und Zeitfenster-Prüfung sind damit vereinbar.
 - Mit JS übernimmt eine Client-Komponente: Validierung mit demselben Feld-Schema (Zod → JSON-Schema-Export für PHP oder ein gespiegeltes, getestetes Regelset), `fetch` mit `Accept: application/json`. Antworten: 200 / 422 (Feldfehler) / 429 / 502.
 - PHP-Seite als Pipeline mit festen Stufen (Details in D11): Methode/Größe → Origin/CSRF → Spam-Schichten → Feldvalidierung → Upload-Prüfung → Versand → Aufräumen (`finally`). Jede Stufe ist eine eigene, einzeln getestete Klasse. Versand mit PHPMailer über SMTP (IONOS-Postfach, z. B. `website@goekbau.de`), `Reply-To` = Nutzer.
 - Konfiguration (SMTP-Host/User/Passwort, Empfänger je Formular, HMAC-Secret) kommt aus Deploy-Now-Runtime-Secrets (GitHub Secrets → Runtime-Config), nie aus dem Repo.

@@ -1,0 +1,18 @@
+{
+  "$comment": "Synthetische, legitime Anfragen (keine echten Kundendaten). Der Inhaltsfilter darf keine davon ablehnen.",
+  "messages": [
+    "Guten Tag, wir planen für März 2027 eine Gleiserneuerung auf der Strecke 4700 und suchen einen Fachbauüberwacher Oberbau. Wären Sie verfügbar? Viele Grüße",
+    "Hallo Herr Gök, wir benötigen für eine Weichenerneuerung in Ulm kurzfristig einen Sicherungsüberwacher. Bitte rufen Sie mich zurück.",
+    "Sehr geehrte Damen und Herren, können Sie uns ein Angebot für die Bauüberwachung Bahn Ob/KIB bei einer Brückenmaßnahme schicken? Unterlagen sende ich gern per E-Mail.",
+    "Wir sind ein Gleisbauunternehmen aus Augsburg und suchen einen Partner für BETRA-Anträge (BBP-Neo). Haben Sie Kapazitäten im Sommer?",
+    "Ich interessiere mich für die Funktionsausbildung zum Fachbauüberwacher. Wann beginnt der nächste Kurs und was kostet er?",
+    "Guten Morgen, unsere Website-Agentur hat uns auf Sie aufmerksam gemacht. Wir bräuchten Unterstützung bei der DV-gestützten Inspektion.",
+    "Moin, für eine Baumaßnahme an der Oberleitung suchen wir einen Anlagenbeauftragten. Infos zum Projekt: www.beispiel-bau.de/projekt",
+    "Hallo, ich habe Ihre Domain über Google gefunden und möchte mich initiativ als Sicherungsposten bewerben. Wie gehe ich vor?",
+    "Sehr geehrter Herr Gök, anbei die Unterlagen zur Ausschreibung (siehe https://vergabe.beispiel.de/123). Bitte um Rückmeldung bis Freitag.",
+    "Wir benötigen eine Überwachung der vertragskonformen Bauausführung für drei Bahnübergänge im Landkreis Neu-Ulm. Bitte um Rückruf.",
+    "Grüß Gott, gibt es bei Ihnen auch Teilzeitstellen? Ich bin Industriemeister Gleisbau und suche eine neue Herausforderung.",
+    "Hello, we are a Swiss rail contractor and need a German-speaking construction supervisor (Bauüberwacher) for a project near Lindau. Please call us.",
+    "Barış Yılmaz hier – ich bin Fahrbahnmechaniker und möchte mich für die Komplettausbildung bewerben. Şehir: Neu-Ulm."
+  ]
+}
