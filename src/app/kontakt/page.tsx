@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/content/Hero";
+import { ExternalMap } from "@/components/consent/ExternalMap";
 import { FormSection } from "@/forms/FormSection";
 import { ProtectedEmail } from "@/components/ProtectedEmail";
 import { Heading, Section } from "@/components/ui/Layout";
@@ -86,7 +87,16 @@ export default function ContactPage() {
         <Heading level={2} id="anfahrt">
           {anfahrt.title}
         </Heading>
-        <div className="mt-6" data-slot="karte" />
+        <div className="mt-6">
+          <ExternalMap
+            label={company.name}
+            query={`${address.street}, ${address.postalCode} ${address.city}`}
+            addressLines={[
+              address.street,
+              `${address.postalCode} ${address.city}${address.district ? `-${address.district}` : ""}`,
+            ]}
+          />
+        </div>
       </Section>
     </main>
   );

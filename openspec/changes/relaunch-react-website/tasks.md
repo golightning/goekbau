@@ -71,9 +71,9 @@
 
 ## 9. Datenschutz & Einwilligung
 
-- [ ] 9.1 `ExternalMediaConsent`-Komponente für Google Maps (statischer Platzhalter, „Karte laden“, „Immer laden“, externer Link); verifizieren: Playwright – ohne Klick kein Google-Request, nach Klick iframe geladen
-- [ ] 9.2 Einstellungen „Cookie-Einstellungen“ (Anzeige + Widerruf), Storage nur nach „Immer laden“; verifizieren: Test – Erstbesuch ohne Cookies/Storage, Widerruf verhindert Auto-Laden
-- [ ] 9.3 Globaler Test „nur eigener Origin“ über alle Routen ohne Einwilligung; verifizieren: Playwright-Netzwerk-Mitschnitt je Route enthält ausschließlich `localhost:8080` bzw. Produktions-Origin
+- [x] 9.1 `ExternalMediaConsent`-Komponente für Google Maps (statischer Platzhalter, „Karte laden“, „Immer laden“, externer Link); verifizieren: Playwright – ohne Klick kein Google-Request, nach Klick iframe geladen
+- [x] 9.2 Einstellungen „Cookie-Einstellungen“ (Anzeige + Widerruf), Storage nur nach „Immer laden“; verifizieren: Test – Erstbesuch ohne Cookies/Storage, Widerruf verhindert Auto-Laden
+- [x] 9.3 Globaler Test „nur eigener Origin“ über alle Routen ohne Einwilligung; verifizieren: Playwright-Netzwerk-Mitschnitt je Route enthält ausschließlich `localhost:8080` bzw. Produktions-Origin
 
 ## 10. SEO & Redirects
 
