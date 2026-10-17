@@ -1,74 +1,43 @@
 import type { Metadata } from "next";
-import { BlockCta, BlockIntro, CtaBand } from "@/components/content/Blocks";
-import { ProjectCards, ServiceAreaOverview, TeamGrid } from "@/components/content/Collections";
-import { Hero } from "@/components/content/Hero";
-import { LinkButton } from "@/components/ui/Button";
-import { Section } from "@/components/ui/Layout";
+import { HomeHero } from "@/components/home/HomeHero";
+import {
+  CareerInverted,
+  ContactRows,
+  FigureLines,
+  IntroColumn,
+  ProjectScatter,
+  ServicePoster,
+  TeamFacts,
+} from "@/components/home/HomeSections";
 import { company, getBlock, getPage } from "@/lib/content";
 import { serializeJsonLd } from "@/lib/job-posting";
-import { organizationJsonLd } from "@/lib/organization";
 import { pageMetadata } from "@/lib/metadata";
+import { organizationJsonLd } from "@/lib/organization";
 
 const page = getPage("home");
 
 export const metadata: Metadata = pageMetadata(page.seo, page.path);
 
-/** company-pages „Startseite“: Hero, Kurzvorstellung, Leistungen, Projekte, Team, Karriere, Kontakt-CTA. */
+/**
+ * Startseite – Richtung „Der Name als Monument“ (design-taste-frontend, 17.10.2026).
+ * Argument: wer wir sind → was wir überwachen → wo schon geleistet → in Zahlen → Team → Karriere → Kontakt.
+ * Idee: GÖKs eigenes Baustellenfoto trägt den ersten Bildschirm, der Name ist das Monument.
+ */
 export default function HomePage() {
-  const intro = getBlock(page, "intro");
-  const leistungen = getBlock(page, "leistungen");
-  const projekte = getBlock(page, "projekte");
-  const team = getBlock(page, "team");
-  const karriere = getBlock(page, "karriere");
-  const kontakt = getBlock(page, "kontakt");
-
   return (
     <main id="inhalt">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationJsonLd(company)) }}
       />
-      <Hero hero={page.hero}>
-        <LinkButton href="/kontakt/">Kontakt aufnehmen</LinkButton>
-        <LinkButton href="/leistungen/" variant="inverse">
-          Unsere Leistungen
-        </LinkButton>
-      </Hero>
-
-      <Section labelledBy="intro">
-        <BlockIntro block={intro} headingId="intro" />
-        <BlockCta block={intro} variant="secondary" />
-      </Section>
-
-      <Section tone="mist" labelledBy="leistungen">
-        <BlockIntro block={leistungen} headingId="leistungen" />
-        <div className="mt-12">
-          <ServiceAreaOverview />
-        </div>
-        <BlockCta block={leistungen} />
-      </Section>
-
-      <Section labelledBy="projekte">
-        <BlockIntro block={projekte} headingId="projekte" />
-        <div className="mt-10">
-          <ProjectCards />
-        </div>
-      </Section>
-
-      <Section tone="bronze" labelledBy="team">
-        <BlockIntro block={team} headingId="team" />
-        <div className="mt-10">
-          <TeamGrid limit={3} />
-        </div>
-        <BlockCta block={team} variant="secondary" />
-      </Section>
-
-      <Section labelledBy="karriere">
-        <BlockIntro block={karriere} headingId="karriere" />
-        <BlockCta block={karriere} />
-      </Section>
-
-      <CtaBand block={kontakt} />
+      <HomeHero hero={page.hero} />
+      <IntroColumn block={getBlock(page, "intro")} />
+      <ServicePoster block={getBlock(page, "leistungen")} />
+      <ProjectScatter block={getBlock(page, "projekte")} />
+      <FigureLines block={getBlock(page, "kennzahlen")} />
+      <TeamFacts block={getBlock(page, "team")} />
+      <CareerInverted block={getBlock(page, "karriere")} />
+      <ContactRows block={getBlock(page, "kontakt")} />
     </main>
   );
 }

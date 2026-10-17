@@ -35,7 +35,8 @@
   /* Typografie */
   --font-heading: var(--font-raleway), var(--font-raleway-ext), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-roboto-slab), var(--font-roboto-slab-ext), ui-serif, Georgia, serif;
-  --font-accent: var(--font-poppins), var(--font-poppins-ext), ui-sans-serif, system-ui, sans-serif;
+  /* Zwei Schriften (Design-Durchgang 17.10.2026): Raleway übernimmt auch Navigation und Buttons */
+  --font-accent: var(--font-raleway), var(--font-raleway-ext), ui-sans-serif, system-ui, sans-serif;
 
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
@@ -45,6 +46,9 @@
   --text-2xl: clamp(1.625rem, 1.35rem + 1vw, 2.125rem);
   --text-3xl: clamp(2rem, 1.5rem + 1.8vw, 2.875rem);
   --text-4xl: clamp(2.5rem, 1.7rem + 3vw, 4.25rem);
+  /* Richtung „Der Name als Monument“: Poster-Zeilen und der Name selbst */
+  --text-poster: clamp(2.75rem, 1rem + 6.4vw, 7.5rem);
+  --text-monument: clamp(7.5rem, 3rem + 19vw, 22rem);
 
   /* Layout: Breakpoints Mobil < 768, Tablet 768–1023, Desktop ≥ 1024 */
   --breakpoint-sm: 30rem;
@@ -138,5 +142,124 @@
   }
   .prose strong {
     font-weight: 700;
+  }
+}
+
+/* Bewegung (design-taste-frontend, references/motion.md): nur transform/opacity, ohne JavaScript über
+   CSS Scroll-Timelines. Ohne Unterstützung oder bei „Bewegung reduzieren“ bleibt alles statisch sichtbar. */
+@layer components {
+  :root {
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+    --t-press: 140ms;
+    --t-hover: 180ms;
+    --t-reveal: 800ms;
+  }
+
+  .press {
+    transition:
+      transform var(--t-press) var(--ease-out),
+      background-color var(--t-hover) ease,
+      color var(--t-hover) ease;
+  }
+  .press:active {
+    transform: scale(0.97);
+  }
+  .link-line {
+    text-decoration: underline;
+    text-decoration-thickness: 0.07em;
+    text-underline-offset: 0.22em;
+    transition: text-decoration-color var(--t-hover) ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .link-line:hover {
+      text-decoration-color: var(--color-bronze-500);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Laden des ersten Bildschirms: höchstens vier Teile, gestaffelt */
+    .rise {
+      animation: rise var(--t-reveal) var(--ease-out) both;
+      animation-delay: calc(var(--i, 0) * 90ms + 120ms);
+    }
+
+    @supports (animation-timeline: view()) {
+      /* Startseite: der WhatsApp-Knopf erscheint erst nach dem ersten Bildschirm und verdeckt nicht den Namen */
+      body:has(.home-hero) .quick-contact {
+        animation: appear linear both;
+        animation-timeline: scroll();
+        animation-range: 40vh 70vh;
+      }
+
+
+      /* Einmaliges Auftauchen beim Hereinscrollen, je Abschnitt gestaffelt über --i */
+      .reveal {
+        animation: rise linear both;
+        animation-timeline: view();
+        animation-range: entry calc(var(--i, 0) * 4%) entry calc(60% + var(--i, 0) * 4%);
+      }
+      /* Bild öffnet sich aus einer Maske */
+      .reveal-image {
+        animation: shutter linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 70%;
+      }
+      /* Signatur: der Name sinkt beim Verlassen des ersten Bildschirms leicht zurück */
+      .monument-scroll {
+        transform-origin: left bottom;
+        animation: monument linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100vh;
+      }
+      /* Ein bewegtes Bild: das Hero-Foto zieht beim Scrollen ganz leicht nach */
+      .drift {
+        animation: drift linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 120vh;
+      }
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes shutter {
+    from {
+      clip-path: inset(12% 0 0 0);
+      transform: scale(1.04);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+      transform: none;
+    }
+  }
+  @keyframes monument {
+    to {
+      transform: scale(0.94);
+    }
+  }
+  @keyframes drift {
+    to {
+      transform: scale(1.06) translateY(-2%);
+    }
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
   }
 }

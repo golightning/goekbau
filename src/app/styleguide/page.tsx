@@ -65,7 +65,7 @@ export default function StyleguidePage() {
         <Heading level={4} className="mt-4">
           Überschrift Ebene 4
         </Heading>
-        <p className="mt-4 font-accent">Akzentschrift Poppins für Navigation und Buttons.</p>
+        <p className="mt-4 font-accent">Navigation und Buttons in Raleway – zwei Familien tragen die Marke.</p>
       </Section>
 
       <Section tone="bronze" labelledBy="buttons">

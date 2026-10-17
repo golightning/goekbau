@@ -141,6 +141,8 @@ export const services = defineCollection({
     summary: s.string(),
     area: s.string(),
     status: s.enum(["offered", "planned"]),
+    /** Plakat-Zeile der Startseite: kurzes Wort groß, Detail klein am rechten Rand */
+    poster: s.object({ label: s.string().max(16), detail: s.string().max(32) }).optional(),
     order: s.number().int(),
   }),
 });
@@ -196,6 +198,8 @@ export const stats = defineCollection({
     prefix: s.string().optional(),
     suffix: s.string().optional(),
     grouping: s.boolean().default(true),
+    /** Ganzer Satz neben der Zahl (Startseite) */
+    sentence: s.string().max(90).optional(),
     order: s.number().int(),
   }),
 });

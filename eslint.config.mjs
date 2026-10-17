@@ -33,6 +33,8 @@ const config = [
       "dist/**",
       "_wp-export/**",
       "research/**",
+      ".claude/**",
+      ".taste-skill/**",
       "tools/**",
       "server/vendor/**",
       "public/static/**",

@@ -1,4 +1,4 @@
-- { id: gruendungsjahr, label: Gründungsjahr, value: 2023, grouping: false, order: 1 }
-- { id: stunden-am-gleis, label: Stunden am Gleis, value: 56000, suffix: "+", order: 2 }
-- { id: projekte, label: Erfolgreiche Projekte, value: 170, suffix: "+", order: 3 }
-- { id: branchenerfahrung, label: Jahre Branchenerfahrung, value: 21, order: 4 }
+- { id: gruendungsjahr, label: Gründungsjahr, value: 2023, grouping: false, sentence: "Im Mai gegründet, mit Sitz in Senden-Wullenstetten bei Ulm.", order: 1 }
+- { id: stunden-am-gleis, label: Stunden am Gleis, value: 56000, suffix: "+", sentence: "Stunden hat unser Team auf Gleisbaustellen verbracht.", order: 2 }
+- { id: projekte, label: Erfolgreiche Projekte, value: 170, suffix: "+", sentence: "Projekte haben wir erfolgreich begleitet.", order: 3 }
+- { id: branchenerfahrung, label: Jahre Branchenerfahrung, value: 21, sentence: "Jahre Erfahrung aus dem Gleisbau bringt das Team mit.", order: 4 }
