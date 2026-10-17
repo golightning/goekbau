@@ -1,4 +1,4 @@
-# Lokaler Prod-Nachbau: `pnpm prod:up`
+# Lokaler Prod-Nachbau: `pnpm local` (Stoppen: `pnpm local:down`)
 # Website: http://localhost:8080  ·  Mailpit (SMTP-Fänger mit STARTTLS): http://localhost:8025
 # Alle Werte hier sind reine Entwicklungswerte – Produktion nutzt Deploy-Now-Runtime-Secrets.
 services:
@@ -12,7 +12,7 @@ services:
     environment:
       GOEKBAU_ENV: local
       GOEKBAU_SECRET: lokal-nur-fuer-entwicklung-0123456789abcdef # gitleaks:allow (reiner Entwicklungswert)
-      GOEKBAU_ALLOWED_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
+      GOEKBAU_ALLOWED_ORIGINS: http://localhost:8080,http://127.0.0.1:8080,http://localhost:3000 # 3000 = pnpm dev (Proxy)
       GOEKBAU_STORAGE_DIR: /var/www/storage
       GOEKBAU_SMTP_HOST: mailpit
       GOEKBAU_SMTP_PORT: "1025"

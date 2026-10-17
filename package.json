@@ -8,22 +8,25 @@
     "node": ">=22"
   },
   "scripts": {
+    "bootstrap": "pnpm install --frozen-lockfile && playwright install chromium && sh scripts/php.sh install",
+    "local": "sh scripts/local.sh",
+    "local:down": "docker compose down",
     "dev": "pnpm content && (velite dev & next dev)",
     "build": "pnpm content && next build",
-    "start": "npx serve out",
+    "assemble": "sh scripts/assemble.sh",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm php:test && pnpm e2e",
     "lint": "eslint .",
     "typecheck": "pnpm content && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "php:install": "sh scripts/php.sh install",
+    "php:test": "sh scripts/php.sh test",
+    "e2e": "playwright test",
+    "lighthouse": "lhci autorun --config=lighthouserc.cjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "assemble": "sh scripts/assemble.sh",
-    "prod:up": "pnpm build && pnpm assemble && docker compose up -d --build",
-    "prod:down": "docker compose down",
-    "e2e": "playwright test",
-    "brand:assets": "node scripts/brand-assets.mjs",
     "content": "velite build --strict && node scripts/optimize-images.mjs",
-    "lighthouse": "lhci autorun --config=lighthouserc.cjs"
+    "brand:assets": "node scripts/brand-assets.mjs"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",
