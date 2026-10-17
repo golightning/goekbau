@@ -31,7 +31,7 @@ export function Section({ tone = "white", id, labelledBy, className, children }:
 }
 
 const headingSizes = {
-  display: "text-4xl font-extrabold",
+  display: "text-4xl font-bold",
   1: "text-3xl font-bold",
   2: "text-2xl font-bold",
   3: "text-xl font-semibold",

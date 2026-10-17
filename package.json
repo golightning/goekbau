@@ -8,11 +8,11 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "velite build --strict && (velite dev & next dev)",
-    "build": "velite build --strict && next build",
+    "dev": "pnpm content && (velite dev & next dev)",
+    "build": "pnpm content && next build",
     "start": "npx serve out",
     "lint": "eslint .",
-    "typecheck": "velite build --strict && tsc --noEmit",
+    "typecheck": "pnpm content && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write .",
@@ -22,13 +22,13 @@
     "prod:down": "docker compose down",
     "e2e": "playwright test",
     "brand:assets": "node scripts/brand-assets.mjs",
-    "content": "velite build --strict"
+    "content": "velite build --strict && node scripts/optimize-images.mjs",
+    "lighthouse": "lhci autorun --config=lighthouserc.cjs"
   },
   "dependencies": {
-    "@fontsource-variable/raleway": "^5.3.0",
-    "@fontsource-variable/roboto-slab": "^5.3.0",
     "@fontsource/poppins": "^5.3.0",
-    "@radix-ui/react-dialog": "^1.2.0",
+    "@fontsource/raleway": "^5.3.0",
+    "@fontsource/roboto-slab": "^5.3.0",
     "@radix-ui/react-tabs": "^1.1.22",
     "next": "^16.4.0",
     "react": "^19.3.0",
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.64.0",
     "@tailwindcss/node": "^4.3.3",
     "@tailwindcss/postcss": "^4.3.3",

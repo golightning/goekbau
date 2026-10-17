@@ -22,7 +22,7 @@ test.describe("Mobile Navigation", () => {
 
   test("öffnet, meldet aria-expanded, schließt mit Escape und gibt den Fokus zurück", async ({ page }) => {
     await page.goto("/");
-    // Bei offenem Dialog setzt Radix aria-hidden außerhalb → Trigger per CSS statt Rolle adressieren
+    // Bei offenem modalem Dialog ist der Rest der Seite inert → Trigger per CSS statt Rolle adressieren
     const trigger = page.locator('header button[aria-haspopup="dialog"]');
     await expect(trigger).toHaveAccessibleName("Menü");
     await expect(trigger).toHaveAttribute("aria-expanded", "false");

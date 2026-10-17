@@ -2,19 +2,21 @@ import localFont from "next/font/local";
 
 // Selbst gehostet (brand-design-system, privacy-consent): keine Requests an Google Fonts.
 // Quelle: @fontsource (SIL Open Font License). Der Font-Loader verlangt reine Literale.
-// "latin" deckt Deutsch inkl. ä/ö/ü/ß ab und wird vorgeladen. "latin-ext" ist eine eigene Familie mit
-// unicode-range und dient nur als Glyph-Fallback (z. B. ş, ı in Namen); der Browser lädt sie nur bei Bedarf.
+// performance-budget: next/font lädt alle Dateien einer Familie vor – daher genau ein Schnitt je Familie
+// (Raleway 700 = Überschriften, Roboto Slab 400 = Fließtext mit synthetischem Fettdruck, Poppins 600 = UI).
+// "latin" deckt Deutsch inkl. ä/ö/ü/ß ab. "latin-ext" ist eine eigene Familie mit unicode-range und dient nur
+// als Glyph-Fallback (z. B. ş, ı in Namen); der Browser lädt sie nur bei Bedarf.
 
 export const raleway = localFont({
-  src: "../../node_modules/@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2",
-  weight: "100 900",
+  src: "../../node_modules/@fontsource/raleway/files/raleway-latin-700-normal.woff2",
+  weight: "700",
   variable: "--font-raleway",
   display: "swap",
   adjustFontFallback: "Arial",
 });
 export const ralewayExt = localFont({
-  src: "../../node_modules/@fontsource-variable/raleway/files/raleway-latin-ext-wght-normal.woff2",
-  weight: "100 900",
+  src: "../../node_modules/@fontsource/raleway/files/raleway-latin-ext-700-normal.woff2",
+  weight: "700",
   variable: "--font-raleway-ext",
   display: "swap",
   preload: false,
@@ -29,15 +31,15 @@ export const ralewayExt = localFont({
 });
 
 export const robotoSlab = localFont({
-  src: "../../node_modules/@fontsource-variable/roboto-slab/files/roboto-slab-latin-wght-normal.woff2",
-  weight: "100 900",
+  src: "../../node_modules/@fontsource/roboto-slab/files/roboto-slab-latin-400-normal.woff2",
+  weight: "400",
   variable: "--font-roboto-slab",
   display: "swap",
   adjustFontFallback: "Times New Roman",
 });
 export const robotoSlabExt = localFont({
-  src: "../../node_modules/@fontsource-variable/roboto-slab/files/roboto-slab-latin-ext-wght-normal.woff2",
-  weight: "100 900",
+  src: "../../node_modules/@fontsource/roboto-slab/files/roboto-slab-latin-ext-400-normal.woff2",
+  weight: "400",
   variable: "--font-roboto-slab-ext",
   display: "swap",
   preload: false,
@@ -52,30 +54,15 @@ export const robotoSlabExt = localFont({
 });
 
 export const poppins = localFont({
-  src: [
-    { path: "../../node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff2", weight: "400" },
-    { path: "../../node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2", weight: "500" },
-    { path: "../../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2", weight: "600" },
-  ],
+  src: "../../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2",
+  weight: "600",
   variable: "--font-poppins",
   display: "swap",
   adjustFontFallback: "Arial",
 });
 export const poppinsExt = localFont({
-  src: [
-    {
-      path: "../../node_modules/@fontsource/poppins/files/poppins-latin-ext-400-normal.woff2",
-      weight: "400",
-    },
-    {
-      path: "../../node_modules/@fontsource/poppins/files/poppins-latin-ext-500-normal.woff2",
-      weight: "500",
-    },
-    {
-      path: "../../node_modules/@fontsource/poppins/files/poppins-latin-ext-600-normal.woff2",
-      weight: "600",
-    },
-  ],
+  src: "../../node_modules/@fontsource/poppins/files/poppins-latin-ext-600-normal.woff2",
+  weight: "600",
   variable: "--font-poppins-ext",
   display: "swap",
   preload: false,

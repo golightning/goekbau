@@ -12,6 +12,8 @@ export function FormSection({ form, position }: { form: FormId; position?: strin
   return (
     <div>
       <noscript>
+        {/* Ohne JS kein Spam-Schutz möglich → Formular ausblenden (Inline-Style ist per CSP erlaubt) */}
+        <style>{"form[data-js-form]{display:none}"}</style>
         <div className="rounded-lg border-2 border-bronze-500 bg-bronze-50 p-6">
           <p className="font-semibold">
             Das Formular benötigt JavaScript für den Spam-Schutz. Bitte kontaktieren Sie uns direkt:

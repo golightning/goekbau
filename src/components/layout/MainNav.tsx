@@ -1,18 +1,32 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cx } from "@/components/ui/cx";
 import { isActive, mainNav } from "@/lib/navigation";
 
-const linkBase = "rounded-full px-4 py-2 font-accent text-[0.95rem] font-medium transition-colors";
+const linkBase = "rounded-full px-4 py-2 font-accent text-[0.95rem] font-semibold transition-colors";
 
-/** Desktop: Linkliste. Mobil (< 1024 px): Menü-Button mit Dialog – Escape, Fokusfalle und Fokus-Rückgabe via Radix. */
+/**
+ * Desktop: Linkliste. Mobil (< 1024 px): Menü-Button mit nativem <dialog> (showModal): Fokusfalle, Escape und
+ * inerter Hintergrund kommen vom Browser; der Fokus kehrt beim Schließen zum Button zurück (site-navigation).
+ * Natives <dialog> statt Radix spart ~10 KB JavaScript auf jeder Seite (performance-budget).
+ */
 export function MainNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (open && !dialog.open) dialog.showModal();
+    if (!open && dialog.open) dialog.close();
+  }, [open]);
+
+  const close = () => setOpen(false);
 
   const links = (onNavigate?: () => void) =>
     mainNav.map((item) => {
@@ -37,32 +51,52 @@ export function MainNav() {
         <ul className="flex items-center gap-1">{links()}</ul>
       </nav>
 
-      <Dialog.Root open={open} onOpenChange={setOpen}>
-        <Dialog.Trigger className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bronze-700 px-4 font-accent text-sm font-semibold text-bronze-800 lg:hidden">
-          <span aria-hidden="true" className="text-lg leading-none">
-            ☰
-          </span>
-          Menü
-        </Dialog.Trigger>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 z-40 bg-ink/60" />
-          <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-[min(22rem,100vw)] flex-col gap-6 bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between">
-              <Dialog.Title className="font-heading text-xl font-bold">Menü</Dialog.Title>
-              <Dialog.Close className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border-2 border-bronze-700 font-accent text-sm font-semibold text-bronze-800">
-                <span aria-hidden="true">✕</span>
-                <span className="sr-only">Menü schließen</span>
-              </Dialog.Close>
-            </div>
-            <Dialog.Description className="sr-only">Hauptnavigation der Website</Dialog.Description>
-            <nav aria-label="Hauptnavigation (mobil)">
-              <ul className="flex flex-col gap-2 [&_a]:block [&_a]:py-3 [&_a]:text-lg">
-                {links(() => setOpen(false))}
-              </ul>
-            </nav>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls="menu-dialog"
+        onClick={() => setOpen(true)}
+        className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bronze-700 px-4 font-accent text-sm font-semibold text-bronze-800 lg:hidden"
+      >
+        <span aria-hidden="true" className="text-lg leading-none">
+          ☰
+        </span>
+        Menü
+      </button>
+
+      <dialog
+        id="menu-dialog"
+        ref={dialogRef}
+        aria-labelledby="menu-dialog-title"
+        onClose={() => {
+          setOpen(false);
+          triggerRef.current?.focus();
+        }}
+        onClick={(e) => {
+          // Klick auf den abgedunkelten Hintergrund (das <dialog> selbst) schließt
+          if (e.target === e.currentTarget) close();
+        }}
+        className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-[min(22rem,100vw)] max-w-none bg-white p-6 shadow-xl backdrop:bg-ink/60"
+      >
+        <div className="flex items-center justify-between">
+          <h2 id="menu-dialog-title" className="font-heading text-xl font-bold">
+            Menü
+          </h2>
+          <button
+            type="button"
+            onClick={close}
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border-2 border-bronze-700 font-accent text-sm font-semibold text-bronze-800"
+          >
+            <span aria-hidden="true">✕</span>
+            <span className="sr-only">Menü schließen</span>
+          </button>
+        </div>
+        <nav aria-label="Hauptnavigation (mobil)" className="mt-6">
+          <ul className="flex flex-col gap-2 [&_a]:block [&_a]:py-3 [&_a]:text-lg">{links(close)}</ul>
+        </nav>
+      </dialog>
     </>
   );
 }

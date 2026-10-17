@@ -233,7 +233,7 @@ export function StatList() {
       {statsSorted().map((s) => (
         <div key={s.id} className="flex flex-col-reverse rounded-lg bg-white p-6 text-center shadow-sm">
           <dt className="mt-2 font-accent text-sm font-semibold text-slate">{s.label}</dt>
-          <dd className="font-heading text-4xl font-extrabold text-bronze-800">
+          <dd className="font-heading text-4xl font-bold text-bronze-800">
             {s.prefix}
             {formatStat(s.value, s.grouping)}
             {s.suffix}

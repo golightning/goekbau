@@ -16,7 +16,8 @@ export default defineConfig({
     assets,
     base: "/static/",
     name: "[name]-[hash:8].[ext]",
-    clean: true,
+    // Assets tragen Hashes im Namen; kein Leeren, damit die Bildvarianten (public/static/opt) erhalten bleiben
+    clean: false,
   },
   collections,
   prepare: (data) => crossCheck(data),

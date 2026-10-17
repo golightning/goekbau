@@ -13,7 +13,13 @@ export function Hero({ hero, children }: { hero: Page["hero"]; children?: ReactN
     >
       {hero.image && (
         <div className="absolute inset-0 -z-10">
-          <ContentImage image={hero.image} sizes="100vw" priority className="h-full object-cover" />
+          {/* Abgedunkeltes Hintergrundmotiv: mobil genügt ≤ 800 px auch bei hoher Pixeldichte (performance-budget) */}
+          <ContentImage
+            image={hero.image}
+            sizes="(max-width: 767px) 300px, 100vw"
+            priority
+            className="h-full object-cover"
+          />
           <div className="absolute inset-0 bg-ink/75" />
         </div>
       )}
@@ -25,7 +31,7 @@ export function Hero({ hero, children }: { hero: Page["hero"]; children?: ReactN
             {hero.eyebrow}
           </p>
         )}
-        <h1 id="seitentitel" className="max-w-4xl text-4xl font-extrabold">
+        <h1 id="seitentitel" className="max-w-4xl text-4xl font-bold">
           {hero.title}
         </h1>
         {hero.lead && <p className="mt-6 max-w-2xl text-lg md:text-xl">{hero.lead}</p>}

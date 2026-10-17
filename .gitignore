@@ -19,3 +19,4 @@ server/vendor/
 .zap/*.json
 .zap/*.md
 .zap/*.yaml
+.lighthouseci/

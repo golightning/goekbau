@@ -162,7 +162,8 @@ test("ohne JavaScript: Hinweis mit Kontaktwegen statt Formular", async ({ reques
   expect(noscript).toContain('href="tel:+491621991444"');
   expect(noscript).toContain('href="https://wa.me/491621991444"');
   expect(noscript).toContain("info [at] goekbau.de");
-  expect(html).toMatch(/<form[^>]*\shidden(=""|\s|>)/);
+  expect(noscript).toContain("form[data-js-form]{display:none}");
+  expect(html).toMatch(/<form[^>]*data-js-form/);
 });
 
 test("sechste Anfrage derselben IP innerhalb einer Stunde → 429", async ({ page, request, baseURL }) => {

@@ -42,8 +42,8 @@ type Props = {
 
 /**
  * Formular mit Client-Vorprüfung (gleiches Regelset wie der Server), selbst gehostetem ALTCHA,
- * Honeypot, Datei-Vorprüfung, Live-Region und Doppelklick-Schutz. Ohne JS bleibt es verborgen
- * (`hidden`), stattdessen zeigt der Server-Wrapper <noscript>-Alternativen.
+ * Honeypot, Datei-Vorprüfung, Live-Region und Doppelklick-Schutz. Wird sofort gerendert (kein Layout-Sprung);
+ * ohne JS blendet der Server-Wrapper es per <noscript>-Style aus und zeigt Alternativen.
  */
 export function SecureForm({ form, position, submitLabel, fallbackHint }: Props) {
   const uid = useId().replace(/:/g, "");
@@ -65,7 +65,7 @@ export function SecureForm({ form, position, submitLabel, fallbackHint }: Props)
     prepared.current.catch(() => {});
   }, [form]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- Formular erst nach dem Hydrieren zeigen
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- Absenden erst nach dem Hydrieren freigeben
   useEffect(() => setReady(true), []);
   useEffect(() => () => abort.current?.abort(), []);
 
@@ -164,7 +164,7 @@ export function SecureForm({ form, position, submitLabel, fallbackHint }: Props)
   return (
     <form
       ref={formRef}
-      hidden={!ready}
+      data-js-form=""
       // Fallback nie per GET: Formulardaten dürfen nicht in URL/Server-Logs landen (ZAP-Befund 10024).
       // Ohne JS scheitert ein POST serverseitig an ALTCHA – es wird nichts versendet.
       method="post"
@@ -297,7 +297,11 @@ export function SecureForm({ form, position, submitLabel, fallbackHint }: Props)
       </div>
 
       <div>
-        <Button type="submit" disabled={status === "submitting"} aria-disabled={status === "submitting"}>
+        <Button
+          type="submit"
+          disabled={!ready || status === "submitting"}
+          aria-disabled={!ready || status === "submitting"}
+        >
           {status === "submitting" ? "Wird gesendet …" : submitLabel}
         </Button>
       </div>
