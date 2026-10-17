@@ -3,11 +3,13 @@ import type { ReactNode } from "react";
 import { QuickContact } from "@/components/layout/QuickContact";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SITE_URL, TITLE_SUFFIX } from "@/lib/metadata";
 import { fontVariables } from "@/styles/fonts";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "GÖK Bauüberwachung Bahn",
+  metadataBase: new URL(SITE_URL),
+  title: { default: TITLE_SUFFIX, template: `%s | ${TITLE_SUFFIX}` },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -33,11 +33,11 @@
 
 ## 5. Unternehmensseiten
 
-- [ ] 5.1 Startseite gemäß Sektionsfolge (`company-pages`), ein Hero-Motiv mit priorisiertem LCP-Bild; verifizieren: Test auf genau eine `h1`, CTA-Ziele, keine doppelten Hero-Inhalte
-- [ ] 5.2 Leistungen inkl. Gruppierung nach Bereich und Kennzeichnung „in Vorbereitung“, gemeinsame Quelle mit Startseite; verifizieren: Test mit `planned`-Fixture zeigt Hinweis auf beiden Seiten
-- [ ] 5.3 Über uns (Profil, Werte, Kennzahlen mit SSR-Endwert + optionaler Animation, Projekte, Team mit Initialen-Fallback, Partner); verifizieren: Test ohne JS zeigt echte Kennzahlen, Reduced-Motion-Test ohne Animation, Team-Fixture ohne Foto zeigt Initialen
-- [ ] 5.4 Kontaktseite (Formular-Slot, `<address>`, Telefon, WhatsApp, E-Mails, Karten-Platzhalter); verifizieren: Test auf `<address>` und Links
-- [ ] 5.5 Impressum, Datenschutz (aktualisiert auf tatsächliche Dienste: IONOS, Formular-E-Mail, Maps nach Einwilligung, WhatsApp-Link; ohne Google Fonts/CookieYes/Elementor), Barrierefreiheitserklärung; verifizieren: Review-Checkliste in PR, Footer-Links per Test
+- [x] 5.1 Startseite gemäß Sektionsfolge (`company-pages`), ein Hero-Motiv mit priorisiertem LCP-Bild; verifizieren: Test auf genau eine `h1`, CTA-Ziele, keine doppelten Hero-Inhalte
+- [x] 5.2 Leistungen inkl. Gruppierung nach Bereich und Kennzeichnung „in Vorbereitung“, gemeinsame Quelle mit Startseite; verifizieren: Test mit `planned`-Fixture zeigt Hinweis auf beiden Seiten
+- [x] 5.3 Über uns (Profil, Werte, Kennzahlen mit SSR-Endwert + optionaler Animation, Projekte, Team mit Initialen-Fallback, Partner); verifizieren: Test ohne JS zeigt echte Kennzahlen, Reduced-Motion-Test ohne Animation, Team-Fixture ohne Foto zeigt Initialen
+- [x] 5.4 Kontaktseite (Formular-Slot, `<address>`, Telefon, WhatsApp, E-Mails, Karten-Platzhalter); verifizieren: Test auf `<address>` und Links
+- [x] 5.5 Impressum, Datenschutz (aktualisiert auf tatsächliche Dienste: IONOS, Formular-E-Mail, Maps nach Einwilligung, WhatsApp-Link; ohne Google Fonts/CookieYes/Elementor), Barrierefreiheitserklärung; verifizieren: Review-Checkliste in PR, Footer-Links per Test
 
 ## 6. Karriere
 

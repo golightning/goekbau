@@ -60,7 +60,7 @@ export function Eyebrow({ children, className }: { children: ReactNode; classNam
   return (
     <p
       className={cx(
-        "mb-3 font-accent text-sm font-semibold tracking-[0.18em] text-bronze-700 uppercase",
+        "mb-3 font-accent text-sm font-semibold tracking-[0.18em] text-bronze-800 uppercase",
         className,
       )}
     >
