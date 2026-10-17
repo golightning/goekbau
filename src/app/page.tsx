@@ -4,7 +4,9 @@ import { ProjectCards, ServiceAreaOverview, TeamGrid } from "@/components/conten
 import { Hero } from "@/components/content/Hero";
 import { LinkButton } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
-import { getBlock, getPage } from "@/lib/content";
+import { company, getBlock, getPage } from "@/lib/content";
+import { serializeJsonLd } from "@/lib/job-posting";
+import { organizationJsonLd } from "@/lib/organization";
 import { pageMetadata } from "@/lib/metadata";
 
 const page = getPage("home");
@@ -22,6 +24,10 @@ export default function HomePage() {
 
   return (
     <main id="inhalt">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationJsonLd(company)) }}
+      />
       <Hero hero={page.hero}>
         <LinkButton href="/kontakt/">Kontakt aufnehmen</LinkButton>
         <LinkButton href="/leistungen/" variant="inverse">

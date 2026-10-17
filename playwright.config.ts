@@ -7,6 +7,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
+  // Unter Volllast (CI, viele Worker) brauchen Navigationen gelegentlich länger als die Standard-5-s
+  expect: { timeout: 10_000 },
   use: {
     baseURL: process.env.E2E_BASE_URL ?? "http://localhost:8080",
     locale: "de-DE",

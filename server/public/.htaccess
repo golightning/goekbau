@@ -12,6 +12,8 @@ LimitRequestBody 11534336
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # ##REDIRECTS## (generiert aus config/redirects.ts – vor allen Sperren, damit WordPress-Pfade 410 liefern)
+
   # PHP-Anwendung, Abhängigkeiten, Konfiguration und Dotfiles sind nie per HTTP erreichbar
   RewriteRule ^_app(/|$) - [F,L]
   RewriteRule (^|/)\.(?!well-known/) - [F,L]
@@ -21,8 +23,6 @@ LimitRequestBody 11534336
   # PHP nur für die drei Endpoints – jede andere .php-Datei existiert nach außen nicht
   RewriteCond %{REQUEST_URI} !^/api/(submit|challenge|stats)\.php$
   RewriteRule \.php$ - [R=404,L,NC]
-
-  # ##REDIRECTS## (generiert in Task 10.4)
 </IfModule>
 
 <IfModule mod_headers.c>

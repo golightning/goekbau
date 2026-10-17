@@ -4,12 +4,15 @@ import { QuickContact } from "@/components/layout/QuickContact";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SITE_URL, TITLE_SUFFIX } from "@/lib/metadata";
+import { isProductionSite } from "@/lib/site-env";
 import { fontVariables } from "@/styles/fonts";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: TITLE_SUFFIX, template: `%s | ${TITLE_SUFFIX}` },
+  // seo-metadata „Staging nicht indexierbar“
+  ...(isProductionSite ? {} : { robots: { index: false, follow: false } }),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -77,10 +77,10 @@
 
 ## 10. SEO & Redirects
 
-- [ ] 10.1 Metadaten je Seite aus Inhaltsmodell (Titel-Suffix, Description-Längen, Canonical mit Slash, OG/Twitter, `og:locale de_DE`), Build-Check auf Eindeutigkeit; verifizieren: Unit-Test für doppelte Titel/fehlende Description
-- [ ] 10.2 `Organization`/`LocalBusiness`-JSON-LD aus Stammdaten; verifizieren: Test vergleicht JSON-LD-Telefon mit Footer-Telefon
-- [ ] 10.3 `sitemap.xml` + `robots.txt` (Staging: `noindex` + Disallow); verifizieren: Test – neue Stellen-Fixture erscheint in Sitemap, 404/Danke-Seiten nicht
-- [ ] 10.4 Redirect-Generator `config/redirects.ts` → `.htaccess` (Stellen aus `legacyPaths`, Sitemaps, Feeds, WP-Pfade 410, Trailing-Slash), Sicherheits- und Cache-Header; verifizieren: Vitest für Generator + Playwright/`curl`-Suite gegen Docker prüft jeden Eintrag auf Status und `Location` sowie alle Header
+- [x] 10.1 Metadaten je Seite aus Inhaltsmodell (Titel-Suffix, Description-Längen, Canonical mit Slash, OG/Twitter, `og:locale de_DE`), Build-Check auf Eindeutigkeit; verifizieren: Unit-Test für doppelte Titel/fehlende Description
+- [x] 10.2 `Organization`/`LocalBusiness`-JSON-LD aus Stammdaten; verifizieren: Test vergleicht JSON-LD-Telefon mit Footer-Telefon
+- [x] 10.3 `sitemap.xml` + `robots.txt` (Staging: `noindex` + Disallow); verifizieren: Test – neue Stellen-Fixture erscheint in Sitemap, 404/Danke-Seiten nicht
+- [x] 10.4 Redirect-Generator `config/redirects.ts` → `.htaccess` (Stellen aus `legacyPaths`, Sitemaps, Feeds, WP-Pfade 410, Trailing-Slash), Sicherheits- und Cache-Header; verifizieren: Vitest für Generator + Playwright/`curl`-Suite gegen Docker prüft jeden Eintrag auf Status und `Location` sowie alle Header
 
 ## 11. Qualitäts-Gates
 

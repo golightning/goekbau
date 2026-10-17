@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { isProductionSite } from "./site-env";
 
 export const SITE_URL = "https://www.goekbau.de";
 export const TITLE_SUFFIX = "GÖK Bauüberwachung Bahn";
@@ -18,10 +19,15 @@ export function pageMetadata(seo: Seo, path: string): Metadata {
     ? { url: seo.ogImage.src, width: seo.ogImage.width, height: seo.ogImage.height }
     : DEFAULT_OG_IMAGE;
   return {
-    title: seo.title,
+    // absolut statt Template: Das Root-Template greift nicht für die Startseite (gleiches Segment)
+    title: { absolute: `${seo.title} | ${TITLE_SUFFIX}` },
     description: seo.description,
     alternates: { canonical },
-    robots: seo.noindex ? { index: false, follow: true } : undefined,
+    robots: !isProductionSite
+      ? { index: false, follow: false }
+      : seo.noindex
+        ? { index: false, follow: true }
+        : undefined,
     openGraph: {
       type: "website",
       locale: "de_DE",

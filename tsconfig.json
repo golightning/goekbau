@@ -23,7 +23,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "#content": ["./.velite"]
-    }
+    },
+    "allowImportingTsExtensions": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
   "exclude": ["node_modules", "out", "dist", "_wp-export", "tools"]

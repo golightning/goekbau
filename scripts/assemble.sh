@@ -21,10 +21,17 @@ docker run --rm -u "$(id -u):$(id -g)" -e COMPOSER_HOME=/tmp/composer -v "$PWD/d
 rm -f dist/site/_app/composer.json dist/site/_app/composer.lock dist/site/_app/app/config.local.php
 printf 'Require all denied\n' > dist/site/_app/.htaccess
 
+# Weiterleitungen alter URLs (legacy-url-redirects)
+node scripts/write-htaccess.ts dist/site
+
 # Hash-basierte CSP je Seite und Artefakt-Prüfung (web-security, email-security)
 node scripts/csp-hash.mjs dist/site
 node scripts/check-artifact.mjs dist/site
 
+if [ "${SITE_ENV:-development}" != "production" ]; then
+  # seo-metadata „Staging nicht indexierbar“
+  printf '\n<IfModule mod_headers.c>\n  Header always set X-Robots-Tag "noindex, nofollow"\n</IfModule>\n' >> dist/site/.htaccess
+fi
 if [ "${SITE_ENV:-development}" = "production" ]; then
   rm -rf dist/site/styleguide
   # Offene redaktionelle/rechtliche Punkte dürfen nie live gehen
