@@ -22,7 +22,7 @@
 - [x] 3.2 Lint-Regel/Test gegen hartkodierte Stammdaten (Telefon, E-Mail, Adresse außerhalb `content/company.yaml`); verifizieren: Fixture mit Telefonnummer-Literal schlägt fehl
 - [x] 3.3 WordPress-Export in `_wp-export/` auswerten (Elementor-JSON je Seite, Formular-Einstellungen, Medien-Originale) bzw. – falls nicht vorhanden – Crawl aus `research/wp-audit/` nutzen; verifizieren: Originalbilder in `content/media/` mit Herkunftsliste
 - [x] 3.4 Inhalte migrieren und redaktionell bereinigen (Tippfehler B9, Widerspruch B13, Leistungs-Status, Stellen vs. Ausbildungen); verifizieren: `pnpm build` grün, `research/wp-audit/MIGRATION.md` listet alle 12 WP-Seiten mit Ziel/Begründung
-- [ ] 3.5 Content-Pflege-Anleitung in `docs/content.md` (neue Stelle anlegen, Kennzahl ändern, Bild hinzufügen, PR-Workflow); verifizieren: Anleitung an einer Test-Stelle durchgespielt, Stelle erscheint auf Staging
+- [x] 3.5 Content-Pflege-Anleitung in `docs/content.md` (neue Stelle anlegen, Kennzahl ändern, Bild hinzufügen, PR-Workflow); verifizieren: Anleitung an einer Test-Stelle durchgespielt, Stelle erscheint auf Staging (lokal durchgespielt 17.10.2026; Staging-Nachweis mit Task 12.2)
 
 ## 4. Layout & Navigation
 
@@ -41,9 +41,9 @@
 
 ## 6. Karriere
 
-- [ ] 6.1 Übersicht `/karriere/` mit getrennten Listen „Stellenangebote“ / „Aus- und Weiterbildung“, Leer-Zustand mit Initiativbewerbung; verifizieren: Tests mit 2/3-Fixture und 0-Jobs-Fixture
-- [ ] 6.2 Detailseiten `/karriere/stellen/[slug]/` und `/karriere/ausbildung/[slug]/` via `generateStaticParams`, nur `published` und nicht abgelaufen; verifizieren: Test mit abgelaufener Fixture – nicht gelistet, keine Seite erzeugt
-- [ ] 6.3 JSON-LD `JobPosting` nur für Typ `job`; verifizieren: Unit-Test validiert Pflichtfelder gegen schema.org-Definition, Ausbildungsseite ohne JobPosting
+- [x] 6.1 Übersicht `/karriere/` mit getrennten Listen „Stellenangebote“ / „Aus- und Weiterbildung“, Leer-Zustand mit Initiativbewerbung; verifizieren: Tests mit 2/3-Fixture und 0-Jobs-Fixture
+- [x] 6.2 Detailseiten `/karriere/stellen/[slug]/` und `/karriere/ausbildung/[slug]/` via `generateStaticParams`, nur `published` und nicht abgelaufen; verifizieren: Test mit abgelaufener Fixture – nicht gelistet, keine Seite erzeugt
+- [x] 6.3 JSON-LD `JobPosting` nur für Typ `job`; verifizieren: Unit-Test validiert Pflichtfelder gegen schema.org-Definition, Ausbildungsseite ohne JobPosting
 
 ## 7. Formulare
 
