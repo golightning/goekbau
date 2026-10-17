@@ -1,0 +1,46 @@
+# email-security „Zustellungsüberwachung“ (Task 8.8): täglicher synthetischer Zustellungstest gegen die Produktion.
+# Unabhängiger Weg: schlägt SMTP fehl, wird dieser Workflow rot und GitHub benachrichtigt die Agentur.
+# Benötigte Repository-Secrets: MONITOR_SITE_URL (z. B. https://www.goekbau.de), MONITOR_TOKEN (= GOEKBAU_MONITOR_TOKEN).
+# Die Testnachricht geht ausschließlich an GOEKBAU_MAIL_TO_MONITOR (Agentur), nie an GÖK.
+name: Mail-Monitor
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Konfiguration vorhanden?
+        id: cfg
+        env:
+          SITE: ${{ secrets.MONITOR_SITE_URL }}
+          TOKEN: ${{ secrets.MONITOR_TOKEN }}
+        run: |
+          if [ -z "$SITE" ] || [ -z "$TOKEN" ]; then
+            echo "Secrets fehlen – Monitor noch nicht aktiv (vor Go-live erwartet)."
+            echo "active=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "active=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Synthetische Anfrage senden
+        if: steps.cfg.outputs.active == 'true'
+        env:
+          SITE: ${{ secrets.MONITOR_SITE_URL }}
+          TOKEN: ${{ secrets.MONITOR_TOKEN }}
+        run: |
+          set -eu
+          csrf=$(curl -fsS "$SITE/api/challenge.php?form=contact" | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"])')
+          status=$(curl -sS -o response.json -w '%{http_code}' -X POST "$SITE/api/submit.php" \
+            -H "Origin: $SITE" -H "X-Monitor-Token: $TOKEN" -H "Accept: application/json" \
+            -F "_csrf_token=$csrf" -F "name=Zustellungsmonitor" -F "email=monitor@golightning.ai" \
+            -F "message=Automatischer täglicher Zustellungstest der Agentur." -F "privacy=on")
+          echo "HTTP $status"; cat response.json; echo
+          test "$status" = "200"
+          python3 -c 'import json; assert json.load(open("response.json"))["ok"] is True'
