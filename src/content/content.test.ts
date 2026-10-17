@@ -25,7 +25,6 @@ function buildWith(mutate?: (dir: string) => void) {
       FORCE_COLOR: "0",
     },
   });
-  // eslint-disable-next-line no-control-regex
   const log = `${res.stdout}\n${res.stderr}`.replace(/\x1b\[[0-9;]*m/g, "");
   return { status: res.status, log };
 }

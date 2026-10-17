@@ -26,10 +26,10 @@
 
 ## 4. Layout & Navigation
 
-- [ ] 4.1 Root-Layout mit `lang="de"`, Skip-Link, Landmarks, Header (Logo, Hauptnavigation, `aria-current`), Footer (Stammdaten, Rechtliches, Cookie-Einstellungen, Barrierefreiheit, Social nur wenn konfiguriert); verifizieren: Playwright-Tests für aktiven Menüpunkt inkl. Karriere-Unterseite und fehlende Social-Icons
-- [ ] 4.2 Mobile Navigation (Disclosure/Dialog, `aria-expanded`, Escape, Fokus-Rückgabe); verifizieren: Playwright-Test im 390-px-Viewport für Öffnen/Schließen/Fokus
-- [ ] 4.3 WhatsApp- und Telefon-Schnellkontakt (reiner Link, `https://wa.me/491621991444` aus Stammdaten); verifizieren: Test prüft `href` und dass ohne Klick kein Request an WhatsApp/Meta erfolgt
-- [ ] 4.4 404-Seite + Apache `ErrorDocument 404`; verifizieren: E2E gegen Docker-Nachbau – `/gibt-es-nicht/` → Status 404 mit gestalteter Seite
+- [x] 4.1 Root-Layout mit `lang="de"`, Skip-Link, Landmarks, Header (Logo, Hauptnavigation, `aria-current`), Footer (Stammdaten, Rechtliches, Cookie-Einstellungen, Barrierefreiheit, Social nur wenn konfiguriert); verifizieren: Playwright-Tests für aktiven Menüpunkt inkl. Karriere-Unterseite und fehlende Social-Icons
+- [x] 4.2 Mobile Navigation (Disclosure/Dialog, `aria-expanded`, Escape, Fokus-Rückgabe); verifizieren: Playwright-Test im 390-px-Viewport für Öffnen/Schließen/Fokus
+- [x] 4.3 WhatsApp- und Telefon-Schnellkontakt (reiner Link, `https://wa.me/491621991444` aus Stammdaten); verifizieren: Test prüft `href` und dass ohne Klick kein Request an WhatsApp/Meta erfolgt
+- [x] 4.4 404-Seite + Apache `ErrorDocument 404`; verifizieren: E2E gegen Docker-Nachbau – `/gibt-es-nicht/` → Status 404 mit gestalteter Seite
 
 ## 5. Unternehmensseiten
 
