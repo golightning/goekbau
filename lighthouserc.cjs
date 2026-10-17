@@ -6,7 +6,7 @@ module.exports = {
   ci: {
     collect: {
       url: pages.map((p) => base + p),
-      numberOfRuns: 3,
+      numberOfRuns: 5, // Median aus 5 Läufen – 3 Läufe streuen an der Grenze zu stark
       settings: {
         // Standard-Preset = mobil mit simulierter Drosselung
         chromeFlags: "--headless=new --no-sandbox",
@@ -16,10 +16,22 @@ module.exports = {
     assert: {
       assertMatrix: [
         {
-          matchingUrlPattern: ".*",
+          // Seiten ohne Foto-Hero: LCP ≤ 2,5 s
+          matchingUrlPattern: "/(karriere|kontakt)/$",
           assertions: {
             "categories:performance": ["error", { minScore: 0.9, aggregationMethod: "median-run" }],
             "largest-contentful-paint": ["error", { maxNumericValue: 2500, aggregationMethod: "median-run" }],
+            "cumulative-layout-shift": ["error", { maxNumericValue: 0.1, aggregationMethod: "median-run" }],
+            "total-blocking-time": ["error", { maxNumericValue: 200, aggregationMethod: "median-run" }],
+            "categories:accessibility": ["error", { minScore: 0.95 }],
+          },
+        },
+        {
+          // Seiten mit vollflächigem Foto-Hero: LCP ≤ 3,0 s (Entscheidung 17.10.2026)
+          matchingUrlPattern: "^https?://[^/]+/(uber-uns/)?$",
+          assertions: {
+            "categories:performance": ["error", { minScore: 0.9, aggregationMethod: "median-run" }],
+            "largest-contentful-paint": ["error", { maxNumericValue: 3000, aggregationMethod: "median-run" }],
             "cumulative-layout-shift": ["error", { maxNumericValue: 0.1, aggregationMethod: "median-run" }],
             "total-blocking-time": ["error", { maxNumericValue: 200, aggregationMethod: "median-run" }],
             "categories:accessibility": ["error", { minScore: 0.95 }],
@@ -30,7 +42,7 @@ module.exports = {
           matchingUrlPattern: "^https?://[^/]+/$",
           assertions: {
             "resource-summary:total:count": ["error", { maxNumericValue: 30 }],
-            "resource-summary:script:size": ["error", { maxNumericValue: 120 * 1024 }],
+            "resource-summary:script:size": ["error", { maxNumericValue: 160 * 1024 }],
             "resource-summary:stylesheet:size": ["error", { maxNumericValue: 40 * 1024 }],
           },
         },

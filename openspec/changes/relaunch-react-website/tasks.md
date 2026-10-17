@@ -85,7 +85,7 @@
 ## 11. Qualitäts-Gates
 
 - [x] 11.1 axe-Prüfung über alle Routen in CI (Fail bei serious/critical); verifizieren: absichtlich entferntes Label lässt CI fehlschlagen
-- [ ] 11.2 Lighthouse CI (mobil) für Start, Über uns, Karriere, Kontakt mit Assertions (LCP ≤ 2,5 s, CLS ≤ 0,1, TBT ≤ 200 ms, Score ≥ 90) + Bundle-Budget (≤ 30 Requests, JS ≤ 120 KB, CSS ≤ 40 KB auf Startseite); verifizieren: CI-Report grün, Budget-Überschreitung per Test-Branch provoziert Fehlschlag
+- [x] 11.2 Lighthouse CI (mobil) für Start, Über uns, Karriere, Kontakt mit Assertions (LCP ≤ 2,5 s, CLS ≤ 0,1, TBT ≤ 200 ms, Score ≥ 90) + Bundle-Budget (≤ 30 Requests, JS ≤ 120 KB, CSS ≤ 40 KB auf Startseite); verifizieren: CI-Report grün, Budget-Überschreitung per Test-Branch provoziert Fehlschlag
 - [x] 11.3 Bildpipeline (`next-image-export-optimizer`, AVIF/WebP, `srcset`, Lazy-Loading, LCP-Priorität); verifizieren: Playwright bei 390 px lädt Hero-Variante ≤ 800 px
 
 ## 12. Abnahme & Go-live

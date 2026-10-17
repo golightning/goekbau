@@ -162,7 +162,7 @@ Der Docker-basierte Prod-Nachbau ist der zentrale Hebel: `.htaccess`- und PHP-Ve
 ## Risks / Trade-offs
 
 - [Deploy Now ignoriert Teile der `.htaccess` (z. B. Header oder 410)] → Spike 1.3 zuerst. Fallback: Header per PHP-Front-Controller nur für HTML oder ein Wechsel zu IONOS-Webspace mit SFTP-Deployment aus GitHub Actions.
-- [Next.js liefert ~90 KB React-Runtime auch auf rein statischen Seiten] → Budget 120 KB ist darauf ausgelegt. Wird es gerissen, folgt ein Wechsel zu Astro + React (D1-Fallback). Komponenten bleiben React und sind portierbar.
+- [Next.js liefert React-Runtime auch auf rein statischen Seiten] → **Eingetreten (Messung 17.10.2026):** Grundlast React 19 + Next.js 16 ≈ 125 KB, gesamt 149 KB; LCP Foto-Hero 2,7–2,9 s wegen JS-Ausführung vor dem Zeichnen. **Entscheidung Auftraggeber:** Next.js behalten, Budget auf JS ≤ 160 KB und LCP ≤ 3,0 s für Foto-Hero angepasst (Score ≥ 0,95, CLS 0). Astro bleibt Fallback, falls die Seite künftig deutlich mehr Client-JS braucht.
 - [IONOS-SMTP lehnt E-Mails mit fremdem `From` ab] → `From` ist immer ein eigenes Postfach, die Nutzeradresse steht nur in `Reply-To`.
 - [Spam trotz aller Schichten] → Die Monitoring-Zähler (`spam-protection`) zeigen, welche Schicht greift. Sperrwortliste und ALTCHA-Komplexität sind ohne Code-Änderung konfigurierbar.
 - [Der eigene PDF-Scanner übersieht eine Verschleierungstechnik] → Bei Parse-Zweifeln wird abgelehnt (fail-closed). Der Testkorpus wächst mit bekannten Techniken. Dazu kommen der Postfach-Scan als zweite Linie und ClamAV als Upgrade-Pfad.
