@@ -13,7 +13,7 @@ const linkBase = "rounded-full px-4 py-2 font-accent text-[0.95rem] font-semibol
  * inerter Hintergrund kommen vom Browser; der Fokus kehrt beim Schließen zum Button zurück (site-navigation).
  * Natives <dialog> statt Radix spart ~10 KB JavaScript auf jeder Seite (performance-budget).
  */
-export function MainNav({ tone = "light" }: { tone?: "light" | "dark" }) {
+export function MainNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -27,14 +27,8 @@ export function MainNav({ tone = "light" }: { tone?: "light" | "dark" }) {
   }, [open]);
 
   const close = () => setOpen(false);
-  const dark = tone === "dark";
-  // Im Dialog ist der Grund immer weiß → helle Variante
-  const activeLink = "bg-bronze-700 text-white";
-  const idleLink = "text-ink hover:bg-mist";
-  const barActive = dark ? "bg-white text-ink" : activeLink;
-  const barIdle = dark ? "text-white hover:bg-white/15" : idleLink;
 
-  const links = (onNavigate?: () => void, bar = false) =>
+  const links = (onNavigate?: () => void) =>
     mainNav.map((item) => {
       const active = isActive(item.href, pathname);
       return (
@@ -43,7 +37,7 @@ export function MainNav({ tone = "light" }: { tone?: "light" | "dark" }) {
             href={item.href}
             aria-current={active ? "page" : undefined}
             onClick={onNavigate}
-            className={cx(linkBase, active ? (bar ? barActive : activeLink) : bar ? barIdle : idleLink)}
+            className={cx(linkBase, active ? "bg-bronze-700 text-white" : "text-ink hover:bg-bronze-100")}
           >
             {item.label}
           </Link>
@@ -54,7 +48,7 @@ export function MainNav({ tone = "light" }: { tone?: "light" | "dark" }) {
   return (
     <>
       <nav aria-label="Hauptnavigation" className="hidden lg:block">
-        <ul className="flex items-center gap-1">{links(undefined, true)}</ul>
+        <ul className="flex items-center gap-1">{links()}</ul>
       </nav>
 
       <button
@@ -64,11 +58,11 @@ export function MainNav({ tone = "light" }: { tone?: "light" | "dark" }) {
         aria-expanded={open}
         aria-controls="menu-dialog"
         onClick={() => setOpen(true)}
-        className={cx(
-          "press inline-flex min-h-11 items-center rounded-full px-5 font-accent text-sm font-semibold lg:hidden",
-          dark ? "bg-white text-ink" : "bg-ink text-white",
-        )}
+        className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bronze-700 px-4 font-accent text-sm font-semibold text-bronze-800 lg:hidden"
       >
+        <span aria-hidden="true" className="text-lg leading-none">
+          ☰
+        </span>
         Menü
       </button>
 
@@ -84,7 +78,7 @@ export function MainNav({ tone = "light" }: { tone?: "light" | "dark" }) {
           // Klick auf den abgedunkelten Hintergrund (das <dialog> selbst) schließt
           if (e.target === e.currentTarget) close();
         }}
-        className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-[min(22rem,100vw)] max-w-none bg-white p-6 backdrop:bg-ink/60"
+        className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-[min(22rem,100vw)] max-w-none bg-white p-6 shadow-xl backdrop:bg-ink/60"
       >
         <div className="flex items-center justify-between">
           <h2 id="menu-dialog-title" className="font-heading text-xl font-bold">
@@ -93,10 +87,10 @@ export function MainNav({ tone = "light" }: { tone?: "light" | "dark" }) {
           <button
             type="button"
             onClick={close}
-            aria-label="Menü schließen"
-            className="press inline-flex min-h-11 items-center rounded-full bg-ink px-5 font-accent text-sm font-semibold text-white"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border-2 border-bronze-700 font-accent text-sm font-semibold text-bronze-800"
           >
-            Schließen
+            <span aria-hidden="true">✕</span>
+            <span className="sr-only">Menü schließen</span>
           </button>
         </div>
         <nav aria-label="Hauptnavigation (mobil)" className="mt-6">

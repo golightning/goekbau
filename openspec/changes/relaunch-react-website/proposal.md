@@ -7,7 +7,7 @@ goekbau.de läuft auf WordPress mit Elementor Pro und neun weiteren Plugins (PHP
 ## What Changes
 
 - Neue React-Website, die alle Seiten zur Build-Zeit als statisches HTML erzeugt und über **IONOS Deploy Now** aus `github.com/golightning/goekbau` ausgeliefert wird.
-- Die Corporate-Design-Werte aus dem Elementor-Kit (Bronze `#A6875C`, Raleway, Roboto Slab; Poppins entfällt seit dem Design-Durchgang) werden als verbindliches Design-System übernommen. Layout und Komponenten werden modernisiert, der Grundaufbau bleibt (5 Hauptseiten + Recht).
+- Die Corporate-Design-Werte aus dem Elementor-Kit (Bronze `#A6875C`, Raleway, Roboto Slab, Poppins) werden als verbindliches Design-System übernommen. Layout und Komponenten werden modernisiert, der Grundaufbau bleibt (5 Hauptseiten + Recht).
 - Inhalte (Leistungen, Projekte, Team, Stellen, Ausbildungen) liegen als typisierte, versionierte Dateien im Repository. Ungültige Inhalte brechen den Build ab.
 - Der Karrierebereich wird neu strukturiert: **Stellenangebote** und **Ausbildungsangebote** werden getrennt und bekommen sprechende URLs unter `/karriere/…`.
 - Kontakt- und Bewerbungsformular laufen über einen eigenen serverseitigen Endpoint mit Validierung, ohne Drittanbieter.

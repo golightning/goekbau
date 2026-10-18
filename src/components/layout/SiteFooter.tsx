@@ -12,9 +12,8 @@ const socialLabels: Record<string, string> = {
   youtube: "YouTube",
 };
 
-const heading = "mb-4 font-heading text-[0.9375rem] font-bold text-bronze-300";
-const link =
-  "underline decoration-transparent underline-offset-4 transition-colors hover:decoration-bronze-300";
+const heading = "mb-4 font-accent text-sm font-semibold tracking-[0.15em] text-bronze-300 uppercase";
+const link = "hover:text-bronze-300 underline-offset-4 hover:underline";
 
 export function SiteFooter() {
   // site-navigation: Social-Icons nur bei echtem Profil
@@ -93,8 +92,8 @@ export function SiteFooter() {
           </ul>
         </nav>
       </Container>
-      <div>
-        <Container className="flex flex-col gap-2 pb-6 text-sm text-white/80 md:flex-row md:justify-between">
+      <div className="border-t border-white/15">
+        <Container className="flex flex-col gap-2 py-5 text-sm text-white/80 md:flex-row md:justify-between">
           <p>
             © {year} {company.name}
           </p>
@@ -105,13 +104,6 @@ export function SiteFooter() {
             </a>
           </p>
         </Container>
-        {/* Wortmarke über die volle Breite – dekorativ, der Name steht oben bereits als Text */}
-        <p
-          aria-hidden="true"
-          className="px-3 pb-[0.04em] font-heading text-[37vw] leading-[0.8] font-bold tracking-[-0.06em] text-bronze-500 select-none"
-        >
-          GÖK
-        </p>
       </div>
     </footer>
   );

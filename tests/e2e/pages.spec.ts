@@ -38,37 +38,32 @@ test.describe("Unternehmensseiten", () => {
 });
 
 test.describe("Startseite", () => {
-  test("Hero: Name als Überschrift, Leitsatz einmal, eigenes Baustellenfoto als LCP", async ({ page }) => {
+  test("Hero ohne doppelte Inhalte, primärer CTA führt zu /kontakt/", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName("GÖK Bauüberwachung Bahn");
     const hero = page.locator("section", { has: page.locator("h1") });
-    await expect(
-      hero.getByText("Bauüberwachung für Gleisbaustellen in Baden-Württemberg und Bayern."),
-    ).toHaveCount(1);
-    await expect(hero.locator("img")).toHaveAttribute("alt", /Goldshöfe/);
-  });
-
-  test("Kontakt-Pfeil führt zu /kontakt/", async ({ page }) => {
-    await page.goto("/");
-    await page.getByRole("link", { name: "Zum Kontaktformular" }).click();
+    await expect(hero.getByText("Schienen der Zukunft gestalten")).toHaveCount(1);
+    await hero.getByRole("link", { name: "Kontakt aufnehmen" }).click();
     await expect(page).toHaveURL(/\/kontakt\/$/);
   });
 
-  test("Argument in dieser Reihenfolge: Über uns, Leistungen, Strecken, Zahlen, Team, Karriere, Kontakt", async ({
+  test("enthält Leistungen, Projekte, Team, Karriere und Kontakt-CTA in dieser Reihenfolge", async ({
     page,
   }) => {
     await page.goto("/");
     const headings = await page.locator("main h2").allTextContents();
     const order = [
-      "Über uns",
-      "Leistungen",
-      "Strecken",
-      "In Zahlen",
-      "Das Team",
-      "Wir suchen Bauüberwacher.",
-      "Schreiben Sie uns",
+      "Was wir für Ihre Baumaßnahme tun",
+      "Von uns erfolgreich begleitet",
+      "Unsere Experten",
+      "Wir stellen ein und bilden aus",
+      "Bauen Sie die Zukunft der Schiene mit uns",
     ];
-    expect(headings.map((h) => h.replace(/\s+/g, " ").trim())).toEqual(order);
+    const idx = order.map((h) => headings.indexOf(h));
+    expect(
+      idx.every((i) => i >= 0),
+      headings.join(" | "),
+    ).toBe(true);
+    expect([...idx].sort((a, b) => a - b)).toEqual(idx);
   });
 });
 

@@ -1,56 +1,54 @@
-# Startseite – Richtung „Der Name als Monument“ (Design-Durchgang 17.10.2026, design-taste-frontend).
-# Argument der Seite: wer wir sind → was wir überwachen → wo schon geleistet → in Zahlen → wer im Team →
-# Karriere → Kontakt. Überschriften höchstens zwei Zeilen, keine Kennzeilen über Überschriften.
 slug: home
 path: /
 seo:
   title: Bauüberwachung Bahn und Oberbau in Süddeutschland
   description: GÖK Bauüberwachung Bahn – Fachbauüberwacher Oberbau, Bauüberwacher Bahn Ob/KIB, Sicherungsüberwachung und BETRA-Anträge aus einer Hand.
 hero:
-  title: GÖK
-  lead: Bauüberwachung für Gleisbaustellen in Baden-Württemberg und Bayern.
+  eyebrow: Präzision und Expertise im Gleisbau
+  title: Schienen der Zukunft gestalten
+  lead: Wir überwachen Bau und Instandhaltung von Gleisanlagen – zuverlässig, vorausschauend und mit langjähriger Branchenerfahrung. So bleiben Ihre Baumaßnahmen sicher, termingerecht und vertragskonform.
   image:
-    src: ../media/projects/strecke-4940-goldshoefe.jpg
-    alt: Gleisanlage bei Goldshöfe in der Abenddämmerung mit Signalen und Oberleitung, Baustellenfoto vom 14. Mai 2023
+    src: ../media/photos/railway-track-pixabay-2049394.jpg
+    alt: Gleis führt unter dunklem Wolkenhimmel geradeaus in die Ferne
+    credit: Pixabay
 blocks:
   - id: intro
-    title: Über uns
+    eyebrow: Über uns
+    title: Ihr Partner für die Bauüberwachung im Gleisbau
     body: |
-      **Wir überwachen Bau und Instandhaltung von Gleisanlagen – als Fachbauüberwacher Oberbau und Bauüberwacher Bahn nach den Richtlinien der DB InfraGO.**
-
-      Deniz Gök hat die GÖK Bauüberwachung Bahn GmbH im Mai 2023 gegründet. Unser Team bringt 21 Jahre Erfahrung aus dem Gleisbau mit.
-
-      Wir sorgen dafür, dass Ihre Baumaßnahme sicher, termingerecht und vertragskonform läuft: mit vorausschauender Planung und penibler Genauigkeit.
+      Die GÖK Bauüberwachung Bahn GmbH wird von Geschäftsführer Deniz Gök geführt, der seine langjährige Branchenerfahrung in den Dienst seiner Kunden stellt. Seit unserer Gründung im Mai 2023 schätzen Auftraggeber unseren ausgeprägten Servicegedanken: kundenorientiertes Handeln, vorausschauende Planung und penible Genauigkeit.
     cta:
       label: Mehr über uns
       href: /uber-uns/
   - id: leistungen
-    title: Leistungen
+    eyebrow: Leistungen
+    title: Was wir für Ihre Baumaßnahme tun
+    body: |
+      Von der Sicherungsüberwachung über BETRA- und Schaltanträge bis zur Überwachung der vertragskonformen Bauausführung – wir decken die Aufgaben rund um Ihre Baumaßnahme am Gleis ab.
     cta:
       label: Alle Leistungen
       href: /leistungen/
   - id: projekte
-    title: Strecken
-    body: |
-      Eine Auswahl abgeschlossener Baustellen. Die Fotos stammen aus unserem Bautagebuch.
-  - id: kennzahlen
-    title: In Zahlen
+    eyebrow: Projekte
+    title: Von uns erfolgreich begleitet
   - id: team
-    title: Das Team
-    body: |
-      Sechs Fachleute für Oberbau und Schienentechnik, geführt von Deniz Gök. Wir kennen die Regelwerke von VV BAU bis Ril 046.2753 – und wissen, was auf der Baustelle zählt.
+    eyebrow: Das Team
+    title: Unsere Experten
     cta:
-      label: Team und Partner
+      label: Team kennenlernen
       href: /uber-uns/#team
   - id: karriere
-    title: Wir suchen Bauüberwacher.
+    eyebrow: Karriere
+    title: Wir stellen ein und bilden aus
     body: |
-      Für erfahrene Fachbauüberwacher – und für alle, die es mit unserer Funktionsausbildung werden wollen.
+      Sie möchten die Bahninfrastruktur von morgen mitgestalten? Wir suchen Fachbauüberwacher und Bauüberwacher Bahn – und begleiten Sie auf Wunsch durch die Funktionsausbildung.
     cta:
       label: Offene Stellen
       href: /karriere/
   - id: kontakt
-    title: Schreiben Sie uns
+    title: Bauen Sie die Zukunft der Schiene mit uns
+    body: |
+      Ob Neubau, Modernisierung oder Instandhaltung: Wir sorgen dafür, dass Ihre Baumaßnahme sicher, effizient und vertragsgerecht umgesetzt wird.
     cta:
-      label: Zum Kontaktformular
+      label: Kontakt aufnehmen
       href: /kontakt/

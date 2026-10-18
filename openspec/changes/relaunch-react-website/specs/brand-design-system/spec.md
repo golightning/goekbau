@@ -16,7 +16,7 @@ Die Website SHALL ausschließlich Farben aus der definierten Palette verwenden: 
 - **THEN** verwendet sie die Primärfarbe Bronze als Hintergrund oder Akzent
 
 ### Requirement: Typografie
-Die Website SHALL genau zwei Schriftfamilien verwenden: Raleway (Überschriften, Navigation, Buttons, Akzente) und Roboto Slab (Fließtext). Poppins aus dem Elementor-Kit entfällt (Design-Durchgang 17.10.2026: zwei Familien tragen die Marke, eine dritte kostet Ladezeit ohne eigene Stimme). Alle Schriftdateien MUST vom eigenen Origin ausgeliefert werden.
+Die Website SHALL Raleway (Überschriften), Roboto Slab (Fließtext) und Poppins (Akzente, Navigation, Buttons) verwenden. Alle Schriftdateien MUST vom eigenen Origin ausgeliefert werden.
 
 #### Scenario: Schriften geladen
 - **WHEN** eine beliebige Seite geladen wird
@@ -27,7 +27,7 @@ Die Website SHALL genau zwei Schriftfamilien verwenden: Raleway (Überschriften,
 - **THEN** bleibt der Text mit einer metrisch angepassten Systemschrift lesbar (`font-display: swap`)
 
 ### Requirement: Responsives Layout
-Jede Seite SHALL ab 320 px Viewport-Breite ohne horizontales Scrollen nutzbar sein. Sie SHALL mindestens die Layoutstufen Mobil (< 768 px), Tablet (768–1023 px) und Desktop (≥ 1024 px) unterstützen, bei einer maximalen Breite von 1140–1280 px für Textspalten. Bild-, Plakat- und Anzeigeflächen (z. B. Hero, Leistungs-Plakat, Wortmarke) MAY die volle Viewport-Breite mit Seitenrand nutzen; Fließtext MUST dabei auf eine lesbare Zeilenlänge (höchstens ca. 75 Zeichen) begrenzt bleiben.
+Jede Seite SHALL ab 320 px Viewport-Breite ohne horizontales Scrollen nutzbar sein. Sie SHALL mindestens die Layoutstufen Mobil (< 768 px), Tablet (768–1023 px) und Desktop (≥ 1024 px) unterstützen, bei einer maximalen Inhaltsbreite von 1140–1280 px.
 
 #### Scenario: Schmaler Viewport
 - **WHEN** eine Seite in 320 px Breite angezeigt wird

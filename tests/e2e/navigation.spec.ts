@@ -62,8 +62,6 @@ test.describe("Footer und Kontaktwege", () => {
       if (/whatsapp|wa\.me|facebook|meta/i.test(new URL(r.url()).hostname)) thirdParty.push(r.url());
     });
     await page.goto("/");
-    // Startseite: der Button erscheint erst nach dem ersten Bildschirm (verdeckt sonst den Namen im Hero)
-    await page.evaluate(() => window.scrollTo(0, window.innerHeight * 2));
     await expect(page.getByRole("link", { name: /WhatsApp/ })).toHaveAttribute(
       "href",
       "https://wa.me/491621991444",
