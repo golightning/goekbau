@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { QuickContact } from "@/components/layout/QuickContact";
-import { SiteFooter } from "@/components/layout/SiteFooter";
-import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SITE_URL, TITLE_SUFFIX } from "@/lib/metadata";
 import { isProductionSite } from "@/lib/site-env";
 import { fontVariables } from "@/styles/fonts";
@@ -26,10 +23,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           Zum Inhalt springen
         </a>
-        <SiteHeader />
-        <div className="flex-1">{children}</div>
-        <SiteFooter />
-        <QuickContact />
+        {/* Header, Footer und Schnellkontakt: app/(site)/layout.tsx bzw. not-found.tsx (SiteChrome) */}
+        {children}
       </body>
     </html>
   );

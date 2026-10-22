@@ -8,8 +8,8 @@
 
 ## 2. Vorbereitung der Live-Seite (ohne Verhaltensänderung)
 
-- [ ] 2.1 Referenz der Live-Seiten aus dem aktuellen Build sichern (Skript `scripts/page-snapshot.mjs`): je Route inkl. 404 Landmarks, Überschriften-Hierarchie, Textinhalte, Links, Metadaten (Titel, Beschreibung, Canonical, Robots, Open Graph, JSON-LD) aus dem gerenderten DOM sowie Screenshots bei 1500 × 750 und 390 × 844; geprüft: Referenz für alle Routen vorhanden, zweiter Lauf gegen denselben Build meldet keine Unterschiede
-- [ ] 2.2 Route-Group `(site)`: Live-Seiten nach `src/app/(site)/`, Header, Footer und Schnellkontakt aus `src/app/layout.tsx` nach `src/app/(site)/layout.tsx`; `src/app/not-found.tsx` bindet Header, Footer und Schnellkontakt selbst ein; geprüft: Vergleich mit 2.1 ohne Unterschied in Struktur, Inhalten, Links und Metadaten, Screenshots innerhalb der Toleranz, 404-Seite mit Navigation, Footer und Schnellkontakt, `pnpm check` ohne Testanpassung grün
+- [x] 2.1 Referenz der Live-Seiten aus dem aktuellen Build sichern (Skript `scripts/page-snapshot.mjs`): je Route inkl. 404 Landmarks, Überschriften-Hierarchie, Textinhalte, Links, Metadaten (Titel, Beschreibung, Canonical, Robots, Open Graph, JSON-LD) aus dem gerenderten DOM sowie Screenshots bei 1500 × 750 und 390 × 844; geprüft: Referenz für alle Routen vorhanden, zweiter Lauf gegen denselben Build meldet keine Unterschiede
+- [x] 2.2 Route-Group `(site)`: Live-Seiten nach `src/app/(site)/`, Header, Footer und Schnellkontakt aus `src/app/layout.tsx` nach `src/app/(site)/layout.tsx`; `src/app/not-found.tsx` bindet Header, Footer und Schnellkontakt selbst ein; geprüft: Vergleich mit 2.1 ohne Unterschied in Struktur, Inhalten, Links und Metadaten, Screenshots innerhalb der Toleranz, 404-Seite mit Navigation, Footer und Schnellkontakt, `pnpm check` ohne Testanpassung grün
 
 ## 3. Entwurfs-Infrastruktur
 

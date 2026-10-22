@@ -21,3 +21,6 @@ server/vendor/
 .zap/*.yaml
 .lighthouseci/
 .taste-skill/
+
+# Seitenreferenzen für Umbauten (scripts/page-snapshot.mjs)
+.snapshots/
