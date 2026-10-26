@@ -72,7 +72,3 @@ export function emailFor(id: "general" | "management" | "careers"): string {
 export function whatsappUrl(): string {
   return `https://wa.me/${company.whatsapp.e164.replace(/^\+/, "")}`;
 }
-
-export function telUrl(): string {
-  return `tel:${company.phone.e164}`;
-}

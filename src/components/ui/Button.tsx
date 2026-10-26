@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cx } from "./cx";
 
-type Variant = "primary" | "secondary" | "inverse";
+type Variant = "primary" | "secondary" | "inverse" | "gold" | "dark";
 
 const base =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-2.5 font-accent text-sm font-semibold tracking-wide transition-colors disabled:cursor-not-allowed disabled:opacity-60";
@@ -12,6 +12,8 @@ const variants: Record<Variant, string> = {
   primary: "bg-bronze-700 text-white hover:bg-bronze-800",
   secondary: "border-2 border-bronze-700 text-bronze-800 hover:bg-bronze-50",
   inverse: "border-2 border-white text-white hover:bg-white hover:text-ink",
+  gold: "bg-bronze-300 text-ink hover:bg-white",
+  dark: "bg-ink text-white hover:bg-bronze-800",
 };
 
 export function buttonClasses(variant: Variant = "primary", className?: string): string {

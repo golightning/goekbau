@@ -4,7 +4,7 @@ import { ExternalMap } from "@/components/consent/ExternalMap";
 import { FormSection } from "@/forms/FormSection";
 import { ProtectedEmail } from "@/components/ProtectedEmail";
 import { Heading, Section } from "@/components/ui/Layout";
-import { company, getBlock, getPage, telUrl, whatsappUrl } from "@/lib/content";
+import { company, getBlock, getPage, whatsappUrl } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
 
 const page = getPage("kontakt");
@@ -49,14 +49,6 @@ export default function ContactPage() {
                   <br />
                   {address.postalCode} {address.city}
                   {address.district ? `-${address.district}` : ""}
-                </p>
-              </div>
-              <div>
-                <p className="font-accent text-sm font-semibold text-slate">Telefon</p>
-                <p className="mt-1">
-                  <a href={telUrl()} className={link}>
-                    {company.phone.display}
-                  </a>
                 </p>
               </div>
               <div>

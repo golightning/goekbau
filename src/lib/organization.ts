@@ -17,7 +17,6 @@ export function organizationJsonLd(company: Company) {
     image: new URL("/brand/og-default.jpg", SITE_URL).toString(),
     description: company.tagline,
     foundingDate: String(company.foundingYear),
-    telephone: company.phone.e164,
     address: {
       "@type": "PostalAddress",
       streetAddress: company.address.street,
@@ -29,7 +28,6 @@ export function organizationJsonLd(company: Company) {
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
-      telephone: company.phone.e164,
       url: new URL("/kontakt/", SITE_URL).toString(),
       availableLanguage: ["de"],
     },

@@ -16,8 +16,8 @@ module.exports = {
     assert: {
       assertMatrix: [
         {
-          // Seiten ohne Foto-Hero: LCP ≤ 2,5 s
-          matchingUrlPattern: "/(karriere|kontakt)/$",
+          // Seiten ohne Foto-Hero: LCP ≤ 2,5 s (Startseite seit Richtung „Netzplan“, 25.10.2026)
+          matchingUrlPattern: "^https?://[^/]+/(karriere/|kontakt/)?$",
           assertions: {
             "categories:performance": ["error", { minScore: 0.9, aggregationMethod: "median-run" }],
             "largest-contentful-paint": ["error", { maxNumericValue: 2500, aggregationMethod: "median-run" }],
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           // Seiten mit vollflächigem Foto-Hero: LCP ≤ 3,0 s (Entscheidung 17.10.2026)
-          matchingUrlPattern: "^https?://[^/]+/(uber-uns/)?$",
+          matchingUrlPattern: "^https?://[^/]+/uber-uns/$",
           assertions: {
             "categories:performance": ["error", { minScore: 0.9, aggregationMethod: "median-run" }],
             "largest-contentful-paint": ["error", { maxNumericValue: 3000, aggregationMethod: "median-run" }],

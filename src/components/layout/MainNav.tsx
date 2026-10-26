@@ -12,8 +12,10 @@ const linkBase = "rounded-full px-4 py-2 font-accent text-[0.95rem] font-semibol
  * Desktop: Linkliste. Mobil (< 1024 px): Menü-Button mit nativem <dialog> (showModal): Fokusfalle, Escape und
  * inerter Hintergrund kommen vom Browser; der Fokus kehrt beim Schließen zum Button zurück (site-navigation).
  * Natives <dialog> statt Radix spart ~10 KB JavaScript auf jeder Seite (performance-budget).
+ * tone="dark": Fassung für den dunklen Header der Startseite; das Menü-Dialogfenster bleibt hell.
  */
-export function MainNav() {
+export function MainNav({ tone = "light" }: { tone?: "light" | "dark" }) {
+  const dark = tone === "dark";
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -37,7 +39,16 @@ export function MainNav() {
             href={item.href}
             aria-current={active ? "page" : undefined}
             onClick={onNavigate}
-            className={cx(linkBase, active ? "bg-bronze-700 text-white" : "text-ink hover:bg-bronze-100")}
+            className={cx(
+              linkBase,
+              active
+                ? dark && !onNavigate
+                  ? "bg-bronze-300 text-ink"
+                  : "bg-bronze-700 text-white"
+                : dark && !onNavigate
+                  ? "text-white/85 hover:bg-white/10 hover:text-white"
+                  : "text-ink hover:bg-bronze-100",
+            )}
           >
             {item.label}
           </Link>
@@ -58,7 +69,10 @@ export function MainNav() {
         aria-expanded={open}
         aria-controls="menu-dialog"
         onClick={() => setOpen(true)}
-        className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bronze-700 px-4 font-accent text-sm font-semibold text-bronze-800 lg:hidden"
+        className={cx(
+          "inline-flex min-h-11 items-center gap-2 rounded-full border-2 px-4 font-accent text-sm font-semibold lg:hidden",
+          dark ? "border-white/40 text-white" : "border-bronze-700 text-bronze-800",
+        )}
       >
         <span aria-hidden="true" className="text-lg leading-none">
           ☰

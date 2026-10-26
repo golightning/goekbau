@@ -67,7 +67,9 @@ describe("robots.txt und Sitemap", () => {
 describe("Organisation (JSON-LD)", () => {
   it("nutzt die Stammdaten und enthält keine E-Mail-Adresse", () => {
     const ld = organizationJsonLd(company);
-    expect(ld.telephone).toBe(company.phone.e164);
+    // Keine Telefonnummer auf der Website, auch nicht maschinenlesbar (Spam-Anrufe)
+    expect(ld).not.toHaveProperty("telephone");
+    expect(JSON.stringify(ld)).not.toContain(company.phone.e164);
     expect(ld.address.streetAddress).toBe(company.address.street);
     expect(ld.contactPoint.url).toBe("https://www.goekbau.de/kontakt/");
     expect(JSON.stringify(ld)).not.toMatch(/@goekbau\.de/);

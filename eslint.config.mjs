@@ -30,6 +30,7 @@ const config = [
       ".next/**",
       ".velite/**",
       "out/**",
+      "out-drafts/**",
       "dist/**",
       "_wp-export/**",
       "research/**",

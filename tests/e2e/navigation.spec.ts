@@ -109,3 +109,23 @@ test.describe("Sprunglink und Fehlerseite", () => {
     );
   });
 });
+
+// Entscheidung 25.10.2026: keine Telefonnummer auf der Website (Spam-Anrufe) – weder sichtbar noch als tel:-Link
+// oder in strukturierten Daten. WhatsApp (wa.me-Link) bleibt als direkter Kontaktweg.
+test("keine Telefonnummer im ausgelieferten HTML", async ({ request }) => {
+  for (const path of [
+    "/",
+    "/uber-uns/",
+    "/leistungen/",
+    "/karriere/",
+    "/kontakt/",
+    "/impressum/",
+    "/datenschutz/",
+    "/barrierefreiheit/",
+    "/karriere/stellen/fachbauueberwacher-oberbau/",
+  ]) {
+    const html = await (await request.get(path)).text();
+    const withoutWhatsApp = html.replaceAll("https://wa.me/491621991444", "");
+    expect(withoutWhatsApp, path).not.toMatch(/tel:|\+49[\s\d]{6,}|1991444/);
+  }
+});

@@ -56,7 +56,7 @@ E-Mails SHALL gemäß `email-security` zugestellt werden. Die E-Mail-Adresse des
 
 #### Scenario: Versand schlägt fehl
 - **WHEN** der SMTP-Server nicht erreichbar ist
-- **THEN** antwortet der Endpoint mit HTTP 502 und der Nutzer sieht eine Fehlermeldung mit Telefonnummer und E-Mail als Alternative
+- **THEN** antwortet der Endpoint mit HTTP 502 und der Nutzer sieht eine Fehlermeldung mit WhatsApp und E-Mail als Alternative
 
 ### Requirement: Datensparsamkeit
 Der Endpoint SHALL Formulardaten und Anhänge nicht dauerhaft auf dem Server speichern. Temporäre Dateien MUST nach dem Versandversuch gelöscht werden, und Logs MUST keine Formularinhalte enthalten.
@@ -66,7 +66,7 @@ Der Endpoint SHALL Formulardaten und Anhänge nicht dauerhaft auf dem Server spe
 - **THEN** befinden sich keine Anhänge des Requests mehr im Dateisystem des Servers
 
 ### Requirement: Bedienbarkeit ohne Seitenwechsel
-Formulare SHALL ohne Seitenneuladen absenden, während des Sendens einen Ladezustand zeigen und Doppel-Absendungen verhindern. Weil der Spam-Schutz (`spam-protection`, ALTCHA) JavaScript erfordert, MUST ohne JavaScript statt des Formulars ein Hinweis mit den alternativen Kontaktwegen (Telefon, WhatsApp, E-Mail) erscheinen (Entscheidung Auftraggeber 17.10.2026: Sicherheit vor No-JS).
+Formulare SHALL ohne Seitenneuladen absenden, während des Sendens einen Ladezustand zeigen und Doppel-Absendungen verhindern. Weil der Spam-Schutz (`spam-protection`, ALTCHA) JavaScript erfordert, MUST ohne JavaScript statt des Formulars ein Hinweis mit den alternativen Kontaktwegen (WhatsApp, E-Mail) erscheinen (Entscheidung Auftraggeber 17.10.2026: Sicherheit vor No-JS; ohne Telefon: Entscheidung Auftraggeber 25.10.2026: keine Telefonnummer auf der Website, um Spam-Anrufe zu vermeiden).
 
 #### Scenario: Doppelklick
 - **WHEN** ein Nutzer den Absenden-Button zweimal schnell klickt
@@ -74,4 +74,4 @@ Formulare SHALL ohne Seitenneuladen absenden, während des Sendens einen Ladezus
 
 #### Scenario: JavaScript deaktiviert
 - **WHEN** ein Nutzer die Kontaktseite ohne JavaScript öffnet
-- **THEN** sieht er statt des Formulars einen Hinweis mit Telefonnummer, WhatsApp-Link und E-Mail-Adresse, und es gibt keinen Weg, das Formular ohne Spam-Prüfung abzusenden
+- **THEN** sieht er statt des Formulars einen Hinweis mit WhatsApp-Link und E-Mail-Adresse, und es gibt keinen Weg, das Formular ohne Spam-Prüfung abzusenden

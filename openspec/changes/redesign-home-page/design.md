@@ -133,6 +133,8 @@ Verglichen werden:
 
 Das initiale JavaScript bleibt ≤ 160 KB. Ohne WebGL2 oder bei reduzierter Bewegung erscheint das flache Logo.
 
+**Umgesetzt (25.10.2026):** Die Medaille steht am Firmensitz im Hero-Streckennetz. Ersatz ist statt des flachen Logos ein vorgerendertes Standbild desselben Modells (Empfehlung des Beraters: „3D-Logo auf allen Geräten mit statischem Fallback, bei reduzierter Bewegung ebenfalls statisch“). three.js lädt erst nach der ersten Nutzeraktion. Statisch bleibt es außerdem im Datensparmodus, auf schwachen Geräten und ohne WebGL. Messwerte in `vergleich/3d.md`.
+
 ### D9 Werkzeuge
 Die Entwürfe entstehen direkt aus `PRODUCT.md` und GÖKs Material. Das Plugin impeccable (wie bei golightning) kann für Kritik und die Abschlussprüfung eingesetzt werden. Sein Urteil ergänzt die eigene Prüfung am Screenshot und die Wahl des Inhabers, ersetzt sie aber nicht. taste-skill wird für die Richtungswahl nicht verwendet.
 
@@ -154,4 +156,13 @@ Die Entwürfe entstehen direkt aus `PRODUCT.md` und GÖKs Material. Das Plugin i
 
 ## Gewählte Richtung
 
-<!-- Wird nach der Vorlage mit Datum ergänzt: gewählter Entwurf, Varianten, Entscheidungen des Inhabers. -->
+**25.10.2026, Inhaber (golightning):**
+- Vorgelegt wurden A, B und C; am ehesten C, aber alle „zu langweilig“. Daraufhin entstand Entwurf D als mutigere Weiterentwicklung von C: dunkler Grund, große Schrift, leuchtendes Streckennetz mit fahrenden Messpunkten im Hero, Projekte als seitliche Fahrt entlang eines Gleises beim Scrollen, hochzählende Kennzahlen, Leistungen als große nummerierte Zeilen, goldenes Kontaktband. **Gewählt: D („Netzplan“).**
+- Übernahme nur für die Startseite, einschließlich eigenem dunklen Header und Footer (Route-Group `(home)`); alle Unterseiten behalten den bisherigen Header und Footer. Navigation, Pflichtangaben im Footer und Schnellkontakt sind inhaltlich gleich wie auf den Unterseiten.
+- Endlosbewegungen (Messpunkte, Puls, rollendes Gleis) lassen sich per Schalter anhalten (WCAG 2.2.2) und entfallen bei reduzierter Bewegung; die seitliche Fahrt wird auf dem Handy und bei reduzierter Bewegung zur senkrechten Liste.
+- Display-Schrift bleibt Raleway 700 (ein Schnitt je Familie, performance-budget); der Entwurf nutzte 800.
+- Die Startseite hat kein Foto-Hero mehr; damit gilt für sie das LCP-Budget der Seiten ohne Foto-Hero (2,5 s).
+- Keine Telefonnummer mehr auf der gesamten Website, weder sichtbar noch als `tel:`-Link noch in JSON-LD, um Spam-Anrufe zu vermeiden (Deltas in `relaunch-react-website`: site-navigation, company-pages, seo-metadata, form-submissions).
+- 3D-Logo (D8, Aufgabe 7.3) gewünscht, auf allen Geräten mit statischem Ersatz; umgesetzt, siehe D8 und `vergleich/3d.md`.
+
+**26.10.2026, Ladezeit („optimiere, was geht, ohne beim Design zu sparen“):** Der Produktions-Build läuft mit Webpack statt Turbopack (`next build --webpack`, Dev-Server weiter Turbopack). Lighthouse CI, Median aus 5 Läufen: Startseite 2,98 → 2,74 s, Karriere 2,52 → 2,40 s, Kontakt 2,53 → 2,42 s, Über uns 2,97 → 2,73 s; E2E unverändert grün. Verworfen: Poppins nicht vorladen (Schriftwechsel, CLS 0,014). Die Startseite bleibt über 2,5 s: Real ist sie nach etwa 0,2 s gezeichnet, den Rest rechnet die Lighthouse-Simulation aus dem Framework-JavaScript hoch. Ressourcen-Zählung 35, davon gut 10 Vorab-Abrufe verlinkter Seiten nach dem Laden. Budget-Entscheidung (LCP Startseite, Anzahl Anfragen) steht beim Inhaber.

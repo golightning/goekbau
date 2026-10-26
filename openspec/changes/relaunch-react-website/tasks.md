@@ -90,6 +90,14 @@
 
 ## 12. Abnahme & Go-live
 
+- [ ] 12.0 **Wartung Abhängigkeiten vor dem nächsten Deployment** (Stand 23.10.2026, nach Next.js 16.4.2): `pnpm audit` meldet 1 low, 2 moderate und 8 high, ausschließlich in Build- und Entwicklungswerkzeugen:
+  - `@lhci/cli`: tmp, extract-zip, basic-ftp, uuid, ip-address
+  - `velite`: sharp 0.34.5, verarbeitet nur eigene Bilder
+  - `eslint-config-next`: braces
+
+  Zuerst Aktualisierung der Elternpakete prüfen; sonst gezielte `pnpm.overrides` je Paket. Pro Override wird die Kompatibilität geprüft (Changelog, Major-Sprung, `pnpm check`, `pnpm lighthouse`, `pnpm content` mit Bildpipeline). Jedes Override gilt nur für die betroffene Version und hält die `minimumReleaseAge` ein. Nicht behebbare Funde werden mit Begründung in `docs/security/` dokumentiert.
+
+  Verifizieren: `pnpm audit --prod` ohne Funde, `pnpm audit` ohne high/critical oder jeder Rest begründet, `pnpm check` und `pnpm lighthouse` grün.
 - [ ] 12.1 **Hosting-Test Deploy Now** (vorbereitet in `tools/deploy-now-spike/`, Ablauf in `docs/adr/0001-deploy-now.md`): PHP-Projekt anlegen, Spike deployen, `check.py` gegen Staging grün (`.htaccess`, Extensions, `.user.ini`-Limits, privater Speicher, HTTPS/SMTP ausgehend); bei Lücken Fallback aus design.md D2 entscheiden; verifizieren: ADR-Tabelle vollständig ausgefüllt
 - [ ] 12.2 Deploy-Now-Workflow auf die echte Site umstellen (Build: Next-Export + Composer + `.htaccess`, Publish-Verzeichnis), CI-Gates aus 1.4 vor Deployment, Staging für Nicht-`main`-Branches; Spike-Endpoint und Token entfernen; verifizieren: Test-PR erzeugt Staging-URL, roter Gate verhindert Deployment, `/api/ping.php` → 404
 - [ ] 12.3 Security-Abnahme vor Go-live: aktiver OWASP-ZAP-Scan gegen Staging (Fokus `api/submit.php`), Checkliste OWASP ASVS L2 (relevante Kapitel V1–V5, V7, V8, V12, V13, V14) durchgehen; verifizieren: Bericht ohne offene high/critical-Funde in `docs/security/go-live-review.md`

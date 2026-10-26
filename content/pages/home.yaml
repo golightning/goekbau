@@ -4,13 +4,10 @@ seo:
   title: Bauüberwachung Bahn und Oberbau in Süddeutschland
   description: GÖK Bauüberwachung Bahn – Fachbauüberwacher Oberbau, Bauüberwacher Bahn Ob/KIB, Sicherungsüberwachung und BETRA-Anträge aus einer Hand.
 hero:
-  eyebrow: Präzision und Expertise im Gleisbau
-  title: Schienen der Zukunft gestalten
-  lead: Wir überwachen Bau und Instandhaltung von Gleisanlagen – zuverlässig, vorausschauend und mit langjähriger Branchenerfahrung. So bleiben Ihre Baumaßnahmen sicher, termingerecht und vertragskonform.
-  image:
-    src: ../media/photos/railway-track-pixabay-2049394.jpg
-    alt: Gleis führt unter dunklem Wolkenhimmel geradeaus in die Ferne
-    credit: Pixabay
+  eyebrow: Bauüberwachung Bahn aus Senden
+  # Text zwischen *Sternchen* erscheint in Gold
+  title: Sicher bauen *am Gleis.*
+  lead: Von Senden aus überwachen wir Gleisbaustellen in Baden-Württemberg und Bayern – als Fachbauüberwacher Oberbau, Sicherungsüberwacher und Antragsteller.
 blocks:
   - id: intro
     eyebrow: Über uns
@@ -31,12 +28,16 @@ blocks:
   - id: projekte
     eyebrow: Projekte
     title: Von uns erfolgreich begleitet
-  - id: team
-    eyebrow: Das Team
-    title: Unsere Experten
+    body: |
+      Ein Auszug aus den Strecken, auf denen wir im Einsatz waren.
+  - id: naechster-halt
+    eyebrow: Nächster Halt
+    title: Ihre Baustelle?
+    body: |
+      Erzählen Sie uns, wo und wann gebaut wird – wir melden uns bei Ihnen.
     cta:
-      label: Team kennenlernen
-      href: /uber-uns/#team
+      label: Anfrage stellen
+      href: /kontakt/
   - id: karriere
     eyebrow: Karriere
     title: Wir stellen ein und bilden aus

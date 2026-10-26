@@ -45,7 +45,7 @@ Die Seite `/uber-uns/` SHALL enthalten: Unternehmensprofil, Werte, Kennzahlen, R
 - **THEN** wird ein neutraler Platzhalter mit Initialen angezeigt statt eines kaputten Bildes
 
 ### Requirement: Kontaktseite
-Die Seite `/kontakt/` SHALL das Kontaktformular, Firmenanschrift, Telefon, WhatsApp, E-Mail-Adressen und eine Karte bzw. einen Kartenplatzhalter gemäß `privacy-consent` enthalten.
+Die Seite `/kontakt/` SHALL das Kontaktformular, Firmenanschrift, WhatsApp, E-Mail-Adressen (ohne Telefon, Entscheidung Auftraggeber 25.10.2026: keine Telefonnummer auf der Website, um Spam-Anrufe zu vermeiden) und eine Karte bzw. einen Kartenplatzhalter gemäß `privacy-consent` enthalten.
 
 #### Scenario: Adresse maschinenlesbar
 - **WHEN** die Kontaktseite gerendert wird

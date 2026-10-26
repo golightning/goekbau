@@ -1,0 +1,207 @@
+/* Startseite (redesign-home-page, Richtung D „Netzplan“) – nur von app/(home) geladen. Präfix hp- */
+
+.hp-dark :focus-visible {
+  outline-color: var(--color-bronze-300);
+}
+
+/* In der Ebene components, damit Tailwind-Utilities (z. B. hyphens-manual) sie überschreiben können */
+@layer components {
+  .hp-display {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+
+  .hp-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-bronze-300);
+  }
+}
+
+/* Gleis als Fläche: zwei Schienen, Schwellen im Raster */
+.hp-sleepers {
+  background-image:
+    linear-gradient(var(--color-bronze-300), var(--color-bronze-300)),
+    linear-gradient(var(--color-bronze-300), var(--color-bronze-300)),
+    repeating-linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-bronze-500) 55%, transparent) 0 10px,
+      transparent 10px 34px
+    );
+  background-size:
+    100% 2px,
+    100% 2px,
+    auto 100%;
+  background-position:
+    0 28%,
+    0 72%,
+    0 0;
+  background-repeat: no-repeat, no-repeat, repeat-x;
+}
+
+/* ---------- Hero ---------- */
+.hp-hero-glow {
+  background:
+    radial-gradient(
+      60% 55% at 72% 45%,
+      color-mix(in srgb, var(--color-bronze-500) 34%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 40% at 10% 100%,
+      color-mix(in srgb, var(--color-bronze-700) 30%, transparent),
+      transparent 70%
+    );
+}
+
+.hp-grain {
+  background-image: radial-gradient(color-mix(in srgb, white 7%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
+/* ---------- Projektfahrt (TrackScroller) ---------- */
+.hp-track-strip {
+  display: grid;
+  gap: 3.5rem;
+}
+.hp-rail {
+  display: none;
+}
+
+.hp-track[data-mode="scroll"] .hp-track-viewport {
+  position: sticky;
+  top: 5rem; /* unter der Kopfzeile */
+  height: calc(100svh - 5rem);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 3rem; /* Abstand zum Schnellkontakt unten rechts */
+}
+.hp-track[data-mode="scroll"] .hp-track-strip {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4vw;
+  width: max-content;
+  padding-inline: max(1.5rem, calc((100vw - 90rem) / 2 + 2.5rem));
+  will-change: transform;
+}
+.hp-track[data-mode="scroll"] .hp-panel {
+  width: min(80vw, 52rem);
+  flex: none;
+}
+.hp-track[data-mode="scroll"] .hp-panel-text {
+  width: min(70vw, 34rem);
+}
+.hp-track[data-mode="scroll"] .hp-rail {
+  display: block;
+}
+.hp-rail-bed {
+  background-position-x:
+    calc(var(--p, 0) * -1600px), calc(var(--p, 0) * -1600px), calc(var(--p, 0) * -1600px);
+}
+.hp-rail-fill {
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+}
+.hp-rail-train {
+  left: calc(var(--p, 0) * 100%);
+}
+
+.hp-row-arrow {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.hp-row-arrow-icon {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Bewegung ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .hp-map .hp-line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: hp-draw 1.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+  .hp-map .hp-glow {
+    opacity: 0;
+    animation: hp-glow 1.2s ease-out 1.2s forwards;
+  }
+  .hp-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hp-pulse 2.8s ease-out infinite;
+  }
+  .hp-pulse-2 {
+    animation-delay: 1.4s;
+  }
+  .hp-hero-rail {
+    animation: hp-roll 1.6s linear infinite;
+  }
+
+  @supports (animation-timeline: view()) {
+    .hp-rise {
+      animation: hp-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+/* MotionToggle */
+[data-paused] *,
+[data-paused] {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-runners {
+    display: none;
+  }
+}
+
+@keyframes hp-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes hp-glow {
+  to {
+    opacity: 0.55;
+  }
+}
+@keyframes hp-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+@keyframes hp-roll {
+  to {
+    background-position:
+      0 28%,
+      0 72%,
+      -34px 0;
+  }
+}
+@keyframes hp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

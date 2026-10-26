@@ -230,7 +230,7 @@ final class SubmitHandlerTest extends TestCase
     {
         $res = $this->handler(new FakeMailer(fail: true))->handle($this->request(), self::NOW);
         self::assertSame(502, $res->status);
-        self::assertStringContainsString('telefonisch', $res->body['message']);
+        self::assertStringContainsString('WhatsApp oder E-Mail', $res->body['message']);
     }
 
     public function testZuGrosserRequestWirdMit413Abgelehnt(): void

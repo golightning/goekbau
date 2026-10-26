@@ -41,20 +41,20 @@ test.describe("Startseite", () => {
   test("Hero ohne doppelte Inhalte, primärer CTA führt zu /kontakt/", async ({ page }) => {
     await page.goto("/");
     const hero = page.locator("section", { has: page.locator("h1") });
-    await expect(hero.getByText("Schienen der Zukunft gestalten")).toHaveCount(1);
-    await hero.getByRole("link", { name: "Kontakt aufnehmen" }).click();
+    await expect(hero.getByRole("heading", { level: 1 })).toHaveText("Sicher bauen am Gleis.");
+    await hero.getByRole("link", { name: "Anfrage stellen" }).click();
     await expect(page).toHaveURL(/\/kontakt\/$/);
   });
 
-  test("enthält Leistungen, Projekte, Team, Karriere und Kontakt-CTA in dieser Reihenfolge", async ({
+  test("enthält Projekte, Leistungen, Über uns, Karriere und Kontakt in dieser Reihenfolge", async ({
     page,
   }) => {
     await page.goto("/");
     const headings = await page.locator("main h2").allTextContents();
     const order = [
-      "Was wir für Ihre Baumaßnahme tun",
       "Von uns erfolgreich begleitet",
-      "Unsere Experten",
+      "Was wir für Ihre Baumaßnahme tun",
+      "Ihr Partner für die Bauüberwachung im Gleisbau",
       "Wir stellen ein und bilden aus",
       "Bauen Sie die Zukunft der Schiene mit uns",
     ];
@@ -64,6 +64,111 @@ test.describe("Startseite", () => {
       headings.join(" | "),
     ).toBe(true);
     expect([...idx].sort((a, b) => a - b)).toEqual(idx);
+  });
+
+  test("Streckennetz nennt jede Projektstrecke", async ({ page }) => {
+    await page.goto("/");
+    const map = page.getByRole("img", { name: /Schema der Projektstrecken/ }).first();
+    for (const line of ["4930", "4940", "4540", "5830"])
+      await expect(map).toHaveAccessibleName(new RegExp(line));
+  });
+
+  // accessibility, WCAG 2.2.2: Endlosbewegung lässt sich anhalten
+  test("Animation im Hero lässt sich anhalten und fortsetzen", async ({ page }) => {
+    await page.goto("/");
+    const hero = page.locator("#hero");
+    await page.getByRole("button", { name: "Animation anhalten" }).click();
+    await expect(hero).toHaveAttribute("data-paused", "");
+    expect(
+      await hero
+        .locator("svg")
+        .first()
+        .evaluate((svg: SVGSVGElement) => svg.animationsPaused()),
+    ).toBe(true);
+    await page.getByRole("button", { name: "Animation fortsetzen" }).click();
+    await expect(hero).not.toHaveAttribute("data-paused");
+  });
+
+  test("3D-Medaille: Standbild sofort, three.js erst nach der ersten Interaktion, Pause hält sie an", async ({
+    page,
+    isMobile,
+  }) => {
+    const scripts: string[] = [];
+    page.on("request", (r) => r.resourceType() === "script" && scripts.push(r.url()));
+    await page.goto("/", { waitUntil: "networkidle" });
+    const hero = page.locator("#hero");
+    await expect(hero.locator("img[src*='medaille']").filter({ visible: true })).toHaveCount(1);
+    await page.waitForTimeout(1000);
+    await expect(hero.locator("canvas")).toHaveCount(0);
+    const before = scripts.length;
+
+    if (isMobile) await page.touchscreen.tap(10, 10);
+    else await page.mouse.move(400, 300);
+    const canvas = hero.locator("canvas");
+    await expect(canvas).toHaveCount(1);
+    expect(scripts.length).toBeGreaterThan(before);
+    await expect(canvas).toHaveCSS("opacity", "1"); // Überblendung vom Standbild abgeschlossen
+
+    await page.getByRole("button", { name: "Animation anhalten" }).click();
+    await page.waitForTimeout(300);
+    const a = await canvas.screenshot();
+    await page.waitForTimeout(600);
+    expect((await canvas.screenshot()).equals(a)).toBe(true);
+    await page.getByRole("button", { name: "Animation fortsetzen" }).click();
+    await page.waitForTimeout(600);
+    expect((await canvas.screenshot()).equals(a)).toBe(false);
+  });
+
+  test("3D-Medaille bleibt bei reduzierter Bewegung ein Standbild", async ({ browser }) => {
+    const ctx = await browser.newContext({ reducedMotion: "reduce" });
+    const page = await ctx.newPage();
+    await page.goto("/");
+    await page.mouse.move(400, 300);
+    await page.mouse.wheel(0, 200);
+    await page.waitForTimeout(1000);
+    await expect(page.locator("#hero canvas")).toHaveCount(0);
+    await expect(page.locator("#hero img[src*='medaille']").filter({ visible: true })).toHaveCount(1);
+    await ctx.close();
+  });
+
+  test("bei reduzierter Bewegung gibt es keine Endlosbewegung und keinen Schalter", async ({ browser }) => {
+    const ctx = await browser.newContext({ reducedMotion: "reduce" });
+    const page = await ctx.newPage();
+    await page.goto("/");
+    await expect(page.getByRole("button", { name: "Animation anhalten" })).toBeHidden();
+    const running = await page.evaluate(() =>
+      document.getAnimations().filter((a) => a.effect?.getComputedTiming().iterations === Infinity),
+    );
+    expect(running).toHaveLength(0);
+    await expect(page.locator(".hp-track")).not.toHaveAttribute("data-mode");
+    await ctx.close();
+  });
+
+  test("Projektfahrt: Scrollen verschiebt die Stationen, Tastaturfokus holt sie ins Bild", async ({
+    browser,
+  }) => {
+    const ctx = await browser.newContext({ viewport: { width: 1500, height: 750 } });
+    const page = await ctx.newPage();
+    await page.goto("/");
+    const track = page.locator(".hp-track");
+    await expect(track).toHaveAttribute("data-mode", "scroll");
+    const strip = page.locator(".hp-track-strip");
+    await track.evaluate((el: HTMLElement) =>
+      scrollTo(0, el.getBoundingClientRect().top + scrollY + el.offsetHeight / 2),
+    );
+    await expect.poll(() => strip.evaluate((el) => getComputedStyle(el).transform)).not.toBe("none");
+
+    await page.evaluate(() => scrollTo(0, 0));
+    const cta = page.locator("#projekte").getByRole("link", { name: "Anfrage stellen" });
+    await cta.focus();
+    // Die Seite springt sofort, das Gleis rückt im nächsten Frame nach
+    await expect
+      .poll(async () => {
+        const b = await cta.boundingBox();
+        return b !== null && b.x >= 0 && b.x + b.width <= 1500 && b.y >= 0 && b.y + b.height <= 750;
+      })
+      .toBe(true);
+    await ctx.close();
   });
 });
 
@@ -116,14 +221,11 @@ test.describe("Über uns", () => {
 });
 
 test.describe("Kontakt", () => {
-  test("Anschrift im address-Element, Telefon und WhatsApp als Links", async ({ page }) => {
+  test("Anschrift im address-Element, WhatsApp als Link, keine Telefonnummer", async ({ page }) => {
     await page.goto("/kontakt/");
     const address = page.locator("main address");
     await expect(address).toContainText("Max-Planck-Straße 16");
-    await expect(address.getByRole("link", { name: "+49 162 1991444" })).toHaveAttribute(
-      "href",
-      "tel:+491621991444",
-    );
+    await expect(address.locator('a[href^="tel:"]')).toHaveCount(0);
     await expect(address.getByRole("link", { name: /WhatsApp/ })).toHaveAttribute(
       "href",
       "https://wa.me/491621991444",

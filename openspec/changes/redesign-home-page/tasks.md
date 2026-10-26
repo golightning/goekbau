@@ -13,8 +13,8 @@
 
 ## 3. Entwurfs-Infrastruktur
 
-- [ ] 3.1 `pageExtensions` in `next.config.ts` um `draft.tsx` nur im Entwicklungsmodus und bei angefordertem Prüfbuild erweitern; Entwurfs-Layout `src/app/entwurf/layout.draft.tsx` ohne Live-Header/-Footer; geprüft: `pnpm dev` liefert `/entwurf/a/` mit Platzhalter und genau einem Header und Footer (aus dem Entwurf), `pnpm build` erzeugt kein `out/entwurf`
-- [ ] 3.2 Kanarienvogel: `src/drafts/canary.ts` (eindeutige Zeichenkette) und `src/drafts/assets/canary.svg` (eindeutige Datei), von jeder Entwurfsseite gerendert bzw. importiert; geprüft: Zeichenkette und Datei erscheinen auf `/entwurf/a/` im Dev
+- [x] 3.1 `pageExtensions` in `next.config.ts` um `draft.tsx` nur im Entwicklungsmodus und bei angefordertem Prüfbuild erweitern; Entwurfs-Layout `src/app/entwurf/layout.draft.tsx` ohne Live-Header/-Footer; geprüft: `pnpm dev` liefert `/entwurf/a/` mit Platzhalter und genau einem Header und Footer (aus dem Entwurf), `pnpm build` erzeugt kein `out/entwurf`
+- [x] 3.2 Kanarienvogel: `src/drafts/canary.ts` (eindeutige Zeichenkette) und `src/drafts/assets/canary.svg` (eindeutige Datei), von jeder Entwurfsseite gerendert bzw. importiert; geprüft: Zeichenkette und Datei erscheinen auf `/entwurf/a/` im Dev
 - [ ] 3.3 Prüfbuild `pnpm drafts:build`: optimierter Build mit Entwurfsrouten über `distDir` nach `out-drafts/`, zusammengesetzt mit derselben `.htaccess`, CSP-Hashes und Headern nach `dist/drafts-check/`, ausgeliefert im Compose-Profil `drafts` auf Port 8081; kein Deploy-Pfad kennt ihn; geprüft: `/entwurf/a/` auf 8081 liefert 200 ohne CSP-Verstoß in der Konsole, `dist/site` bleibt unberührt
 - [ ] 3.4 `scripts/check-artifact.mjs`: im auslieferbaren Artefakt Abbruch bei Kanarien-Zeichenkette, bei Dateien mit dem SHA-256 einer Datei aus `src/drafts/assets/` und bei Verzeichnis `entwurf`; Positivkontrolle im Prüfbuild (muss beides finden); geprüft: Unit-Tests mit präpariertem Artefakt (schlägt fehl), sauberem Artefakt (besteht) und Prüfbuild ohne Kanarienvogel (schlägt fehl)
 - [ ] 3.5 E2E-Test: `/entwurf/a/`, `/entwurf/b/` und `/entwurf/c/` liefern 404 auf dem Nachbau des auslieferbaren Artefakts; geprüft: Test grün in `pnpm e2e`
@@ -37,7 +37,7 @@
 
 - [ ] 7.1 Vergleichspaket vorlegen: Screenshots Ist-Stand und A/B/C bei 1500 × 750 und 390 × 844 nebeneinander, Messtabelle aus dem Prüfbuild, Liste der Annahmen, Frage, ob Header und Footer auf alle Unterseiten übertragen werden; geprüft: Inhaber hat das Paket erhalten
 - [ ] 7.2 Wahl und Varianten des Inhabers mit Datum unter „Gewählte Richtung“ in `design.md` festhalten (`/opsx:update`); Delta für die Anforderung „Startseite“ und, falls Header/Footer übertragen werden, für die betroffenen Anforderungen ergänzen; geprüft: `openspec validate redesign-home-page --strict`
-- [ ] 7.3 Optional, nur auf Wunsch: 3D-Logo-Versuch (img2threejs) als Variante der gewählten Richtung, Vergleich Wiedererkennbarkeit, zusätzlicher Download separat, mobile Darstellung, gemessen im Prüfbuild; initiales JS ≤ 160 KB; geprüft: Tabelle in `vergleich/3d.md`
+- [x] 7.3 Optional, nur auf Wunsch: 3D-Logo-Versuch (img2threejs) als Variante der gewählten Richtung, Vergleich Wiedererkennbarkeit, zusätzlicher Download separat, mobile Darstellung, gemessen im Prüfbuild; initiales JS ≤ 160 KB; geprüft: Tabelle in `vergleich/3d.md`
 
 ## 8. Übernahme nach Freigabe
 

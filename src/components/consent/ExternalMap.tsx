@@ -3,6 +3,7 @@
 import { useEffect, useId, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { CONSENT_EVENT, hasStoredConsent, storeConsent } from "./consent";
+import { withBase } from "@/lib/site-env";
 
 type Props = { query: string; label: string; addressLines: string[] };
 
@@ -48,7 +49,7 @@ export function ExternalMap({ query, label, addressLines }: Props) {
         <p className="mt-4 max-w-prose text-sm">
           Zum Schutz Ihrer Daten laden wir die Karte von Google Maps erst nach Ihrer Zustimmung. Dabei werden
           Daten (u. a. Ihre IP-Adresse) an Google übertragen – mehr dazu in der{" "}
-          <a href="/datenschutz/" className="font-semibold text-bronze-800 underline">
+          <a href={withBase("/datenschutz/")} className="font-semibold text-bronze-800 underline">
             Datenschutzerklärung
           </a>
           .

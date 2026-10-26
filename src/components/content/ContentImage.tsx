@@ -1,6 +1,7 @@
 import { preload } from "react-dom";
 import type { Image } from "velite";
 import { cx } from "@/components/ui/cx";
+import { withBase } from "@/lib/site-env";
 
 export type ContentImageData = { src: Image; alt?: string; decorative?: boolean };
 
@@ -18,7 +19,7 @@ type Props = {
 function variant(src: string, width: number, ext: string): string {
   const file = src.split("/").pop()!;
   const base = file.replace(/\.[^.]+$/, "");
-  return `/static/opt/${base}-${width}.${ext}`;
+  return withBase(`/static/opt/${base}-${width}.${ext}`);
 }
 
 /**

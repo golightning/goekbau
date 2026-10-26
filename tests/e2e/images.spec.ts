@@ -6,8 +6,9 @@ test("Smartphone (390 px, DPR 2) lädt eine Hero-Variante von höchstens 800 px 
 }) => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
   const page = await ctx.newPage();
-  await page.goto("/");
-  const hero = page.locator("section").first().locator("img");
+  // Die Startseite hat kein Hero-Foto mehr (Streckennetz als SVG) – geprüft wird die Über-uns-Seite
+  await page.goto("/uber-uns/");
+  const hero = page.locator("main section").first().locator("img");
   await expect(hero).toHaveAttribute("fetchpriority", "high");
   await expect(hero).toHaveAttribute("loading", "eager");
   const current = await hero.evaluate((img: HTMLImageElement) => img.currentSrc);

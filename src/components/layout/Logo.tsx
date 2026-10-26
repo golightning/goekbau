@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { company } from "@/lib/content";
+import { withBase } from "@/lib/site-env";
 
 /** Rasterlogo in 1×/2×/3× (brand-design-system „Logo“), erzeugt von scripts/brand-assets.mjs. */
 export function Logo({ priority = false }: { priority?: boolean }) {
@@ -12,11 +13,11 @@ export function Logo({ priority = false }: { priority?: boolean }) {
       <picture>
         <source
           type="image/webp"
-          srcSet="/brand/logo-64.webp 1x, /brand/logo-128.webp 2x, /brand/logo-192.webp 3x"
+          srcSet={`${withBase("/brand/logo-64.webp")} 1x, ${withBase("/brand/logo-128.webp")} 2x, ${withBase("/brand/logo-192.webp")} 3x`}
         />
         <img
-          src="/brand/logo-64.png"
-          srcSet="/brand/logo-128.png 2x, /brand/logo-192.png 3x"
+          src={withBase("/brand/logo-64.png")}
+          srcSet={`${withBase("/brand/logo-128.png")} 2x, ${withBase("/brand/logo-192.png")} 3x`}
           width={72}
           height={64}
           alt=""

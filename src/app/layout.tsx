@@ -15,7 +15,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="de" className={fontVariables}>
-      <body className="flex min-h-dvh flex-col">
+      {/* suppressHydrationWarning: Browser-Erweiterungen (z. B. ColorZilla: cz-shortcut-listen) setzen Attribute am
+          <body> vor dem Hydrieren; gilt nur für Attribute dieses einen Elements, nicht für seinen Inhalt */}
+      <body className="flex min-h-dvh flex-col" suppressHydrationWarning>
         {/* site-navigation „Sprunglink“: erstes fokussierbares Element */}
         <a
           href="#inhalt"

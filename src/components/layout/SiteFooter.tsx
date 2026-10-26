@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ProtectedEmail } from "@/components/ProtectedEmail";
 import { Container } from "@/components/ui/Layout";
-import { company, telUrl } from "@/lib/content";
+import { company } from "@/lib/content";
 import { legalNav, mainNav } from "@/lib/navigation";
 
 const socialLabels: Record<string, string> = {
@@ -62,11 +62,6 @@ export function SiteFooter() {
               <br />
               {company.address.postalCode} {company.address.city}
               {company.address.district ? `-${company.address.district}` : ""}
-            </p>
-            <p>
-              <a href={telUrl()} className={link}>
-                {company.phone.display}
-              </a>
             </p>
             <p>
               <ProtectedEmail address={company.emails[0]!.address} className={link} />

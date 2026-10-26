@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { FieldShell, InputField, TextareaField } from "@/components/ui/Field";
 import { solveAltcha, type AltchaChallenge } from "./altcha";
 import { fieldsOf, limits, validate, validateFiles, type FieldErrors, type FormId } from "./validate";
+import { withBase } from "@/lib/site-env";
 
 type Status = "idle" | "submitting" | "success" | "error";
 type Prepared = { token: string; issuedAt: number; altcha: Promise<string> };
@@ -19,7 +20,7 @@ function ageOf(ticket: Prepared): number {
 }
 
 async function prepare(form: FormId, signal: AbortSignal): Promise<Prepared> {
-  const res = await fetch(`/api/challenge.php?form=${form}`, {
+  const res = await fetch(withBase(`/api/challenge.php?form=${form}`), {
     signal,
     credentials: "same-origin",
     cache: "no-store",
@@ -115,7 +116,7 @@ export function SecureForm({ form, position, submitLabel, fallbackHint }: Props)
       data.set("_csrf_token", ticket.token);
       data.set("altcha", await ticket.altcha);
 
-      const res = await fetch("/api/submit.php", {
+      const res = await fetch(withBase("/api/submit.php"), {
         method: "POST",
         body: data,
         credentials: "same-origin",
@@ -168,7 +169,7 @@ export function SecureForm({ form, position, submitLabel, fallbackHint }: Props)
       // Fallback nie per GET: Formulardaten dürfen nicht in URL/Server-Logs landen (ZAP-Befund 10024).
       // Ohne JS scheitert ein POST serverseitig an ALTCHA – es wird nichts versendet.
       method="post"
-      action="/api/submit.php"
+      action={withBase("/api/submit.php")}
       noValidate
       onSubmit={onSubmit}
       onFocusCapture={warmUp}

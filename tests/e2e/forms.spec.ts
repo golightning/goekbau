@@ -159,7 +159,7 @@ test("ohne JavaScript: Hinweis mit Kontaktwegen statt Formular", async ({ reques
   const html = await (await request.get("/kontakt/")).text();
   const noscript = html.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] ?? "";
   expect(noscript).toContain("Das Formular benötigt JavaScript für den Spam-Schutz.");
-  expect(noscript).toContain('href="tel:+491621991444"');
+  expect(noscript).not.toContain("tel:");
   expect(noscript).toContain('href="https://wa.me/491621991444"');
   expect(noscript).toContain("info [at] goekbau.de");
   expect(noscript).toContain("form[data-js-form]{display:none}");

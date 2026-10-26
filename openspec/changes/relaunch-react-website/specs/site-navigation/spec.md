@@ -21,7 +21,7 @@ Unterhalb von 1024 px Viewport-Breite SHALL die Hauptnavigation hinter einem Men
 - **THEN** schließt sich die Navigation und der Fokus kehrt zum Menü-Button zurück
 
 ### Requirement: Footer
-Jede Seite SHALL einen Footer mit Kurzclaim, Navigation, Kontaktdaten (Telefon, E-Mail, Adresse), Links zu Impressum und Datenschutz, einem Link „Cookie-Einstellungen“ und dem Agentur-Hinweis enthalten. Social-Media-Links MUST nur erscheinen, wenn ein echtes Ziel-Profil konfiguriert ist.
+Jede Seite SHALL einen Footer mit Kurzclaim, Navigation, Kontaktdaten (E-Mail, Adresse), Links zu Impressum und Datenschutz, einem Link „Cookie-Einstellungen“ und dem Agentur-Hinweis enthalten. Social-Media-Links MUST nur erscheinen, wenn ein echtes Ziel-Profil konfiguriert ist.
 
 #### Scenario: Kein Social-Profil hinterlegt
 - **WHEN** für ein Netzwerk keine Profil-URL in den Inhalten konfiguriert ist
@@ -32,11 +32,15 @@ Jede Seite SHALL einen Footer mit Kurzclaim, Navigation, Kontaktdaten (Telefon, 
 - **THEN** sind Impressum und Datenschutz mit höchstens einem Klick erreichbar
 
 ### Requirement: Direkte Kontaktwege
-Die Website SHALL die Telefonnummer als `tel:`-Link anbieten, E-Mail-Adressen gemäß `email-security` geschützt darstellen und einen schwebenden WhatsApp-Button anbieten, der auf `https://wa.me/49…` mit vollständiger internationaler Nummer verlinkt. Der WhatsApp-Button MUST keine Drittanbieter-Ressourcen laden, bevor er geklickt wird.
+Die Website MUST NOT eine Telefonnummer anzeigen, als `tel:`-Link anbieten oder in strukturierten Daten ausgeben (Entscheidung Auftraggeber 25.10.2026: keine Telefonnummer auf der Website, um Spam-Anrufe zu vermeiden). Sie SHALL E-Mail-Adressen gemäß `email-security` geschützt darstellen und einen schwebenden WhatsApp-Button anbieten, der auf `https://wa.me/49…` mit vollständiger internationaler Nummer verlinkt. Der WhatsApp-Button MUST keine Drittanbieter-Ressourcen laden, bevor er geklickt wird.
 
 #### Scenario: WhatsApp-Link
 - **WHEN** ein Nutzer den WhatsApp-Button aktiviert
 - **THEN** öffnet sich `https://wa.me/491621991444` in einem neuen Tab
+
+#### Scenario: Keine Telefonnummer
+- **WHEN** eine beliebige Seite ausgeliefert wird
+- **THEN** enthält ihr HTML weder `tel:`-Links noch die Telefonnummer (außer als Teil des WhatsApp-Links)
 
 #### Scenario: Keine Vorab-Requests
 - **WHEN** eine Seite geladen wird und der WhatsApp-Button nicht geklickt wurde

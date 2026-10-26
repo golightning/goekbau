@@ -1,5 +1,5 @@
 import { ProtectedEmail } from "@/components/ProtectedEmail";
-import { company, emailFor, telUrl, whatsappUrl } from "@/lib/content";
+import { emailFor, whatsappUrl } from "@/lib/content";
 import { SecureForm } from "./SecureForm";
 import type { FormId } from "./validate";
 
@@ -8,7 +8,8 @@ import type { FormId } from "./validate";
  * den Fallback-Hinweis aus den Stammdaten.
  */
 export function FormSection({ form, position }: { form: FormId; position?: string }) {
-  const fallbackHint = `Sie erreichen uns auch telefonisch unter ${company.phone.display} oder per WhatsApp.`;
+  // Keine Telefonnummer auf der Website (Spam-Anrufe) – Entscheidung 25.10.2026
+  const fallbackHint = "Sie erreichen uns auch per WhatsApp oder E-Mail.";
   return (
     <div>
       <noscript>
@@ -19,12 +20,6 @@ export function FormSection({ form, position }: { form: FormId; position?: strin
             Das Formular benötigt JavaScript für den Spam-Schutz. Bitte kontaktieren Sie uns direkt:
           </p>
           <ul className="mt-3 space-y-1">
-            <li>
-              Telefon:{" "}
-              <a href={telUrl()} className="font-semibold text-bronze-800 underline">
-                {company.phone.display}
-              </a>
-            </li>
             <li>
               <a href={whatsappUrl()} className="font-semibold text-bronze-800 underline">
                 Nachricht per WhatsApp

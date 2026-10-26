@@ -137,7 +137,7 @@ final class SubmitHandler
             try {
                 $this->mailer->send($message);
             } catch (MailDeliveryError) {
-                throw new Rejection(502, 'smtp', 'Ihre Nachricht konnte gerade nicht zugestellt werden. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns telefonisch.');
+                throw new Rejection(502, 'smtp', 'Ihre Nachricht konnte gerade nicht zugestellt werden. Bitte versuchen Sie es später erneut oder schreiben Sie uns per WhatsApp oder E-Mail.');
             }
 
             $outcome = $isMonitor ? 'monitor-ok' : 'accepted';

@@ -41,12 +41,12 @@ test("Metadaten: lang, eindeutiger Titel mit Suffix, Beschreibung, Canonical, OG
   }
 });
 
-test("JSON-LD der Startseite stimmt mit dem Footer überein und enthält keine E-Mail", async ({ page }) => {
+test("JSON-LD der Startseite enthält weder E-Mail noch Telefonnummer", async ({ page }) => {
   await page.goto("/");
   const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent())!);
-  const footerPhone = await page.getByRole("contentinfo").locator('a[href^="tel:"]').getAttribute("href");
-  expect(`tel:${ld.telephone}`).toBe(footerPhone);
+  expect(ld).not.toHaveProperty("telephone");
   expect(JSON.stringify(ld)).not.toContain("@goekbau.de");
+  expect(JSON.stringify(ld)).not.toContain("1991444");
 });
 
 test("Staging/lokal: noindex per Meta, Header und robots.txt; Sitemap vollständig", async ({

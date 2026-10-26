@@ -4,12 +4,14 @@ import { expect, type Page } from "@playwright/test";
 /** accessibility: keine Verstöße der Schwere „serious“ oder „critical“ (WCAG 2.2 AA). */
 export async function expectNoSeriousA11yViolations(page: Page) {
   // Lade-Animationen (.rise) abwarten, sonst misst axe den Kontrast mitten im Einblenden.
-  // Scroll-gebundene Animationen (view()/scroll()) enden nie von selbst und bleiben außen vor.
+  // Scroll-gebundene Animationen (view()/scroll()) und Endlosschleifen (Startseite: Puls, Gleis; per Schalter
+  // anhaltbar) enden nie von selbst und bleiben außen vor.
   await page.evaluate(() =>
     Promise.all(
       document
         .getAnimations()
         .filter((a) => a.timeline === document.timeline)
+        .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
         .map((a) => a.finished.catch(() => undefined)),
     ),
   );
