@@ -12,7 +12,7 @@
     "local": "sh scripts/local.sh",
     "local:down": "docker compose down",
     "dev": "pnpm content && (velite dev & next dev)",
-    "build": "pnpm content && next build",
+    "build": "pnpm content && next build --webpack",
     "assemble": "sh scripts/assemble.sh",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm php:test && pnpm e2e",
     "lint": "eslint .",

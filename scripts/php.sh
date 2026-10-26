@@ -4,7 +4,7 @@
 #   sh scripts/php.sh test      PHPUnit im PHP-8.3-Image des Prod-Nachbaus
 set -eu
 cd "$(dirname "$0")/.."
-COMPOSER_IMAGE="composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac"
+COMPOSER_IMAGE="composer@sha256:b6dcd72ca98fa19d0e5b8476de179859704891fad06dd9e0b96833d4c430a5fc"
 
 case "${1:-}" in
   install)

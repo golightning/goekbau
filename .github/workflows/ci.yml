@@ -51,7 +51,7 @@ jobs:
       - name: composer install
         run: >
           docker run --rm -u "$(id -u):$(id -g)" -e COMPOSER_HOME=/tmp/composer -v "$PWD/server:/app" -w /app
-          composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac
+          composer@sha256:b6dcd72ca98fa19d0e5b8476de179859704891fad06dd9e0b96833d4c430a5fc
           composer install --no-interaction --no-progress --ignore-platform-req=ext-gd --ignore-platform-req=ext-zip
       - run: docker build -q -t goekbau-php docker/web
       - run: docker run --rm -v "$PWD:/repo" -w /repo/server goekbau-php php vendor/bin/phpunit --no-progress

@@ -4,9 +4,12 @@
 set -eu
 cd "$(dirname "$0")/.."
 [ -f out/index.html ] || { echo "out/ fehlt – zuerst 'pnpm build' ausführen" >&2; exit 1; }
-COMPOSER_IMAGE="composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac"
+COMPOSER_IMAGE="composer@sha256:b6dcd72ca98fa19d0e5b8476de179859704891fad06dd9e0b96833d4c430a5fc"
 
-rm -rf dist/site
+# Inhalt leeren statt den Ordner zu löschen: der lokale Nachbau bindet dist/site ein; ein ersetzter Ordner
+# ließ Apache im Container auf die alte Verzeichnis-Instanz warten und blockierte Docker (25.10.2026).
+mkdir -p dist/site
+find dist/site -mindepth 1 -delete
 mkdir -p dist/site/_app/app
 cp -R out/. dist/site/
 cp -R server/public/. dist/site/
