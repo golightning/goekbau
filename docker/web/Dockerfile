@@ -1,7 +1,7 @@
 # Lokaler Prod-Nachbau (design.md D9): Apache + PHP 8.3 wie auf IONOS Deploy Now.
 # Base-Image per Digest gepinnt (Lieferkette, web-security): php:8.3.36-apache, enthält die Korrekturen für
 # CVE-2026-109618/-109619 („PHP2Shell“, 21.10.2026).
-FROM php@sha256:0d46cb96775228313d3997c155f78227de13bf9972e0c736e653fb23aded79b2
+FROM php@sha256:50956f094e90a716d43bea28087d447555ad80510e386ab8c9c10d8c70d781a9
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends libzip-dev libpng-dev libjpeg62-turbo-dev libwebp-dev \
